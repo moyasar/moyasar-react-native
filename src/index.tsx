@@ -1,9 +1,5 @@
-import {
-  requireNativeComponent,
-  UIManager,
-  Platform,
-  type ViewStyle,
-} from 'react-native';
+import { Platform, type ViewStyle, View, Text } from 'react-native';
+import React from 'react';
 
 const LINKING_ERROR =
   `The package 'react-native-moyasar-sdk' doesn't seem to be linked. Make sure: \n\n` +
@@ -16,11 +12,12 @@ type MoyasarSdkProps = {
   style: ViewStyle;
 };
 
-const ComponentName = 'MoyasarSdkView';
-
-export const MoyasarSdkView =
-  UIManager.getViewManagerConfig(ComponentName) != null
-    ? requireNativeComponent<MoyasarSdkProps>(ComponentName)
-    : () => {
-        throw new Error(LINKING_ERROR);
-      };
+export const MoyasarSdkView = (moyasarSdkProps: MoyasarSdkProps) => {
+  return (
+    <View>
+      <Text style={{ ...moyasarSdkProps.style, color: moyasarSdkProps.color }}>
+        {LINKING_ERROR}
+      </Text>
+    </View>
+  );
+};
