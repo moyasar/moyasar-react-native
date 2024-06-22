@@ -1,11 +1,7 @@
-import { Platform, type ViewStyle, View, Text } from 'react-native';
+import { type ViewStyle, View, Text } from 'react-native';
 import React from 'react';
-
-const LINKING_ERROR =
-  `The package 'react-native-moyasar-sdk' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
+import './localizations/i18n';
+import { Trans } from 'react-i18next';
 
 type MoyasarSdkProps = {
   color: string;
@@ -16,7 +12,7 @@ export const MoyasarSdkView = (moyasarSdkProps: MoyasarSdkProps) => {
   return (
     <View>
       <Text style={{ ...moyasarSdkProps.style, color: moyasarSdkProps.color }}>
-        {LINKING_ERROR}
+        <Trans i18nKey="nameOnCard" />
       </Text>
     </View>
   );
