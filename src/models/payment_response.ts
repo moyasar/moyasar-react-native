@@ -1,4 +1,3 @@
-import { debugLog } from '../helpers/debug_log';
 import type PaymentStatus from './payment_status';
 import PaymentType from './payment_type';
 import CreditCardResponseSource from './sources/credit_card/credit_card_response_source';
@@ -102,7 +101,7 @@ class PaymentResponse {
    * Creates a new PaymentResponse instance from a JSON object.
    * @throws Error if the payment type is invalid.
    */
-  static fromJson(json: any, paymentType: PaymentType) {
+  static fromJson(json: Record<string, any>, paymentType: PaymentType) {
     let paymentSource;
 
     switch (paymentType) {
@@ -113,10 +112,8 @@ class PaymentResponse {
         throw new Error('Invalid payment type!');
     }
 
-    debugLog(`${json.id}`);
-
     return new PaymentResponse({
-      id: json.idddd as string,
+      id: json.id,
       status: json.status,
       amount: json.amount,
       fee: json.fee,

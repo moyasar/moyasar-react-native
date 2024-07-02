@@ -42,7 +42,7 @@ class CreditCardResponseSource implements PaymentResponseSource {
     this.message = message;
   }
 
-  static fromJson(json: any): CreditCardResponseSource {
+  static fromJson(json: Record<string, any>): CreditCardResponseSource {
     return new CreditCardResponseSource({
       company: json.company,
       name: json.name,
