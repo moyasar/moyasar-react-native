@@ -1,10 +1,10 @@
-import type CardNetwork from '../../card_network';
+import type CreditCardNetwork from '../../credit_card_network';
 import PaymentType from '../../payment_type';
 import type { PaymentResponseSource } from '../payment_response_source';
 
 class CreditCardResponseSource implements PaymentResponseSource {
   public type: PaymentType = PaymentType.creditCard;
-  public network: CardNetwork;
+  public network: CreditCardNetwork;
   public name: string;
   public number: string;
   public gatewayId: string;
@@ -23,7 +23,7 @@ class CreditCardResponseSource implements PaymentResponseSource {
     token,
     message,
   }: {
-    company: CardNetwork;
+    company: CreditCardNetwork;
     name: string;
     number: string;
     gatewayId: string;
