@@ -2,7 +2,10 @@ import type PaymentStatus from './payment_status';
 import PaymentType from './payment_type';
 import CreditCardResponseSource from './sources/credit_card/credit_card_response_source';
 
-class PaymentResponse {
+/**
+ Moyasar API response for processing a payment.
+ */
+export class PaymentResponse {
   id: string;
   status: PaymentStatus;
   amount: number;
@@ -138,5 +141,3 @@ class PaymentResponse {
     });
   }
 }
-
-export default PaymentResponse;

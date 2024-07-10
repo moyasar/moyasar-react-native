@@ -4,7 +4,7 @@ import type CreditCardConfig from './credit_card_config';
 /**
  Used by Moyasar API along with any of the supported sources. 
  */
-class PaymentConfig {
+export class PaymentConfig {
   /**
    * Used internally to manage the 3DS step.
    */
@@ -26,7 +26,7 @@ class PaymentConfig {
    * @param currency - The currency code for the payment. Defaults to 'SAR'. Must be in ISO 3166-1 alpha-3 country code format.
    * @param description - Can be any string you want to tag the payment. For example `Payment for Order #34321`.
    * @param metadata - The [metadata] adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
-   * @param supportedNetworks - Card networks supported for this payment. Defaults to ['mada', 'visa', 'masterCard', 'amex'].
+   * @param supportedNetworks - Card networks supported for Apple Pay. Defaults to ['mada', 'visa', 'masterCard', 'amex'].
    * @param applePay - Required for Apple Pay feature.
    * @param creditCard - Required for Credit Card form feature.
    */
@@ -70,5 +70,3 @@ class PaymentConfig {
     this.creditCard = creditCard;
   }
 }
-
-export default PaymentConfig;

@@ -1,4 +1,4 @@
-import type PaymentConfig from './payment_config';
+import type { PaymentConfig } from './payment_config';
 import type { PaymentRequestSource } from './sources/payment_request_source';
 
 class PaymentRequest {
