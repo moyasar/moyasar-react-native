@@ -22,7 +22,7 @@ export class PaymentConfig {
   /**
    * Constructs a new PaymentConfig instance with the provided settings.
    * @param publishableApiKey - Your Moyasar publishable API key - https://docs.moyasar.com/get-your-api-keys.
-   * @param amount - The amount to be charged in the smallest currency unit. For example, to charge `SAR 257.58` you will have the [amount] as `25758`. In other words, 10 SAR = 10 * 100 Halalas.
+   * @param amount - The amount to be charged in the smallest currency unit. For example, to charge `SAR 257.58` you will have the [amount] as `25758`. In other words, 10 SAR = 10 * 100 Halalas. Integer values only.
    * @param currency - The currency code for the payment. Defaults to 'SAR'. Must be in ISO 3166-1 alpha-3 country code format.
    * @param description - Can be any string you want to tag the payment. For example `Payment for Order #34321`.
    * @param metadata - The [metadata] adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
@@ -54,6 +54,7 @@ export class PaymentConfig {
       'Please fill `publishableApiKey` argument with your key.'
     );
     assert(amount > 0, 'Please add a positive amount.');
+    assert(Number.isInteger(amount), 'Amount must be an integer.');
     assert(description.length > 0, 'Please add a description.');
     assert(
       supportedNetworks.length > 0,

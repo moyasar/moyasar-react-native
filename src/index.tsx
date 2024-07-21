@@ -1,4 +1,6 @@
-export * from './credit_card';
+import './localizations/i18n';
+
+export * from './views/credit_card';
 export * from './models/payment_config';
 export * from './models/credit_card_config';
 export * from './models/payment_response';

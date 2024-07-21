@@ -11,7 +11,7 @@ const resources = {
       cvc: 'CVC',
       cardNumberRequired: 'Card number is required',
       invalidCardNumber: 'Invalid card number',
-      unsupportedCardNetwork: 'Unsupported card network',
+      unsupportedCreditCardNetwork: 'Unsupported card network',
       expiryRequired: 'Expiry date is required',
       invalidExpiry: 'Invalid expiry date',
       expiredCard: 'Expired card',
@@ -19,6 +19,7 @@ const resources = {
       bothNamesRequired: 'Both first and last names are required',
       onlyEnglishAlphabets: 'Name may only contain english alphabets',
       cvcRequired: 'Security code is required',
+      onlyDigits: 'Security code may only contain numbers',
       invalidCvc: 'Invalid security code',
       pay: 'Pay',
     },
@@ -31,7 +32,7 @@ const resources = {
       cvc: 'رمز الأمان',
       cardNumberRequired: 'رقم البطاقة مطلوب',
       invalidCardNumber: 'رقم البطاقة غير صحيح',
-      unsupportedCardNetwork: 'شبكة البطاقة غير مدعومة',
+      unsupportedCreditCardNetwork: 'شبكة البطاقة غير مدعومة',
       expiryRequired: 'تاريخ الإنتهاء مطلوب',
       invalidExpiry: 'تاريخ الإنتهاء غير صحيح',
       expiredCard: 'البطاقة منتهية',
@@ -39,6 +40,7 @@ const resources = {
       bothNamesRequired: 'الاسم الأول والأخير مطلوبان',
       onlyEnglishAlphabets: 'يجب أن يحتوي الاسم على حروف إنجليزية فقط',
       cvcRequired: 'رمز الأمان مطلوب',
+      onlyDigits: 'رمز الأمان يجب أن يحتوي على أرقام فقط',
       invalidCvc: 'رمز الأمان غير صحيح',
       pay: 'ادفع',
     },
@@ -46,7 +48,7 @@ const resources = {
 };
 
 // TODO: Check 'https://www.npmjs.com/package/i18next-browser-languagedetector' when supporting web
-const lang =
+export const currentLang =
   Platform.OS === 'ios'
     ? NativeModules.SettingsManager.settings.AppleLocale.substring(0, 2)
     : NativeModules.I18nManager.localeIdentifier.substring(0, 2);
@@ -54,6 +56,10 @@ const lang =
 i18n.use(initReactI18next).init({
   resources: resources,
   compatibilityJSON: 'v3',
-  lng: lang,
+  lng: currentLang,
   fallbackLng: ['en', 'ar'],
 });
+
+export function isArabicLang(): boolean {
+  return currentLang === 'ar';
+}

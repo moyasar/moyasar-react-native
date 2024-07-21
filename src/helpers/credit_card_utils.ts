@@ -1,7 +1,9 @@
 import CreditCardNetwork from '../models/credit_card_network';
 import { inMadaRange } from './mada_util';
 
-export const getCardNetworkFromNumber = (input: string): CreditCardNetwork => {
+export function getCreditCardNetworkFromNumber(
+  input: string
+): CreditCardNetwork {
   if (inMadaRange(input)) {
     return CreditCardNetwork.mada;
   } else if (new RegExp('[4]').test(input)) {
@@ -17,4 +19,21 @@ export const getCardNetworkFromNumber = (input: string): CreditCardNetwork => {
   }
 
   return CreditCardNetwork.unknown;
-};
+}
+
+export function isValidLuhn(cardNumber: string): boolean {
+  // TODO: Make clean string for cleaning formatting
+
+  const digits = cardNumber
+    .split('')
+    .reverse()
+    .map((digit) => parseInt(digit, 10));
+  const sum = digits.reduce((acc, digit, index) => {
+    if (index % 2 === 1) {
+      const doubled = digit * 2;
+      return acc + (doubled > 9 ? doubled - 9 : doubled);
+    }
+    return acc + digit;
+  }, 0);
+  return sum % 10 === 0;
+}
