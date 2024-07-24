@@ -1,4 +1,4 @@
-import { getCardNetworkFromNumber } from '../../../helpers/card_utils';
+import { getCreditCardNetworkFromNumber } from '../../../helpers/credit_card_utils';
 import CreditCardNetwork from '../../credit_card_network';
 import CreditCardConfig from '../../credit_card_config';
 import PaymentType from '../../payment_type';
@@ -32,7 +32,7 @@ class CreditCardRequestSource implements PaymentRequestSource {
     tokenizeCard: boolean;
     manualPayment: boolean;
   }) {
-    this.network = getCardNetworkFromNumber(number);
+    this.network = getCreditCardNetworkFromNumber(number);
     this.name = name;
     this.number = number;
     this.cvc = cvc;

@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { CreditCard, PaymentConfig } from 'react-native-moyasar-sdk';
+import {
+  CreditCard,
+  PaymentConfig,
+  PaymentResponse,
+} from 'react-native-moyasar-sdk';
 
 const paymentConfig = new PaymentConfig({
   publishableApiKey: 'pk_test_U38gMHTgVv4wYCd35Zk1JSEd1ZyMYyA9oQ7T4rKa',
-  amount: 100,
+  amount: 10000,
   currency: 'SAR',
   description: 'Test payment',
 });
 
-function onPaymentResult() {
-  console.log('Payment done');
+function onPaymentResult(paymentResponse: PaymentResponse) {
+  console.log(`Payment done ${JSON.stringify(paymentResponse)}`);
 }
 
 export default function App() {
