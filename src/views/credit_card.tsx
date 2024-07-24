@@ -14,8 +14,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { MoyasarProps } from '../models/moyasar_props';
 import { toMajor } from '../helpers/currency_util';
-import type { CreditCardFields } from '../models/component_models/credit_card_fields';
-import type { CreditCardErrorFields } from '../models/component_models/credit_card_error_fields';
 import { CreditCardPaymentService } from '../services/credit_card_payment_service';
 
 const paymentService = new CreditCardPaymentService();
@@ -38,18 +36,15 @@ function getFormattedAmount(amount: number, currency: string): string {
 export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
   const { t } = useTranslation();
 
-  const [fields, setFields] = useState<CreditCardFields>({
-    name: '',
-    number: '',
-    expiry: '',
-    cvc: '',
-  });
-  const [errors, setError] = useState<CreditCardErrorFields>({
-    name: null,
-    number: null,
-    expiry: null,
-    cvc: null,
-  });
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [cvc, setCvc] = useState('');
+
+  const [nameError, setNameError] = useState<string | null>(null);
+  const [numberError, setNumberError] = useState<string | null>(null);
+  const [expiryError, setExpiryError] = useState<string | null>(null);
+  const [cvcError, setCvcError] = useState<string | null>(null);
 
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
   const [isPaymentInProgress, setIsPaymentInProgress] =
@@ -57,9 +52,10 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
 
   useEffect(() => {
     setIsButtonDisabled(
-      !paymentService.validateAllFields(fields) || isPaymentInProgress
+      !paymentService.validateAllFields({ name, number, expiry, cvc }) ||
+        isPaymentInProgress
     );
-  }, [fields, isPaymentInProgress]);
+  }, [name, number, expiry, cvc, isPaymentInProgress]);
 
   return (
     <KeyboardAvoidingView
@@ -71,13 +67,12 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
             <View style={styles.inputSubContainer}>
               <TextInput
                 style={styles.input}
-                value={fields.name}
+                value={name}
                 onChangeText={(value) => {
-                  setFields({ ...fields, name: value });
-                  setError({
-                    ...errors,
-                    name: paymentService.nameValidator.visualValidate(value),
-                  });
+                  setName(value);
+                  setNameError(
+                    paymentService.nameValidator.visualValidate(value)
+                  );
                 }}
                 placeholder={t('nameOnCard')}
                 autoCorrect={false}
@@ -85,19 +80,17 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
               />
             </View>
 
-            <Text style={styles.errorText}>{errors.name}</Text>
+            <Text style={styles.errorText}>{nameError}</Text>
 
             <View style={styles.inputSubContainer}>
               <TextInput
                 style={styles.input}
-                value={fields.number}
+                value={number}
                 onChangeText={(value) => {
-                  setFields({ ...fields, number: value });
-                  setError({
-                    ...errors,
-                    number:
-                      paymentService.numberValidator.visualValidate(value),
-                  });
+                  setNumber(value);
+                  setNumberError(
+                    paymentService.numberValidator.visualValidate(value)
+                  );
                 }}
                 placeholder={t('cardNumber')}
                 keyboardType="numeric"
@@ -105,19 +98,17 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
               />
             </View>
 
-            <Text style={styles.errorText}>{errors.number}</Text>
+            <Text style={styles.errorText}>{numberError}</Text>
 
             <View style={styles.inputSubContainer}>
               <TextInput
                 style={styles.input}
-                value={fields.expiry}
+                value={expiry}
                 onChangeText={(value) => {
-                  setFields({ ...fields, expiry: value });
-                  setError({
-                    ...errors,
-                    expiry:
-                      paymentService.expiryValidator.visualValidate(value),
-                  });
+                  setExpiry(value);
+                  setExpiryError(
+                    paymentService.expiryValidator.visualValidate(value)
+                  );
                 }}
                 placeholder={t('expiry')}
                 keyboardType="numeric"
@@ -125,18 +116,17 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
               />
             </View>
 
-            <Text style={styles.errorText}>{errors.expiry}</Text>
+            <Text style={styles.errorText}>{expiryError}</Text>
 
             <View style={styles.inputSubContainer}>
               <TextInput
                 style={styles.input}
-                value={fields.cvc}
+                value={cvc}
                 onChangeText={(value) => {
-                  setFields({ ...fields, cvc: value });
-                  setError({
-                    ...errors,
-                    cvc: paymentService.cvcValidator.visualValidate(value),
-                  });
+                  setCvc(value);
+                  setCvcError(
+                    paymentService.cvcValidator.visualValidate(value)
+                  );
                 }}
                 placeholder={t('cvc')}
                 keyboardType="numeric"
@@ -146,7 +136,7 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
             </View>
           </View>
 
-          <Text style={styles.errorText}>{errors.cvc}</Text>
+          <Text style={styles.errorText}>{cvcError}</Text>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -161,7 +151,7 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
                 setIsPaymentInProgress(true);
                 await paymentService.payByCreditCard(
                   paymentConfig,
-                  fields,
+                  { name, number, expiry, cvc },
                   onPaymentResult
                 );
                 setIsPaymentInProgress(false);
