@@ -1,12 +1,12 @@
 import { getCardNetworkFromNumber } from '../../../helpers/card_utils';
-import CardNetwork from '../../card_network';
+import CreditCardNetwork from '../../credit_card_network';
 import CreditCardConfig from '../../credit_card_config';
 import PaymentType from '../../payment_type';
 import type { PaymentRequestSource } from '../payment_request_source';
 
 class CreditCardRequestSource implements PaymentRequestSource {
   type: PaymentType = PaymentType.creditCard;
-  network: CardNetwork;
+  network: CreditCardNetwork;
   name: string;
   number: string;
   cvc: string;
@@ -46,7 +46,7 @@ class CreditCardRequestSource implements PaymentRequestSource {
     new CreditCardConfig({ saveCard: true, manual: true });
     return {
       type: this.type,
-      company: CardNetwork[this.network],
+      company: CreditCardNetwork[this.network],
       name: this.name,
       number: this.number,
       cvc: this.cvc,

@@ -1,4 +1,4 @@
-enum CardNetwork {
+enum CreditCardNetwork {
   mada = 'mada',
   visa = 'visa',
   master = 'master',
@@ -6,4 +6,4 @@ enum CardNetwork {
   unknown = 'unknown',
 }
 
-export default CardNetwork;
+export default CreditCardNetwork;
