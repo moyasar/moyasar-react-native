@@ -9,16 +9,21 @@ class PaymentRequest {
   source: PaymentRequestSource;
   callbackUrl: string;
 
-  constructor(
-    config: PaymentConfig,
-    paymentRequestSource: PaymentRequestSource
-  ) {
+  constructor({
+    config,
+    source,
+    callbackUrl,
+  }: {
+    config: PaymentConfig;
+    source: PaymentRequestSource;
+    callbackUrl: string;
+  }) {
     this.amount = config.amount;
     this.currency = config.currency;
     this.description = config.description;
     this.metadata = config.metadata;
-    this.source = paymentRequestSource;
-    this.callbackUrl = config.callbackUrl;
+    this.source = source;
+    this.callbackUrl = callbackUrl;
   }
 
   toJson(): Record<string, any> {

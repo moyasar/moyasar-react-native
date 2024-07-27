@@ -10,8 +10,11 @@ import { CreditCardCvcValidator } from './validators/credit_card_cvc_validator';
 import { CreditCardExpiryValidator } from './validators/credit_card_expiry_validator';
 import { CreditCardNameValidator } from './validators/credit_card_name_validator';
 import { CreditCardNumberValidator } from './validators/credit_card_number_validator';
+import PaymentStatus from '../models/payment_status';
 
 export class CreditCardPaymentService {
+  payment: PaymentResponse | null = null;
+
   nameValidator = new CreditCardNameValidator();
   numberValidator = new CreditCardNumberValidator();
   expiryValidator = new CreditCardExpiryValidator();
@@ -21,19 +24,19 @@ export class CreditCardPaymentService {
     paymentConfig: PaymentConfig,
     fields: CreditCardFields,
     onPaymentResult: (onPaymentResult: PaymentResponse) => void
-  ) {
+  ): Promise<boolean> {
     debugLog('Moyasar SDK: Begin CC payment...');
 
     if (!this.validateAllFields(fields)) {
       // TODO: Alert user about invalid fields
-      return;
+      return false;
     }
 
     const expiryDate = ExpiryDateUtil.fromPattern(fields.expiry);
 
     if (expiryDate === null) {
       // TODO: Alert user about invalid fields
-      return;
+      return false;
     }
 
     const creditCardRequestSource: CreditCardRequestSource =
@@ -49,19 +52,29 @@ export class CreditCardPaymentService {
 
     debugLog('Moyasar SDK: Paying...');
 
-    const paymentRequest = new PaymentRequest(
-      paymentConfig,
-      creditCardRequestSource
-    );
+    const paymentRequest = new PaymentRequest({
+      config: paymentConfig,
+      source: creditCardRequestSource,
+      callbackUrl: 'https://sdk.moyasar.com/return',
+    });
 
-    const payment = await createPayment(
+    const paymentResponse = await createPayment(
       paymentRequest,
       paymentConfig.publishableApiKey
     );
 
-    debugLog(`Moyasar SDK: Payment done with status: ${payment.status}`);
+    debugLog(
+      `Moyasar SDK: Payment done with status: ${paymentResponse.status}`
+    );
 
-    onPaymentResult(payment);
+    if (paymentResponse.status !== PaymentStatus.initiated) {
+      onPaymentResult(paymentResponse);
+      return false;
+    }
+
+    this.payment = paymentResponse;
+
+    return true;
   }
 
   validateAllFields(fields: CreditCardFields): boolean {

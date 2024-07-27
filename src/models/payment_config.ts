@@ -5,10 +5,6 @@ import type CreditCardConfig from './credit_card_config';
  Used by Moyasar API along with any of the supported sources. 
  */
 export class PaymentConfig {
-  /**
-   * Used internally to manage the 3DS step.
-   */
-  callbackUrl: string = 'https://sdk.moyasar.com/return';
   publishableApiKey: string;
   amount: number;
   currency: string = 'SAR';

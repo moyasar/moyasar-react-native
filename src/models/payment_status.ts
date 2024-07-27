@@ -4,6 +4,9 @@ enum PaymentStatus {
   failed = 'failed',
   authorized = 'authorized',
   captured = 'captured',
+  refunded = 'refunded',
+  voided = 'voided',
+  verified = 'verified',
 }
 
 export default PaymentStatus;
