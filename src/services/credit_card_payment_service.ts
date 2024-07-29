@@ -64,7 +64,7 @@ export class CreditCardPaymentService {
     );
 
     debugLog(
-      `Moyasar SDK: Payment done with status: ${paymentResponse.status}`
+      `Moyasar SDK: Payment created with status: ${paymentResponse.status}`
     );
 
     if (paymentResponse.status !== PaymentStatus.initiated) {

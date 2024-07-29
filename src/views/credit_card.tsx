@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { currentLang, isArabicLang } from '../localizations/i18n';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { MoyasarProps } from '../models/moyasar_props';
 import { toMajor } from '../helpers/currency_util';
