@@ -10,11 +10,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { currentLang, isArabicLang } from '../localizations/i18n';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { MoyasarProps } from '../models/moyasar_props';
 import { toMajor } from '../helpers/currency_util';
 import { CreditCardPaymentService } from '../services/credit_card_payment_service';
+import { WebviewPaymentAuth } from './webview_payment_auth';
+import type CreditCardResponseSource from '../models/sources/credit_card/credit_card_response_source';
+import type { CreditCardProps } from '../models/credit_card_props';
 
 const paymentService = new CreditCardPaymentService();
 
@@ -34,6 +37,38 @@ function getFormattedAmount(amount: number, currency: string): string {
 }
 
 export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
+  const [isWebviewVisible, setWebviewVisible] = useState(false);
+
+  return isWebviewVisible ? (
+    <WebviewPaymentAuth
+      transactionUrl={
+        (paymentService.payment?.source as CreditCardResponseSource)
+          .transactionUrl
+      }
+      onWebviewPaymentAuthResult={(webviewPaymentResponse) => {
+        if (paymentService.payment) {
+          paymentService.payment.status = webviewPaymentResponse.status as any;
+          (paymentService.payment.source as CreditCardResponseSource).message =
+            webviewPaymentResponse.message;
+          onPaymentResult(paymentService.payment);
+        }
+      }}
+    />
+  ) : (
+    <CreditCardScreen
+      paymentConfig={paymentConfig}
+      onPaymentResult={onPaymentResult}
+      setWebviewVisible={setWebviewVisible}
+    />
+  );
+}
+
+// TODO: Extract to a separate file with separating to components
+const CreditCardScreen = ({
+  paymentConfig,
+  onPaymentResult,
+  setWebviewVisible,
+}: CreditCardProps) => {
   const { t } = useTranslation();
 
   const [name, setName] = useState('');
@@ -149,12 +184,14 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
               ]}
               onPress={async () => {
                 setIsPaymentInProgress(true);
-                await paymentService.payByCreditCard(
+                const showAuthWebview = await paymentService.payByCreditCard(
                   paymentConfig,
                   { name, number, expiry, cvc },
                   onPaymentResult
                 );
                 setIsPaymentInProgress(false);
+
+                setWebviewVisible(showAuthWebview);
               }}
               disabled={isButtonDisabled}
             >
@@ -175,7 +212,7 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   scrollView: {

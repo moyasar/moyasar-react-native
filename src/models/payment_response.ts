@@ -104,7 +104,10 @@ export class PaymentResponse {
    * Creates a new PaymentResponse instance from a JSON object.
    * @throws Error if the payment type is invalid.
    */
-  static fromJson(json: Record<string, any>, paymentType: PaymentType) {
+  static fromJson(
+    json: Record<string, any>,
+    paymentType: PaymentType
+  ): PaymentResponse {
     let paymentSource;
 
     switch (paymentType) {
