@@ -42,76 +42,78 @@ async function onApplePayResponse(
 }
 
 export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
+  if (Platform.OS !== 'ios') {
+    return <View />;
+  }
+
   assert(paymentConfig.applePay != undefined, 'Apple Pay config is required');
 
   return (
     <View style={{ alignItems: 'center' }}>
-      {Platform.OS === 'ios' && (
-        <ApplePayButton
-          type="inStore"
-          height={50}
-          width="90%"
-          cornerRadius={11}
-          onPress={() => {
-            debugLog('Moyasar SDK: Apple Pay button pressed');
+      <ApplePayButton
+        type="inStore"
+        height={50}
+        width="90%"
+        cornerRadius={11}
+        onPress={() => {
+          debugLog('Moyasar SDK: Apple Pay button pressed');
 
-            const methodData = {
-              supportedMethods: ['apple-pay'],
-              data: {
-                merchantIdentifier: paymentConfig.applePay!.merchantId,
-                supportedNetworks: paymentConfig.supportedNetworks, // TODO: ensure all all lower case
-                merchantCapabilities:
-                  paymentConfig.applePay!.merchantCapabilities, // TODO: Test
-                countryCode:
-                  currencyToCountryCodeMap[paymentConfig.currency] || 'SA',
-                currencyCode: paymentConfig.currency,
+          const methodData = {
+            supportedMethods: ['apple-pay'],
+            data: {
+              merchantIdentifier: paymentConfig.applePay!.merchantId,
+              supportedNetworks: paymentConfig.supportedNetworks, // TODO: ensure all all lower case
+              merchantCapabilities:
+                paymentConfig.applePay!.merchantCapabilities, // TODO: Test
+              countryCode:
+                currencyToCountryCodeMap[paymentConfig.currency] || 'SA',
+              currencyCode: paymentConfig.currency,
+            },
+          };
+
+          const details = {
+            total: {
+              label: paymentConfig.applePay!.label,
+              amount: {
+                currency: paymentConfig.currency,
+                value: toMajor(paymentConfig.amount, paymentConfig.currency),
               },
-            };
+            },
+          };
 
-            const details = {
-              total: {
-                label: paymentConfig.applePay!.label,
-                amount: {
-                  currency: paymentConfig.currency,
-                  value: toMajor(paymentConfig.amount, paymentConfig.currency),
-                },
-              },
-            };
+          const applePayPaymentRequest = new PaymentRequest(
+            [methodData],
+            details
+          );
 
-            const applePayPaymentRequest = new PaymentRequest(
-              [methodData],
-              details
-            );
+          debugLog(
+            `Moyasar SDK: Apple Pay request: ${JSON.stringify(applePayPaymentRequest)}`
+          );
 
-            debugLog(
-              `Moyasar SDK: Apple Pay request: ${JSON.stringify(applePayPaymentRequest)}`
-            );
+          applePayPaymentRequest
+            .show()
+            .then(async (paymentResponse: any) => {
+              debugLog('Moyasar SDK: Got Apple Pay response');
 
-            applePayPaymentRequest
-              .show()
-              .then(async (paymentResponse: any) => {
-                debugLog('Moyasar SDK: Got Apple Pay response');
-
-                if (paymentResponse.details.paymentData) {
-                  await onApplePayResponse(
-                    paymentResponse.details.paymentData,
-                    paymentConfig,
-                    onPaymentResult
-                  );
-                  paymentResponse.complete('success');
-                } else {
-                  errorLog(
-                    'Moyasar SDK: Apple Pay token is null, please use a physical device in order to test Apple Pay'
-                  );
-                  paymentResponse.complete('failure');
-                }
-              })
-              .catch((error: any) => {
-                errorLog(`Moyasar SDK: Apple Pay payment error: ${error}`);
-              });
-          }}
-        />
-      )}
+              if (paymentResponse.details.paymentData) {
+                await onApplePayResponse(
+                  paymentResponse.details.paymentData,
+                  paymentConfig,
+                  onPaymentResult
+                );
+                paymentResponse.complete('success');
+              } else {
+                errorLog(
+                  'Moyasar SDK: Apple Pay token is null, please use a physical device in order to test Apple Pay'
+                );
+                paymentResponse.complete('failure');
+              }
+            })
+            .catch((error: any) => {
+              errorLog(`Moyasar SDK: Apple Pay payment error: ${error}`);
+            });
+        }}
+      />
     </View>
   );
 }
