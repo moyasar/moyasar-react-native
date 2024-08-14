@@ -1,9 +1,9 @@
-import { debugLog } from '../helpers/debug_log';
+import { debugLog, errorLog } from '../helpers/debug_log';
 import { ExpiryDateUtil } from '../helpers/expiry_date_util';
 import type { PaymentConfig } from '../models/payment_config';
-import PaymentRequest from '../models/payment_request';
+import { PaymentRequest } from '../models/payment_request';
 import type { PaymentResponse } from '../models/payment_response';
-import CreditCardRequestSource from '../models/sources/credit_card/credit_card_request_source';
+import { CreditCardRequestSource } from '../models/sources/credit_card/credit_card_request_source';
 import type { CreditCardFields } from '../models/component_models/credit_card_fields';
 import { createPayment } from './payment_service';
 import { CreditCardCvcValidator } from './validators/credit_card_cvc_validator';
@@ -46,8 +46,8 @@ export class CreditCardPaymentService {
         cvc: fields.cvc,
         month: expiryDate?.month.toString(),
         year: expiryDate?.year.toString(),
-        tokenizeCard: paymentConfig.creditCard?.saveCard ?? false,
-        manualPayment: paymentConfig.creditCard?.manual ?? false,
+        tokenizeCard: paymentConfig.creditCard.saveCard,
+        manualPayment: paymentConfig.creditCard.manual,
       });
 
     debugLog('Moyasar SDK: Paying...');
@@ -58,23 +58,29 @@ export class CreditCardPaymentService {
       callbackUrl: 'https://sdk.moyasar.com/return',
     });
 
-    const paymentResponse = await createPayment(
-      paymentRequest,
-      paymentConfig.publishableApiKey
-    );
+    try {
+      const paymentResponse = await createPayment(
+        paymentRequest,
+        paymentConfig.publishableApiKey
+      );
 
-    debugLog(
-      `Moyasar SDK: Payment created with status: ${paymentResponse.status}`
-    );
+      debugLog(
+        `Moyasar SDK: CC Payment created with status: ${paymentResponse.status}`
+      );
 
-    if (paymentResponse.status !== PaymentStatus.initiated) {
-      onPaymentResult(paymentResponse);
+      if (paymentResponse.status !== PaymentStatus.initiated) {
+        onPaymentResult(paymentResponse);
+        return false;
+      }
+
+      this.payment = paymentResponse;
+
+      return true;
+    } catch (error) {
+      errorLog(`Moyasar SDK: CC Payment failed with error: ${error}`);
+      // TODO: Return error 'onPaymentResult'
       return false;
     }
-
-    this.payment = paymentResponse;
-
-    return true;
   }
 
   validateAllFields(fields: CreditCardFields): boolean {

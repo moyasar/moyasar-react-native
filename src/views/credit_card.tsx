@@ -9,14 +9,14 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { currentLang, isArabicLang } from '../localizations/i18n';
+import { isArabicLang } from '../localizations/i18n';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { MoyasarProps } from '../models/moyasar_props';
-import { toMajor } from '../helpers/currency_util';
+import { formatAmount } from '../helpers/currency_util';
 import { CreditCardPaymentService } from '../services/credit_card_payment_service';
 import { WebviewPaymentAuth } from './webview_payment_auth';
-import type CreditCardResponseSource from '../models/sources/credit_card/credit_card_response_source';
+import type { CreditCardResponseSource } from '../models/sources/credit_card/credit_card_response_source';
 import type { CreditCardProps } from '../models/credit_card_props';
 
 const paymentService = new CreditCardPaymentService();
@@ -25,13 +25,7 @@ let formattedAmount: string;
 
 function getFormattedAmount(amount: number, currency: string): string {
   if (!formattedAmount) {
-    const numberFormatter = new Intl.NumberFormat(currentLang, {
-      style: 'currency',
-      currency: currency,
-      useGrouping: true,
-    });
-    let majorAmount = toMajor(amount, currency);
-    return (formattedAmount = numberFormatter.format(majorAmount));
+    return (formattedAmount = formatAmount(amount, currency));
   }
   return formattedAmount;
 }

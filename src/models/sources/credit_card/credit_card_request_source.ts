@@ -1,10 +1,9 @@
 import { getCreditCardNetworkFromNumber } from '../../../helpers/credit_card_utils';
 import CreditCardNetwork from '../../credit_card_network';
-import CreditCardConfig from '../../credit_card_config';
 import PaymentType from '../../payment_type';
 import type { PaymentRequestSource } from '../payment_request_source';
 
-class CreditCardRequestSource implements PaymentRequestSource {
+export class CreditCardRequestSource implements PaymentRequestSource {
   type: PaymentType = PaymentType.creditCard;
   network: CreditCardNetwork;
   name: string;
@@ -43,7 +42,6 @@ class CreditCardRequestSource implements PaymentRequestSource {
   }
 
   toJson(): Record<string, any> {
-    new CreditCardConfig({ saveCard: true, manual: true });
     return {
       type: this.type,
       company: CreditCardNetwork[this.network],
@@ -57,5 +55,3 @@ class CreditCardRequestSource implements PaymentRequestSource {
     };
   }
 }
-
-export default CreditCardRequestSource;

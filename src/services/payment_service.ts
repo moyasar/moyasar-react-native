@@ -1,9 +1,10 @@
-import { debugLog } from '../helpers/debug_log';
-import type PaymentRequest from '../models/payment_request';
+import { debugLog, errorLog } from '../helpers/debug_log';
+import type { PaymentRequest } from '../models/payment_request';
 import { PaymentResponse } from '../models/payment_response';
 
 const paymentsApiUrl = 'https://api.moyasar.com/v1/payments';
 
+/** @Throws */
 export async function createPayment(
   paymentRequest: PaymentRequest,
   publishableApiKey: string
@@ -32,7 +33,7 @@ export async function createPayment(
 
     return PaymentResponse.fromJson(paymentData, paymentRequest.source.type);
   } catch (error) {
-    debugLog(`Moyasar SDK error: Failed to create payment, ${error}`);
+    errorLog(`Moyasar SDK error: Failed to create payment, ${error}`);
     throw error;
   }
 }
