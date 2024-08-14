@@ -69,6 +69,7 @@
     "react": "18.2.0",
     "react-native": "0.74.1",
     "react-native-builder-bob": "^0.20.0",
+    "react-native-payments": "github:AbdulazizAlrabiah/react-native-payments",
     "react-native-webview": "^13.10.5",
     "release-it": "^17.3.0",
     "turbo": "^1.10.7",
@@ -80,6 +81,7 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
+    "react-native-payments": "*",
     "react-native-webview": "^13.10.5"
   },
   "workspaces": [

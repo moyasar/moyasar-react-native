@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.74.1",
+    "react-native-payments": "github:AbdulazizAlrabiah/react-native-payments",
     "react-native-webview": "^13.10.5"
   },
   "devDependencies": {
