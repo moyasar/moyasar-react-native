@@ -10895,7 +10895,6 @@ __metadata:
     babel-plugin-module-resolver: ^5.0.0
     react: 18.2.0
     react-native: 0.74.1
-    react-native-payments: "github:AbdulazizAlrabiah/react-native-payments"
     react-native-webview: ^13.10.5
   languageName: unknown
   linkType: soft
@@ -10913,6 +10912,7 @@ __metadata:
     commitlint: ^17.0.2
     decimal.js: ^10.4.3
     del-cli: ^5.1.0
+    es6-error: ^4.0.2
     eslint: ^8.51.0
     eslint-config-prettier: ^9.0.0
     eslint-plugin-prettier: ^5.0.1
@@ -10923,33 +10923,19 @@ __metadata:
     react-i18next: ^14.1.2
     react-native: 0.74.1
     react-native-builder-bob: ^0.20.0
-    react-native-payments: "github:AbdulazizAlrabiah/react-native-payments"
     react-native-url-polyfill: ^2.0.0
     react-native-webview: ^13.10.5
     release-it: ^17.3.0
     turbo: ^1.10.7
     typescript: ^5.2.2
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-payments: "*"
-    react-native-webview: ^13.10.5
-  languageName: unknown
-  linkType: soft
-
-"react-native-payments@github:AbdulazizAlrabiah/react-native-payments":
-  version: 0.8.3
-  resolution: "react-native-payments@https://github.com/AbdulazizAlrabiah/react-native-payments.git#commit=c2d17c70a1d87a17482efdc2ea152b29be326c1d"
-  dependencies:
-    es6-error: ^4.0.2
     uuid: ^3.1.0
     validator: ^13.12.0
   peerDependencies:
-    react: ">=15"
-    react-native: ">=0.60"
-  checksum: ee2425a247a702985255839d78c4f4bcb56a650852af5accbb7d68dbb6a64bcf4afd7e7887f56d0ceba0c7fc55acc866bba712ec71a923feb5ba78ac2f54ec0c
-  languageName: node
-  linkType: hard
+    react: "*"
+    react-native: "*"
+    react-native-webview: ^13.10.5
+  languageName: unknown
+  linkType: soft
 
 "react-native-url-polyfill@npm:^2.0.0":
   version: 2.0.0

@@ -1,5 +1,5 @@
 // @ts-ignore
-import { ApplePayButton, PaymentRequest } from 'react-native-payments';
+import { ApplePayButton, PaymentRequest } from '../react_native_apple_pay';
 import { debugLog, errorLog } from '../helpers/debug_log';
 import { Platform, View } from 'react-native';
 import type { MoyasarProps } from '../models/moyasar_props';
@@ -46,7 +46,7 @@ export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
     return <View />;
   }
 
-  assert(paymentConfig.applePay != undefined, 'Apple Pay config is required');
+  assert(paymentConfig.applePay !== undefined, 'Apple Pay config is required');
 
   return (
     <View style={{ alignItems: 'center' }}>
@@ -62,9 +62,7 @@ export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
             supportedMethods: ['apple-pay'],
             data: {
               merchantIdentifier: paymentConfig.applePay!.merchantId,
-              supportedNetworks: paymentConfig.supportedNetworks, // TODO: ensure all all lower case
-              merchantCapabilities:
-                paymentConfig.applePay!.merchantCapabilities, // TODO: Test
+              supportedNetworks: paymentConfig.supportedNetworks,
               countryCode:
                 currencyToCountryCodeMap[paymentConfig.currency] || 'SA',
               currencyCode: paymentConfig.currency,

@@ -956,8 +956,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-payments (0.8.3):
-    - React
   - react-native-webview (13.10.5):
     - DoubleConversion
     - glog
@@ -1245,7 +1243,6 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - react-native-moyasar-sdk (from `../..`)
-  - react-native-payments (from `../node_modules/react-native-payments`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -1340,8 +1337,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   react-native-moyasar-sdk:
     :path: "../.."
-  react-native-payments:
-    :path: "../node_modules/react-native-payments"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-nativeconfig:
@@ -1425,7 +1420,6 @@ SPEC CHECKSUMS:
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
   react-native-moyasar-sdk: ca828b8fe627c8f39e1e3c0b42647e7aae9c1350
-  react-native-payments: 521c285d3a6b2df0ada3f0b4faae7f64e3e79bcb
   react-native-webview: 553abd09f58e340fdc7746c9e2ae096839e99911
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec
   React-NativeModulesApple: df46ff3e3de5b842b30b4ca8a6caae6d7c8ab09f

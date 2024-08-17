@@ -62,7 +62,9 @@ export class PaymentConfig {
     this.currency = currency;
     this.description = description;
     this.metadata = metadata;
-    this.supportedNetworks = supportedNetworks;
+    this.supportedNetworks = supportedNetworks.map((network) =>
+      network.toLowerCase()
+    );
     this.applePay = applePay;
     this.creditCard = creditCard;
   }
