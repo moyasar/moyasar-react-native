@@ -3,8 +3,10 @@ import {
   ApplePay,
   ApplePayConfig,
   CreditCard,
+  CreditCardConfig,
   PaymentConfig,
   PaymentResponse,
+  PaymentStatus,
 } from 'react-native-moyasar-sdk';
 
 const paymentConfig = new PaymentConfig({
@@ -14,18 +16,30 @@ const paymentConfig = new PaymentConfig({
   description: 'Test payment',
   metadata: { size: '250 g' },
   supportedNetworks: ['mada', 'visa', 'mastercard', 'amex'],
+  creditCard: new CreditCardConfig({ saveCard: true, manual: false }),
   applePay: new ApplePayConfig({
     merchantId: 'merchant.mysr.aalrabiah',
     label: 'Test Apple Pay from app',
+    manual: false,
   }),
 });
 
-function onPaymentResult(paymentResponse: PaymentResponse) {
-  console.log(`Payment done ${JSON.stringify(paymentResponse)}`);
-}
-
-function onApplePayResult(paymentResponse: PaymentResponse) {
-  console.log(`Apple Pay payment done ${JSON.stringify(paymentResponse)}`);
+function onPaymentResult(paymentResponse: any) {
+  if (paymentResponse instanceof PaymentResponse) {
+    switch (paymentResponse.status) {
+      case PaymentStatus.paid:
+        // handle success
+        console.log(`Payment succeeded ${JSON.stringify(paymentResponse)}`);
+        break;
+      case PaymentStatus.failed:
+        // handle failure
+        console.log(`Payment failed ${JSON.stringify(paymentResponse)}`);
+        break;
+    }
+  } else {
+    // handle error
+    console.log(`Payment callback called with error ${paymentResponse}`);
+  }
 }
 
 export default function App() {
@@ -37,7 +51,7 @@ export default function App() {
       />
       <ApplePay
         paymentConfig={paymentConfig}
-        onPaymentResult={onApplePayResult}
+        onPaymentResult={onPaymentResult}
       />
     </View>
   );

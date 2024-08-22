@@ -1,4 +1,4 @@
-import type PaymentStatus from './payment_status';
+import type { PaymentStatus } from './payment_status';
 import PaymentType from './payment_type';
 import { ApplePayPaymentResponseSource } from './sources/apple_pay/apple_pay_response_source';
 import { CreditCardResponseSource } from './sources/credit_card/credit_card_response_source';

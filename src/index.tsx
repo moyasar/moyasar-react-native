@@ -7,3 +7,4 @@ export * from './models/payment_response';
 export * from './models/moyasar_props';
 export * from './views/apple_pay';
 export * from './models/apple_pay_config';
+export * from './models/payment_status';

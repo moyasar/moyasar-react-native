@@ -10,7 +10,7 @@ import { CreditCardCvcValidator } from './validators/credit_card_cvc_validator';
 import { CreditCardExpiryValidator } from './validators/credit_card_expiry_validator';
 import { CreditCardNameValidator } from './validators/credit_card_name_validator';
 import { CreditCardNumberValidator } from './validators/credit_card_number_validator';
-import PaymentStatus from '../models/payment_status';
+import { PaymentStatus } from '../models/payment_status';
 
 export class CreditCardPaymentService {
   payment: PaymentResponse | null = null;
@@ -23,7 +23,7 @@ export class CreditCardPaymentService {
   async payByCreditCard(
     paymentConfig: PaymentConfig,
     fields: CreditCardFields,
-    onPaymentResult: (onPaymentResult: PaymentResponse) => void
+    onPaymentResult: (onPaymentResult: any) => void
   ): Promise<boolean> {
     debugLog('Moyasar SDK: Begin CC payment...');
 
@@ -78,7 +78,8 @@ export class CreditCardPaymentService {
       return true;
     } catch (error) {
       errorLog(`Moyasar SDK: CC Payment failed with error: ${error}`);
-      // TODO: Return error 'onPaymentResult'
+      onPaymentResult(error);
+
       return false;
     }
   }
