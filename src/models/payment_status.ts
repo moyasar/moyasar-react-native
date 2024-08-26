@@ -1,4 +1,4 @@
-enum PaymentStatus {
+export enum PaymentStatus {
   initiated = 'initiated',
   paid = 'paid',
   failed = 'failed',
@@ -8,5 +8,3 @@ enum PaymentStatus {
   voided = 'voided',
   verified = 'verified',
 }
-
-export default PaymentStatus;

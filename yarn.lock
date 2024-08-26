@@ -5763,6 +5763,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es6-error@npm:^4.0.2":
+  version: 4.1.1
+  resolution: "es6-error@npm:4.1.1"
+  checksum: ae41332a51ec1323da6bbc5d75b7803ccdeddfae17c41b6166ebbafc8e8beb7a7b80b884b7fab1cc80df485860ac3c59d78605e860bb4f8cd816b3d6ade0d010
+  languageName: node
+  linkType: hard
+
 "escalade@npm:^3.1.1, escalade@npm:^3.1.2":
   version: 3.1.2
   resolution: "escalade@npm:3.1.2"
@@ -10905,6 +10912,7 @@ __metadata:
     commitlint: ^17.0.2
     decimal.js: ^10.4.3
     del-cli: ^5.1.0
+    es6-error: ^4.0.2
     eslint: ^8.51.0
     eslint-config-prettier: ^9.0.0
     eslint-plugin-prettier: ^5.0.1
@@ -10920,6 +10928,8 @@ __metadata:
     release-it: ^17.3.0
     turbo: ^1.10.7
     typescript: ^5.2.2
+    uuid: ^3.1.0
+    validator: ^13.12.0
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -13001,6 +13011,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uuid@npm:^3.1.0":
+  version: 3.4.0
+  resolution: "uuid@npm:3.4.0"
+  bin:
+    uuid: ./bin/uuid
+  checksum: 58de2feed61c59060b40f8203c0e4ed7fd6f99d42534a499f1741218a1dd0c129f4aa1de797bcf822c8ea5da7e4137aa3673431a96dae729047f7aca7b27866f
+  languageName: node
+  linkType: hard
+
 "v8-compile-cache-lib@npm:^3.0.1":
   version: 3.0.1
   resolution: "v8-compile-cache-lib@npm:3.0.1"
@@ -13026,6 +13045,13 @@ __metadata:
     spdx-correct: ^3.0.0
     spdx-expression-parse: ^3.0.0
   checksum: 35703ac889d419cf2aceef63daeadbe4e77227c39ab6287eeb6c1b36a746b364f50ba22e88591f5d017bc54685d8137bc2d328d0a896e4d3fd22093c0f32a9ad
+  languageName: node
+  linkType: hard
+
+"validator@npm:^13.12.0":
+  version: 13.12.0
+  resolution: "validator@npm:13.12.0"
+  checksum: fb8f070724770b1449ea1a968605823fdb112dbd10507b2802f8841cda3e7b5c376c40f18c84e6a7b59de320a06177e471554101a85f1fa8a70bac1a84e48adf
   languageName: node
   linkType: hard
 

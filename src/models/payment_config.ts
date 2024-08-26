@@ -1,5 +1,6 @@
 import { assert } from '../helpers/assert';
-import type CreditCardConfig from './credit_card_config';
+import type { ApplePayConfig } from './apple_pay_config';
+import { CreditCardConfig } from './credit_card_config';
 
 /**
  Used by Moyasar API along with any of the supported sources. 
@@ -7,13 +8,12 @@ import type CreditCardConfig from './credit_card_config';
 export class PaymentConfig {
   publishableApiKey: string;
   amount: number;
-  currency: string = 'SAR';
+  currency: string;
   description: string;
   metadata?: Record<string, string>;
-  supportedNetworks: string[] = ['mada', 'visa', 'masterCard', 'amex'];
-  // TODO: Add type for applePay
-  applePay?: any;
-  creditCard?: CreditCardConfig;
+  supportedNetworks: string[];
+  applePay?: ApplePayConfig;
+  creditCard: CreditCardConfig;
 
   /**
    * Constructs a new PaymentConfig instance with the provided settings.
@@ -22,9 +22,9 @@ export class PaymentConfig {
    * @param currency - The currency code for the payment. Defaults to 'SAR'. Must be in ISO 3166-1 alpha-3 country code format.
    * @param description - Can be any string you want to tag the payment. For example `Payment for Order #34321`.
    * @param metadata - The [metadata] adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
-   * @param supportedNetworks - Card networks supported for Apple Pay. Defaults to ['mada', 'visa', 'masterCard', 'amex'].
+   * @param supportedNetworks - Card networks supported for Apple Pay. Defaults to ['mada', 'visa', 'mastercard', 'amex'].
    * @param applePay - Required for Apple Pay feature.
-   * @param creditCard - Required for Credit Card form feature.
+   * @param creditCard - Optional for Credit Card feature.
    */
   constructor({
     publishableApiKey,
@@ -32,9 +32,9 @@ export class PaymentConfig {
     currency = 'SAR',
     description,
     metadata,
-    supportedNetworks = ['mada', 'visa', 'masterCard', 'amex'],
+    supportedNetworks = ['mada', 'visa', 'mastercard', 'amex'],
     applePay,
-    creditCard,
+    creditCard = new CreditCardConfig({}),
   }: {
     publishableApiKey: string;
     amount: number;
@@ -42,15 +42,15 @@ export class PaymentConfig {
     description: string;
     metadata?: Record<string, string>;
     supportedNetworks?: string[];
-    applePay?: any;
+    applePay?: ApplePayConfig;
     creditCard?: CreditCardConfig;
   }) {
     assert(
       publishableApiKey.length > 0,
       'Please fill `publishableApiKey` argument with your key.'
     );
-    assert(amount > 0, 'Please add a positive amount.');
     assert(Number.isInteger(amount), 'Amount must be an integer.');
+    assert(amount > 0, 'Amount must be a positive integer.');
     assert(description.length > 0, 'Please add a description.');
     assert(
       supportedNetworks.length > 0,
@@ -62,7 +62,9 @@ export class PaymentConfig {
     this.currency = currency;
     this.description = description;
     this.metadata = metadata;
-    this.supportedNetworks = supportedNetworks;
+    this.supportedNetworks = supportedNetworks.map((network) =>
+      network.toLowerCase()
+    );
     this.applePay = applePay;
     this.creditCard = creditCard;
   }

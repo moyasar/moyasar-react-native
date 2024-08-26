@@ -1,7 +1,7 @@
 import type { PaymentConfig } from './payment_config';
 import type { PaymentRequestSource } from './sources/payment_request_source';
 
-class PaymentRequest {
+export class PaymentRequest {
   amount: number;
   currency: string;
   description?: string;
@@ -37,5 +37,3 @@ class PaymentRequest {
     };
   }
 }
-
-export default PaymentRequest;

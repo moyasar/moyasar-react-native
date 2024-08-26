@@ -1,8 +1,12 @@
 import { StyleSheet, View } from 'react-native';
 import {
+  ApplePay,
+  ApplePayConfig,
   CreditCard,
+  CreditCardConfig,
   PaymentConfig,
   PaymentResponse,
+  PaymentStatus,
 } from 'react-native-moyasar-sdk';
 
 const paymentConfig = new PaymentConfig({
@@ -10,16 +14,42 @@ const paymentConfig = new PaymentConfig({
   amount: 10000,
   currency: 'SAR',
   description: 'Test payment',
+  metadata: { size: '250 g' },
+  supportedNetworks: ['mada', 'visa', 'mastercard', 'amex'],
+  creditCard: new CreditCardConfig({ saveCard: true, manual: false }),
+  applePay: new ApplePayConfig({
+    merchantId: 'merchant.mysr.aalrabiah',
+    label: 'Test Apple Pay from app',
+    manual: false,
+  }),
 });
 
-function onPaymentResult(paymentResponse: PaymentResponse) {
-  console.log(`Payment done ${JSON.stringify(paymentResponse)}`);
+function onPaymentResult(paymentResponse: any) {
+  if (paymentResponse instanceof PaymentResponse) {
+    switch (paymentResponse.status) {
+      case PaymentStatus.paid:
+        // handle success
+        console.log(`Payment succeeded ${JSON.stringify(paymentResponse)}`);
+        break;
+      case PaymentStatus.failed:
+        // handle failure
+        console.log(`Payment failed ${JSON.stringify(paymentResponse)}`);
+        break;
+    }
+  } else {
+    // handle error
+    console.log(`Payment callback called with error ${paymentResponse}`);
+  }
 }
 
 export default function App() {
   return (
     <View style={styles.container}>
       <CreditCard
+        paymentConfig={paymentConfig}
+        onPaymentResult={onPaymentResult}
+      />
+      <ApplePay
         paymentConfig={paymentConfig}
         onPaymentResult={onPaymentResult}
       />
@@ -30,12 +60,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
   },
 });

@@ -1,6 +1,6 @@
 {
   "name": "react-native-moyasar-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native Moyasar SDK",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -90,7 +90,8 @@
     "preset": "react-native",
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
+      "<rootDir>/lib/",
+      "<rootDir>/src/react_native_apple_pay"
     ]
   },
   "commitlint": {
@@ -161,8 +162,11 @@
   },
   "dependencies": {
     "decimal.js": "^10.4.3",
+    "es6-error": "^4.0.2",
     "i18next": "^23.11.5",
     "react-i18next": "^14.1.2",
-    "react-native-url-polyfill": "^2.0.0"
+    "react-native-url-polyfill": "^2.0.0",
+    "uuid": "^3.1.0",
+    "validator": "^13.12.0"
   }
 }
