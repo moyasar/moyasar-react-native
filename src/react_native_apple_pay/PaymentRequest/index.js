@@ -19,11 +19,12 @@ import type PaymentResponseType from './PaymentResponse';
 
 // Modules
 import { DeviceEventEmitter, Platform } from 'react-native';
-import uuid from 'uuid/v1';
+import { v1 as uuid } from 'uuid';
 
 import NativePayments from '../NativeBridge';
 import PaymentResponse from './PaymentResponse';
 import PaymentRequestUpdateEvent from './PaymentRequestUpdateEvent';
+import { errorLog } from '../../helpers/debug_log';
 
 // Helpers
 import {
@@ -134,7 +135,14 @@ export default class PaymentRequest {
 
     // 3. Establish the request's id:
     if (!details.id) {
-      details.id = uuid();
+      try {
+        details.id = uuid();
+      } catch (e) {
+        errorLog(
+          'Apple Pay is not supported using a simulator, please use a real device'
+        );
+        return;
+      }
     }
 
     // 4. Process payment methods

@@ -4,7 +4,7 @@ import {
   getCreditCardNetworkFromNumber,
   isValidLuhn,
 } from '../../helpers/credit_card_utils';
-import CreditCardNetwork from '../../models/credit_card_network';
+import { CreditCardNetwork } from '../../models/credit_card_network';
 
 export class CreditCardNumberValidator extends FieldValidator {
   constructor() {

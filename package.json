@@ -69,6 +69,7 @@
     "react": "18.2.0",
     "react-native": "0.74.1",
     "react-native-builder-bob": "^0.20.0",
+    "react-native-svg": "^15.6.0",
     "react-native-webview": "^13.10.5",
     "release-it": "^17.3.0",
     "turbo": "^1.10.7",
@@ -80,6 +81,7 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
+    "react-native-svg": "^15.6.0",
     "react-native-webview": "^13.10.5"
   },
   "workspaces": [
@@ -166,7 +168,7 @@
     "i18next": "^23.11.5",
     "react-i18next": "^14.1.2",
     "react-native-url-polyfill": "^2.0.0",
-    "uuid": "^3.1.0",
+    "uuid": "^9.0.1",
     "validator": "^13.12.0"
   }
 }
