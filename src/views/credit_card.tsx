@@ -294,7 +294,8 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 12,
-    textAlign: isArabicLang() ? 'left' : 'right',
+    textAlign: 'left',
+    direction: isArabicLang() ? 'rtl' : 'ltr',
   },
   cardNetworkLogoContainer: {
     flexDirection: 'row',
