@@ -23,6 +23,11 @@ import { Mastercard } from '../assets/mastercard';
 import { Amex } from '../assets/amex';
 import { Mada } from '../assets/mada';
 import { CreditCardNetwork } from '../models/credit_card_network';
+import {
+  formatCreditCardNumber,
+  formatExpiryDate,
+} from '../helpers/formatters';
+import { getCreditCardNetworkFromNumber } from '../helpers/credit_card_utils';
 
 const paymentService = new CreditCardPaymentService();
 
@@ -119,16 +124,26 @@ const CreditCardView = ({
             <View style={styles.inputSubContainer}>
               <TextInput
                 style={styles.input}
-                value={number}
+                value={formatCreditCardNumber(number)}
                 onChangeText={(value) => {
-                  setNumber(value);
+                  const cleanNumber = value
+                    .replace(/\s/g, '')
+                    .replace(/[^0-9]/gi, '');
+
+                  setNumber(cleanNumber);
                   setNumberError(
-                    paymentService.numberValidator.visualValidate(value)
+                    paymentService.numberValidator.visualValidate(cleanNumber)
                   );
                 }}
                 placeholder={t('cardNumber')}
                 keyboardType="numeric"
                 editable={!isPaymentInProgress}
+                maxLength={
+                  getCreditCardNetworkFromNumber(number) ===
+                  CreditCardNetwork.amex
+                    ? 17
+                    : 19
+                }
               />
               <View style={styles.cardNetworkLogoContainer}>
                 {paymentService.shouldShowNetworkLogo(
@@ -166,16 +181,23 @@ const CreditCardView = ({
             <View style={styles.inputSubContainer}>
               <TextInput
                 style={styles.input}
-                value={expiry}
+                value={formatExpiryDate(expiry)}
                 onChangeText={(value) => {
-                  setExpiry(value);
+                  const cleanExpiryDate = value
+                    .replace(/[\s\/]/g, '')
+                    .replace(/[^0-9]/gi, '');
+
+                  setExpiry(cleanExpiryDate);
                   setExpiryError(
-                    paymentService.expiryValidator.visualValidate(value)
+                    paymentService.expiryValidator.visualValidate(
+                      cleanExpiryDate
+                    )
                   );
                 }}
                 placeholder={t('expiry')}
                 keyboardType="numeric"
                 editable={!isPaymentInProgress}
+                maxLength={9}
               />
             </View>
 
@@ -269,7 +291,6 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 18,
     textAlign: isArabicLang() ? 'right' : 'left',
-    writingDirection: isArabicLang() ? 'rtl' : 'ltr',
     borderWidth: 1.25,
     borderColor: '#DCDCDC',
     borderRadius: 7,

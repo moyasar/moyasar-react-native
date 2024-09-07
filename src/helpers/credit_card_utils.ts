@@ -22,8 +22,6 @@ export function getCreditCardNetworkFromNumber(
 }
 
 export function isValidLuhn(cardNumber: string): boolean {
-  // TODO: Make clean string for cleaning formatting
-
   const digits = cardNumber
     .split('')
     .reverse()

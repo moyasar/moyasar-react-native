@@ -20,7 +20,7 @@ export async function createPayment(
     debugLog('Moyasar SDK: Got payment response...');
 
     if (!response.ok) {
-      debugLog(
+      errorLog(
         `Moyasar SDK error: Failed to create payment with status code: ${response.status} and message: ${await response.text()}`
       );
       throw new Error('Error response from Moyasar API');
