@@ -15,7 +15,7 @@ export class CreditCardNumberValidator extends FieldValidator {
     });
 
     this.addRule(i18n.t('invalidCardNumber'), (value: string) => {
-      return value.length < 16 || !isValidLuhn(value);
+      return value.length < 15 || !isValidLuhn(value);
     });
 
     this.addRule(i18n.t('unsupportedCreditCardNetwork'), (value: string) => {
