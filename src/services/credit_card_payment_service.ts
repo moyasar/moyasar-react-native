@@ -11,6 +11,8 @@ import { CreditCardExpiryValidator } from './validators/credit_card_expiry_valid
 import { CreditCardNameValidator } from './validators/credit_card_name_validator';
 import { CreditCardNumberValidator } from './validators/credit_card_number_validator';
 import { PaymentStatus } from '../models/payment_status';
+import { CreditCardNetwork } from '../models/credit_card_network';
+import { getCreditCardNetworkFromNumber } from '../helpers/credit_card_utils';
 
 export class CreditCardPaymentService {
   payment: PaymentResponse | null = null;
@@ -19,6 +21,17 @@ export class CreditCardPaymentService {
   numberValidator = new CreditCardNumberValidator();
   expiryValidator = new CreditCardExpiryValidator();
   cvcValidator = new CreditCardCvcValidator();
+
+  shouldShowNetworkLogo(number: string, network: CreditCardNetwork): boolean {
+    const inferredNetwork = getCreditCardNetworkFromNumber(number);
+
+    switch (inferredNetwork) {
+      case CreditCardNetwork.unknown:
+        return true;
+      default:
+        return inferredNetwork === network;
+    }
+  }
 
   async payByCreditCard(
     paymentConfig: PaymentConfig,
@@ -68,7 +81,7 @@ export class CreditCardPaymentService {
         `Moyasar SDK: CC Payment created with status: ${paymentResponse.status}`
       );
 
-      if (paymentResponse.status !== PaymentStatus.initiated) {
+      if (paymentResponse.status != PaymentStatus.initiated) {
         onPaymentResult(paymentResponse);
         return false;
       }

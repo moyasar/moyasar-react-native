@@ -1,5 +1,5 @@
 import { getCreditCardNetworkFromNumber } from '../../../helpers/credit_card_utils';
-import CreditCardNetwork from '../../credit_card_network';
+import { CreditCardNetwork } from '../../credit_card_network';
 import PaymentType from '../../payment_type';
 import type { PaymentRequestSource } from '../payment_request_source';
 

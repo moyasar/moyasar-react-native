@@ -18,6 +18,11 @@ import { CreditCardPaymentService } from '../services/credit_card_payment_servic
 import { WebviewPaymentAuth } from './webview_payment_auth';
 import type { CreditCardResponseSource } from '../models/sources/credit_card/credit_card_response_source';
 import type { CreditCardProps } from '../models/credit_card_props';
+import { Visa } from '../assets/visa';
+import { Mastercard } from '../assets/mastercard';
+import { Amex } from '../assets/amex';
+import { Mada } from '../assets/mada';
+import { CreditCardNetwork } from '../models/credit_card_network';
 
 const paymentService = new CreditCardPaymentService();
 
@@ -49,7 +54,7 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
       }}
     />
   ) : (
-    <CreditCardScreen
+    <CreditCardView
       paymentConfig={paymentConfig}
       onPaymentResult={onPaymentResult}
       setWebviewVisible={setWebviewVisible}
@@ -57,8 +62,8 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
   );
 }
 
-// TODO: Extract to a separate file with separating to components
-const CreditCardScreen = ({
+// TODO: Extract to a separate file
+const CreditCardView = ({
   paymentConfig,
   onPaymentResult,
   setWebviewVisible,
@@ -125,6 +130,35 @@ const CreditCardScreen = ({
                 keyboardType="numeric"
                 editable={!isPaymentInProgress}
               />
+              <View style={styles.cardNetworkLogoContainer}>
+                {paymentService.shouldShowNetworkLogo(
+                  number,
+                  CreditCardNetwork.mada
+                ) ? (
+                  <Mada style={styles.cardNetworkLogo} />
+                ) : null}
+
+                {paymentService.shouldShowNetworkLogo(
+                  number,
+                  CreditCardNetwork.visa
+                ) ? (
+                  <Visa style={styles.cardNetworkLogo} />
+                ) : null}
+
+                {paymentService.shouldShowNetworkLogo(
+                  number,
+                  CreditCardNetwork.master
+                ) ? (
+                  <Mastercard style={styles.cardNetworkLogo} />
+                ) : null}
+
+                {paymentService.shouldShowNetworkLogo(
+                  number,
+                  CreditCardNetwork.amex
+                ) ? (
+                  <Amex style={styles.cardNetworkLogo} />
+                ) : null}
+              </View>
             </View>
 
             <Text style={styles.errorText}>{numberError}</Text>
@@ -163,9 +197,9 @@ const CreditCardScreen = ({
                 editable={!isPaymentInProgress}
               />
             </View>
-          </View>
 
-          <Text style={styles.errorText}>{cvcError}</Text>
+            <Text style={styles.errorText}>{cvcError}</Text>
+          </View>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -225,6 +259,7 @@ const styles = StyleSheet.create({
   inputSubContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    direction: isArabicLang() ? 'rtl' : 'ltr',
   },
   buttonContainer: {
     flex: 1,
@@ -234,6 +269,7 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 18,
     textAlign: isArabicLang() ? 'right' : 'left',
+    writingDirection: isArabicLang() ? 'rtl' : 'ltr',
     borderWidth: 1.25,
     borderColor: '#DCDCDC',
     borderRadius: 7,
@@ -258,6 +294,19 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 12,
-    textAlign: isArabicLang() ? 'left' : 'right',
+    textAlign: 'left',
+    direction: isArabicLang() ? 'rtl' : 'ltr',
+  },
+  cardNetworkLogoContainer: {
+    flexDirection: 'row',
+    position: 'absolute',
+    alignSelf: 'center',
+    end: 10,
+    justifyContent: 'flex-end',
+  },
+  cardNetworkLogo: {
+    marginEnd: 8,
+    height: 37,
+    width: 37,
   },
 });

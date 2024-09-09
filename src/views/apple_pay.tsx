@@ -101,6 +101,7 @@ export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
                 );
                 paymentResponse.complete('success');
               } else {
+                // TODO: Don't make appear as error in logs
                 errorLog(
                   'Moyasar SDK: Apple Pay token is null, please use a physical device in order to test Apple Pay'
                 );

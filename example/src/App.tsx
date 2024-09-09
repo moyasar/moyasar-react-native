@@ -35,6 +35,9 @@ function onPaymentResult(paymentResponse: any) {
         // handle failure
         console.log(`Payment failed ${JSON.stringify(paymentResponse)}`);
         break;
+      default:
+        // handle other statuses
+        console.log(`Payment: ${JSON.stringify(paymentResponse)}`);
     }
   } else {
     // handle error

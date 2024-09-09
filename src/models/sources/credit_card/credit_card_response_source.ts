@@ -1,4 +1,4 @@
-import type CreditCardNetwork from '../../credit_card_network';
+import type { CreditCardNetwork } from '../../credit_card_network';
 import PaymentType from '../../payment_type';
 import type { PaymentResponseSource } from '../payment_response_source';
 
