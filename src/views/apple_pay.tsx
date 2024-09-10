@@ -1,7 +1,7 @@
 // @ts-ignore
 import { ApplePayButton, PaymentRequest } from '../react_native_apple_pay';
 import { debugLog, errorLog } from '../helpers/debug_log';
-import { Platform, View } from 'react-native';
+import { Platform, useColorScheme, View } from 'react-native';
 import type { MoyasarProps } from '../models/moyasar_props';
 import { currencyToCountryCodeMap, toMajor } from '../helpers/currency_util';
 import { assert } from '../helpers/assert';
@@ -42,6 +42,8 @@ async function onApplePayResponse(
 }
 
 export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
+  const isLightTheme = useColorScheme() === 'light';
+
   if (Platform.OS !== 'ios') {
     return <View />;
   }
@@ -55,6 +57,7 @@ export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
         height={50}
         width="90%"
         cornerRadius={11}
+        style={isLightTheme ? 'black' : 'white'}
         onPress={() => {
           debugLog('Moyasar SDK: Apple Pay button pressed');
 
@@ -101,7 +104,6 @@ export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
                 );
                 paymentResponse.complete('success');
               } else {
-                // TODO: Don't make appear as error in logs
                 errorLog(
                   'Moyasar SDK: Apple Pay token is null, please use a physical device in order to test Apple Pay'
                 );
