@@ -75,6 +75,7 @@ const CreditCardView = ({
   setWebviewVisible,
 }: CreditCardProps) => {
   const { t } = useTranslation();
+  const isLightMode = useColorScheme() === 'light';
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -108,7 +109,7 @@ const CreditCardView = ({
               <TextInput
                 style={{
                   ...styles.input,
-                  color: useColorScheme() === 'light' ? 'black' : 'white',
+                  color: isLightMode ? 'black' : 'white',
                 }}
                 value={name}
                 onChangeText={(value) => {
@@ -127,7 +128,10 @@ const CreditCardView = ({
 
             <View style={styles.inputSubContainer}>
               <TextInput
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  color: isLightMode ? 'black' : 'white',
+                }}
                 value={formatCreditCardNumber(number)}
                 onChangeText={(value) => {
                   const cleanNumber = value
@@ -184,7 +188,10 @@ const CreditCardView = ({
 
             <View style={styles.inputSubContainer}>
               <TextInput
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  color: isLightMode ? 'black' : 'white',
+                }}
                 value={formatExpiryDate(expiry)}
                 onChangeText={(value) => {
                   const cleanExpiryDate = value
@@ -209,7 +216,10 @@ const CreditCardView = ({
 
             <View style={styles.inputSubContainer}>
               <TextInput
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  color: isLightMode ? 'black' : 'white',
+                }}
                 value={cvc}
                 onChangeText={(value) => {
                   setCvc(value);
