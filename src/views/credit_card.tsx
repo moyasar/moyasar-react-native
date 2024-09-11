@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  useColorScheme,
 } from 'react-native';
 import { isArabicLang } from '../localizations/i18n';
 import { useEffect, useState } from 'react';
@@ -105,7 +106,10 @@ const CreditCardView = ({
           <View style={styles.inputContainer}>
             <View style={styles.inputSubContainer}>
               <TextInput
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  color: useColorScheme() === 'light' ? 'black' : 'white',
+                }}
                 value={name}
                 onChangeText={(value) => {
                   setName(value);
