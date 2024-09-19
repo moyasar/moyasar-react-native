@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { currentLang } from '../localizations/i18n';
+import { getCurrentLang } from '../localizations/i18n';
 
 type FractionMap = Map<string, number>;
 
@@ -249,7 +249,7 @@ export function toMajor(minor: number, currency: string): number {
 }
 
 export function formatAmount(amount: number, currency: string): string {
-  const numberFormatter = new Intl.NumberFormat(currentLang, {
+  const numberFormatter = new Intl.NumberFormat(getCurrentLang(), {
     style: 'currency',
     currency: currency,
     useGrouping: true,
