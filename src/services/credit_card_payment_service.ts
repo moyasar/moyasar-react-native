@@ -102,7 +102,7 @@ export class CreditCardPaymentService {
       this.nameValidator.validate(fields.name),
       this.numberValidator.validate(fields.number),
       this.expiryValidator.validate(fields.expiry),
-      this.cvcValidator.validate(fields.cvc),
+      this.cvcValidator.validate(fields.cvc, fields.number),
     ];
 
     return validations.every((validation) => validation === null);

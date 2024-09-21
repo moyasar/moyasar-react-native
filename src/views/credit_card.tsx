@@ -30,10 +30,12 @@ import {
 } from '../helpers/formatters';
 import { getCreditCardNetworkFromNumber } from '../helpers/credit_card_utils';
 import { mapArabicNumbers } from '../helpers/arabic_numbers_mapper';
+import { debugLog } from '../helpers/debug_log';
 
+// TODO: Modify to a better approach rather than global variable
 const paymentService = new CreditCardPaymentService();
 
-let formattedAmount: string;
+let formattedAmount: string | null;
 
 function getFormattedAmount(amount: number, currency: string): string {
   if (!formattedAmount) {
@@ -44,6 +46,14 @@ function getFormattedAmount(amount: number, currency: string): string {
 
 export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
   const [isWebviewVisible, setWebviewVisible] = useState(false);
+
+  useEffect(() => {
+    debugLog('Moyasar SDK: CreditCard view mounted');
+    return () => {
+      debugLog('Moyasar SDK: CreditCard view unmounted');
+      formattedAmount = null;
+    };
+  }, []);
 
   return isWebviewVisible ? (
     <WebviewPaymentAuth
@@ -148,6 +158,13 @@ const CreditCardView = ({
                       mappedCleanNumbers
                     )
                   );
+                  // To better handle Amex card valiadtion
+                  setCvcError(
+                    paymentService.cvcValidator.visualValidate(
+                      cvc,
+                      mappedCleanNumbers
+                    )
+                  );
                 }}
                 placeholder={t('cardNumber')}
                 keyboardType="numeric"
@@ -240,12 +257,22 @@ const CreditCardView = ({
 
                   setCvc(mappedCleanCvc);
                   setCvcError(
-                    paymentService.cvcValidator.visualValidate(mappedCleanCvc)
+                    paymentService.cvcValidator.visualValidate(
+                      mappedCleanCvc,
+                      number
+                    )
                   );
                 }}
                 placeholder={t('cvc')}
                 keyboardType="numeric"
-                maxLength={4}
+                maxLength={(() => {
+                  const cardNetwork = getCreditCardNetworkFromNumber(number);
+
+                  return cardNetwork === CreditCardNetwork.amex ||
+                    cardNetwork === CreditCardNetwork.unknown
+                    ? 4
+                    : 3;
+                })()}
                 editable={!isPaymentInProgress}
               />
             </View>

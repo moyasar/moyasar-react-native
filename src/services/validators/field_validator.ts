@@ -1,4 +1,7 @@
-type Predicate = (value: string) => boolean;
+type Predicate = (
+  value: string,
+  creditCardNumber: string | undefined
+) => boolean;
 
 interface ValidationRule {
   predicate: Predicate;
@@ -13,18 +16,18 @@ export class FieldValidator {
     this.rules.push({ predicate, error });
   }
 
-  visualValidate(value: string): string | null {
+  visualValidate(value: string, creditCardNumber?: string): string | null {
     this.shouldErr = this.shouldErr || value !== '';
     if (!this.shouldErr) {
       return null;
     }
 
-    return this.validate(value);
+    return this.validate(value, creditCardNumber);
   }
 
-  validate(value: string): string | null {
+  validate(value: string, creditCardNumber?: string): string | null {
     for (const rule of this.rules) {
-      if (rule.predicate(value)) {
+      if (rule.predicate(value, creditCardNumber)) {
         return rule.error;
       }
     }
