@@ -1,4 +1,6 @@
 import { debugLog, errorLog } from '../helpers/debug_log';
+import { ApiError } from '../models/errors/api_error';
+import { NetworkEndpointError } from '../models/errors/moyasar_errors';
 import type { PaymentRequest } from '../models/payment_request';
 import { PaymentResponse } from '../models/payment_response';
 
@@ -8,34 +10,31 @@ const paymentsApiUrl = 'https://api.moyasar.com/v1/payments';
 export async function createPayment(
   paymentRequest: PaymentRequest,
   publishableApiKey: string
-) {
+): Promise<PaymentResponse> {
   debugLog('Moyasar SDK: Creating payment...');
 
-  try {
-    const response = await fetch(paymentsApiUrl, {
-      method: 'POST',
-      headers: buildRequestHeaders(publishableApiKey),
-      body: JSON.stringify(paymentRequest.toJson()),
-    });
-    debugLog('Moyasar SDK: Got payment response...');
+  const response = await fetch(paymentsApiUrl, {
+    method: 'POST',
+    headers: buildRequestHeaders(publishableApiKey),
+    body: JSON.stringify(paymentRequest.toJson()),
+  });
+  debugLog('Moyasar SDK: Got payment response...');
 
-    if (!response.ok) {
-      errorLog(
-        `Moyasar SDK error: Failed to create payment with status code: ${response.status} and message: ${await response.text()}`
-      );
-      throw new Error('Error response from Moyasar API');
-    }
+  const paymentJson = await response.json();
 
-    const paymentData = await response.json();
-    debugLog(
-      `Moyasar SDK: Payment created successfully, ${JSON.stringify(paymentData)}`
+  if (!response.ok) {
+    errorLog(
+      `Moyasar SDK error: Failed to create payment with status code: ${response.status} and message: ${JSON.stringify(paymentJson)}`
     );
 
-    return PaymentResponse.fromJson(paymentData, paymentRequest.source.type);
-  } catch (error) {
-    errorLog(`Moyasar SDK error: Failed to create payment, ${error}`);
-    throw error;
+    throw new NetworkEndpointError(ApiError.fromJson(paymentJson));
   }
+
+  debugLog(
+    `Moyasar SDK: Payment created successfully, ${JSON.stringify(paymentJson)}`
+  );
+
+  return PaymentResponse.fromJson(paymentJson, paymentRequest.source.type);
 }
 
 function buildRequestHeaders(apiKey: string): Record<string, string> {

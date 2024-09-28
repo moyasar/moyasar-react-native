@@ -13,6 +13,11 @@ import { CreditCardNumberValidator } from './validators/credit_card_number_valid
 import { PaymentStatus } from '../models/payment_status';
 import { CreditCardNetwork } from '../models/credit_card_network';
 import { getCreditCardNetworkFromNumber } from '../helpers/credit_card_utils';
+import {
+  isMoyasarError,
+  NetworkError,
+  type MoyasarError,
+} from '../models/errors/moyasar_errors';
 
 export class CreditCardPaymentService {
   payment: PaymentResponse | null = null;
@@ -36,7 +41,7 @@ export class CreditCardPaymentService {
   async payByCreditCard(
     paymentConfig: PaymentConfig,
     fields: CreditCardFields,
-    onPaymentResult: (onPaymentResult: any) => void
+    onPaymentResult: (onPaymentResult: PaymentResponse | MoyasarError) => void
   ): Promise<boolean> {
     debugLog('Moyasar SDK: Begin CC payment...');
 
@@ -91,7 +96,16 @@ export class CreditCardPaymentService {
       return true;
     } catch (error) {
       errorLog(`Moyasar SDK: CC Payment failed with error: ${error}`);
-      onPaymentResult(error);
+
+      if (isMoyasarError(error)) {
+        onPaymentResult(error);
+      } else {
+        onPaymentResult(
+          new NetworkError(
+            'Moyasar SDK: An error occured while processing a Credit Card payment'
+          )
+        );
+      }
 
       return false;
     }

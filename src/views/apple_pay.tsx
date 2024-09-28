@@ -9,11 +9,18 @@ import { ApplePayPaymentRequestSource } from '../models/sources/apple_pay/apple_
 import type { PaymentConfig } from '../models/payment_config';
 import { PaymentRequest as MoyasarPaymentRequest } from '../models/payment_request';
 import { createPayment } from '../services/payment_service';
+import {
+  isMoyasarError,
+  GeneralError,
+  type MoyasarError,
+  NetworkError,
+} from '../models/errors/moyasar_errors';
+import type { PaymentResponse } from '../models/payment_response';
 
 async function onApplePayResponse(
   token: any,
   paymentConfig: PaymentConfig,
-  onPaymentResult: (paymentResponse: any) => void
+  onPaymentResult: (paymentResponse: PaymentResponse | MoyasarError) => void
 ) {
   const source = new ApplePayPaymentRequestSource({
     applePayToken: token,
@@ -37,7 +44,16 @@ async function onApplePayResponse(
     onPaymentResult(paymentResponse);
   } catch (error) {
     errorLog(`Moyasar SDK: Failed to pay with Apple Pay, ${error}`);
-    onPaymentResult(error);
+
+    if (isMoyasarError(error)) {
+      onPaymentResult(error);
+    } else {
+      onPaymentResult(
+        new NetworkError(
+          'Moyasar SDK: An error occured error while processing an Apple Pay payment'
+        )
+      );
+    }
   }
 }
 
@@ -108,7 +124,11 @@ export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
                   'Moyasar SDK: Apple Pay token is null, please use a physical device in order to test Apple Pay'
                 );
                 paymentResponse.complete('failure');
-                onPaymentResult(Error('Apple Pay token is null'));
+                onPaymentResult(
+                  new GeneralError(
+                    'Moyasar SDK: Apple Pay token is null, are you using a Simulator? Please file a bug report if you are not'
+                  )
+                );
               }
             })
             .catch((error: any) => {
