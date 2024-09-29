@@ -7,7 +7,7 @@ const resources = {
     translation: {
       nameOnCard: 'Name on Card',
       cardNumber: 'Card Number',
-      expiry: 'Expiry',
+      expiry: 'Expiry (MM/YY)',
       cvc: 'CVC',
       cardNumberRequired: 'Card number is required',
       invalidCardNumber: 'Invalid card number',
@@ -28,7 +28,7 @@ const resources = {
     translation: {
       nameOnCard: 'الاسم على البطاقة',
       cardNumber: 'رقم البطاقة',
-      expiry: 'تاريخ الإنتهاء',
+      expiry: 'تاريخ الانتهاء (شهر/سنة)',
       cvc: 'رمز الأمان',
       cardNumberRequired: 'رقم البطاقة مطلوب',
       invalidCardNumber: 'رقم البطاقة غير صحيح',
@@ -48,18 +48,23 @@ const resources = {
 };
 
 // TODO: Check 'https://www.npmjs.com/package/i18next-browser-languagedetector' when supporting web
-export const currentLang =
-  Platform.OS === 'ios'
-    ? NativeModules.SettingsManager.settings.AppleLocale.substring(0, 2)
-    : NativeModules.I18nManager.localeIdentifier.substring(0, 2);
+export function getCurrentLang(): string {
+  return Platform.OS === 'ios'
+    ? NativeModules.SettingsManager.settings.AppleLocale?.substring(0, 2) ||
+        NativeModules.SettingsManager.settings.AppleLanguages[0]?.substring(
+          0,
+          2
+        ) // iOS 13
+    : NativeModules.I18nManager.localeIdentifier?.substring(0, 2);
+}
 
 i18n.use(initReactI18next).init({
   resources: resources,
   compatibilityJSON: 'v3',
-  lng: currentLang,
+  lng: getCurrentLang(),
   fallbackLng: ['en', 'ar'],
 });
 
 export function isArabicLang(): boolean {
-  return currentLang === 'ar';
+  return getCurrentLang() === 'ar';
 }
