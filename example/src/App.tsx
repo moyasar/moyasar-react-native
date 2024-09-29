@@ -4,9 +4,13 @@ import {
   ApplePayConfig,
   CreditCard,
   CreditCardConfig,
+  GeneralError,
+  NetworkEndpointError,
+  NetworkError,
   PaymentConfig,
   PaymentResponse,
   PaymentStatus,
+  type MoyasarError,
 } from 'react-native-moyasar-sdk';
 
 const paymentConfig = new PaymentConfig({
@@ -24,7 +28,7 @@ const paymentConfig = new PaymentConfig({
   }),
 });
 
-function onPaymentResult(paymentResponse: any) {
+function onPaymentResult(paymentResponse: PaymentResponse | MoyasarError) {
   if (paymentResponse instanceof PaymentResponse) {
     switch (paymentResponse.status) {
       case PaymentStatus.paid:
@@ -40,8 +44,18 @@ function onPaymentResult(paymentResponse: any) {
         console.log(`Payment: ${JSON.stringify(paymentResponse)}`);
     }
   } else {
-    // handle error
-    console.log(`Payment callback called with error ${paymentResponse}`);
+    // handle errors
+    console.log('Payment callback called with error');
+
+    if (paymentResponse instanceof NetworkEndpointError) {
+      console.log(
+        `Backend endpoint error message: ${paymentResponse.error.message}, errors: ${JSON.stringify(paymentResponse.error.errors)}, error type: ${paymentResponse.error.type}`
+      );
+    } else if (paymentResponse instanceof NetworkError) {
+      console.log(`Error message: ${paymentResponse.message}`);
+    } else if (paymentResponse instanceof GeneralError) {
+      console.log(`Error message: ${paymentResponse.message}`);
+    }
   }
 }
 
