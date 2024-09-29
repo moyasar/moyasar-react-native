@@ -29,6 +29,7 @@ import {
   formatExpiryDate,
 } from '../helpers/formatters';
 import { getCreditCardNetworkFromNumber } from '../helpers/credit_card_utils';
+import { mapArabicNumbers } from '../helpers/arabic_numbers_mapper';
 
 const paymentService = new CreditCardPaymentService();
 
@@ -136,11 +137,16 @@ const CreditCardView = ({
                 onChangeText={(value) => {
                   const cleanNumber = value
                     .replace(/\s/g, '')
-                    .replace(/[^0-9]/gi, '');
+                    .replace(/[^\d٠-٩]/gi, '')
+                    .slice(0, 16);
 
-                  setNumber(cleanNumber);
+                  const mappedCleanNumbers = mapArabicNumbers(cleanNumber);
+
+                  setNumber(mappedCleanNumbers);
                   setNumberError(
-                    paymentService.numberValidator.visualValidate(cleanNumber)
+                    paymentService.numberValidator.visualValidate(
+                      mappedCleanNumbers
+                    )
                   );
                 }}
                 placeholder={t('cardNumber')}
@@ -196,12 +202,16 @@ const CreditCardView = ({
                 onChangeText={(value) => {
                   const cleanExpiryDate = value
                     .replace(/[\s\/]/g, '')
-                    .replace(/[^0-9]/gi, '');
+                    .replace(/[^\d٠-٩]/gi, '')
+                    .slice(0, 6);
 
-                  setExpiry(cleanExpiryDate);
+                  const mappedCleanExpiryDate =
+                    mapArabicNumbers(cleanExpiryDate);
+
+                  setExpiry(mappedCleanExpiryDate);
                   setExpiryError(
                     paymentService.expiryValidator.visualValidate(
-                      cleanExpiryDate
+                      mappedCleanExpiryDate
                     )
                   );
                 }}
@@ -222,9 +232,15 @@ const CreditCardView = ({
                 }}
                 value={cvc}
                 onChangeText={(value) => {
-                  setCvc(value);
+                  const cleanCvc = value
+                    .replace(/\s/g, '')
+                    .replace(/[^\d٠-٩]/gi, '');
+
+                  const mappedCleanCvc = mapArabicNumbers(cleanCvc);
+
+                  setCvc(mappedCleanCvc);
                   setCvcError(
-                    paymentService.cvcValidator.visualValidate(value)
+                    paymentService.cvcValidator.visualValidate(mappedCleanCvc)
                   );
                 }}
                 placeholder={t('cvc')}
