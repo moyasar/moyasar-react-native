@@ -1,3 +1,14 @@
+## 0.3.0
+
+- [Credit Card] Add arabic number mapper.
+- [General] Support dark mode.
+- [General] Enhance UI.
+- [General] Enhance error handling.
+
+### Optional changes:
+
+Change the `paymentResponse` parameter type from `any` to `PaymentResponse | MoyasarError` in the `onPaymentResult` callback.
+
 ## 0.2.0
 
 - [Credit Card] Add input formatting.
