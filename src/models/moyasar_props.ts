@@ -1,8 +1,7 @@
-import type { MoyasarError } from './errors/moyasar_errors';
 import type { PaymentConfig } from './payment_config';
-import type { PaymentResponse } from './payment_response';
+import type { ResultCallback } from './payment_result';
 
 export interface MoyasarProps {
   paymentConfig: PaymentConfig;
-  onPaymentResult: (paymentResponse: PaymentResponse | MoyasarError) => void;
+  onPaymentResult: ResultCallback;
 }

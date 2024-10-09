@@ -1,5 +1,4 @@
-import type { PaymentConfig } from './payment_config';
-import type { PaymentRequestSource } from './sources/payment_request_source';
+import type { PaymentRequestSource } from '../sources/payment_request_source';
 
 export class PaymentRequest {
   amount: number;
@@ -10,18 +9,24 @@ export class PaymentRequest {
   callbackUrl: string;
 
   constructor({
-    config,
+    amount,
+    currency,
+    description,
+    metadata,
     source,
     callbackUrl,
   }: {
-    config: PaymentConfig;
+    amount: number;
+    currency: string;
+    description?: string;
+    metadata?: Record<string, string>;
     source: PaymentRequestSource;
     callbackUrl: string;
   }) {
-    this.amount = config.amount;
-    this.currency = config.currency;
-    this.description = config.description;
-    this.metadata = config.metadata;
+    this.amount = amount;
+    this.currency = currency;
+    this.description = description;
+    this.metadata = metadata;
     this.source = source;
     this.callbackUrl = callbackUrl;
   }
@@ -29,10 +34,10 @@ export class PaymentRequest {
   toJson(): Record<string, any> {
     return {
       amount: this.amount,
-      source: this.source.toJson(),
       currency: this.currency,
       description: this.description,
       metadata: this.metadata,
+      source: this.source.toJson(),
       callback_url: this.callbackUrl,
     };
   }
