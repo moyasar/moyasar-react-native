@@ -19,7 +19,6 @@ import type PaymentResponseType from './PaymentResponse';
 
 // Modules
 import { DeviceEventEmitter, Platform } from 'react-native';
-import { v1 as uuid } from 'uuid';
 
 import NativePayments from '../NativeBridge';
 import PaymentResponse from './PaymentResponse';
@@ -97,7 +96,6 @@ const IS_IOS = Platform.OS === 'ios'
 // }
 
 export default class PaymentRequest {
-  _id: string;
   _shippingAddress: null | PaymentAddress;
   _shippingOption: null | string;
   _shippingType: null | PaymentShippingType;
@@ -134,16 +132,7 @@ export default class PaymentRequest {
     // happens in `processPaymentMethods`
 
     // 3. Establish the request's id:
-    if (!details.id) {
-      try {
-        details.id = uuid();
-      } catch (e) {
-        errorLog(
-          'Apple Pay is not supported using a simulator, please use a real device'
-        );
-        return;
-      }
-    }
+    // Removed usage of id since it's not used in our implementation
 
     // 4. Process payment methods
     const serializedMethodData = validatePaymentMethods(methodData);
@@ -191,9 +180,6 @@ export default class PaymentRequest {
 
     // 17. Set request.[[serializedMethodData]] to serializedMethodData.
     this._serializedMethodData = JSON.stringify(methodData);
-
-    // Set attributes (18-20)
-    this._id = details.id;
 
     // 18. Set the value of request's shippingOption attribute to selectedShippingOption.
     this._shippingOption = selectedShippingOption;
@@ -387,7 +373,6 @@ export default class PaymentRequest {
     }
 
     const paymentResponse = new PaymentResponse({
-      requestId: this.id,
       methodName: IS_IOS ? 'apple-pay' : 'android-pay',
       shippingAddress: this._options.requestShipping ? this._shippingAddress : null,
       details: this._getPlatformDetails(details),
@@ -439,11 +424,6 @@ export default class PaymentRequest {
     if (eventName === SHIPPING_OPTION_CHANGE_EVENT) {
       return (this._shippingOptionChangeFn = fn.bind(this));
     }
-  }
-
-  // https://www.w3.org/TR/payment-request/#id-attribute
-  get id(): string {
-    return this._id;
   }
 
   // https://www.w3.org/TR/payment-request/#shippingaddress-attribute
