@@ -10,7 +10,8 @@ import {
   PaymentConfig,
   PaymentResponse,
   PaymentStatus,
-  type MoyasarError,
+  TokenResponse,
+  type PaymentResult,
 } from 'react-native-moyasar-sdk';
 
 const paymentConfig = new PaymentConfig({
@@ -26,35 +27,40 @@ const paymentConfig = new PaymentConfig({
     label: 'Test Apple Pay from app',
     manual: false,
   }),
+  createSaveOnlyToken: false,
 });
 
-function onPaymentResult(paymentResponse: PaymentResponse | MoyasarError) {
-  if (paymentResponse instanceof PaymentResponse) {
-    switch (paymentResponse.status) {
+function onPaymentResult(paymentResult: PaymentResult) {
+  if (paymentResult instanceof PaymentResponse) {
+    switch (paymentResult.status) {
       case PaymentStatus.paid:
         // handle success
-        console.log(`Payment succeeded ${JSON.stringify(paymentResponse)}`);
+        console.log(`Payment succeeded ${JSON.stringify(paymentResult)}`);
         break;
       case PaymentStatus.failed:
         // handle failure
-        console.log(`Payment failed ${JSON.stringify(paymentResponse)}`);
+        console.log(`Payment failed ${JSON.stringify(paymentResult)}`);
         break;
       default:
         // handle other statuses
-        console.log(`Payment: ${JSON.stringify(paymentResponse)}`);
+        console.log(`Payment: ${JSON.stringify(paymentResult)}`);
     }
+  } else if (paymentResult instanceof TokenResponse) {
+    // Not needed if not utilizing 'createSaveOnlyToken' flow
+    // handle token response
+    console.log(`Token response: ${JSON.stringify(paymentResult)}`);
   } else {
     // handle errors
     console.log('Payment callback called with error');
 
-    if (paymentResponse instanceof NetworkEndpointError) {
+    if (paymentResult instanceof NetworkEndpointError) {
       console.log(
-        `Backend endpoint error message: ${paymentResponse.error.message}, errors: ${JSON.stringify(paymentResponse.error.errors)}, error type: ${paymentResponse.error.type}`
+        `Backend endpoint error message: ${paymentResult.error.message}, errors: ${JSON.stringify(paymentResult.error.errors)}, error type: ${paymentResult.error.type}`
       );
-    } else if (paymentResponse instanceof NetworkError) {
-      console.log(`Error message: ${paymentResponse.message}`);
-    } else if (paymentResponse instanceof GeneralError) {
-      console.log(`Error message: ${paymentResponse.message}`);
+    } else if (paymentResult instanceof NetworkError) {
+      console.log(`Error message: ${paymentResult.message}`);
+    } else if (paymentResult instanceof GeneralError) {
+      console.log(`Error message: ${paymentResult.message}`);
     }
   }
 }

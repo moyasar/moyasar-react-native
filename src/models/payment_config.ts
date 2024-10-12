@@ -14,6 +14,7 @@ export class PaymentConfig {
   supportedNetworks: string[];
   applePay?: ApplePayConfig;
   creditCard: CreditCardConfig;
+  createSaveOnlyToken: boolean;
 
   /**
    * Constructs a new PaymentConfig instance with the provided settings.
@@ -21,10 +22,11 @@ export class PaymentConfig {
    * @param amount - The amount to be charged in the smallest currency unit. For example, to charge `SAR 257.58` you will have the [amount] as `25758`. In other words, 10 SAR = 10 * 100 Halalas. Integer values only.
    * @param currency - The currency code for the payment. Defaults to 'SAR'. Must be in ISO 3166-1 alpha-3 country code format.
    * @param description - Can be any string you want to tag the payment. For example `Payment for Order #34321`.
-   * @param metadata - The [metadata] adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
+   * @param metadata - Adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
    * @param supportedNetworks - Card networks supported for Apple Pay. Defaults to ['mada', 'visa', 'mastercard', 'amex'].
    * @param applePay - Required for Apple Pay feature.
    * @param creditCard - Optional for Credit Card feature.
+   * @param createSaveOnlyToken - Optional to process a save only token flow for a Credit Card. Defaults to false - https://docs.moyasar.com/create-token
    */
   constructor({
     publishableApiKey,
@@ -35,6 +37,7 @@ export class PaymentConfig {
     supportedNetworks = ['mada', 'visa', 'mastercard', 'amex'],
     applePay,
     creditCard = new CreditCardConfig({}),
+    createSaveOnlyToken = false,
   }: {
     publishableApiKey: string;
     amount: number;
@@ -44,6 +47,7 @@ export class PaymentConfig {
     supportedNetworks?: string[];
     applePay?: ApplePayConfig;
     creditCard?: CreditCardConfig;
+    createSaveOnlyToken?: boolean;
   }) {
     assert(
       publishableApiKey.length > 0,
@@ -67,5 +71,6 @@ export class PaymentConfig {
     );
     this.applePay = applePay;
     this.creditCard = creditCard;
+    this.createSaveOnlyToken = createSaveOnlyToken;
   }
 }

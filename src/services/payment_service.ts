@@ -1,40 +1,75 @@
 import { debugLog, errorLog } from '../helpers/debug_log';
 import { ApiError } from '../models/errors/api_error';
 import { NetworkEndpointError } from '../models/errors/moyasar_errors';
-import type { PaymentRequest } from '../models/payment_request';
-import { PaymentResponse } from '../models/payment_response';
+import type { PaymentRequest } from '../models/api/api_requests/payment_request';
+import { PaymentResponse } from '../models/api/api_responses/payment_response';
+import type { TokenRequest } from '../models/api/api_requests/token_request';
+import { TokenResponse } from '../models/api/api_responses/token_response';
 
 const paymentsApiUrl = 'https://api.moyasar.com/v1/payments';
+const tokenApiUrl = 'https://api.moyasar.com/v1/tokens';
 
-/** @Throws */
+async function makeRequest(
+  url: string,
+  jsonPayload: string,
+  publishableApiKey: string
+): Promise<any> {
+  debugLog('Moyasar SDK: Making backend request...');
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: buildRequestHeaders(publishableApiKey),
+    body: jsonPayload,
+  });
+  debugLog('Moyasar SDK: Got backend response...');
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    errorLog(
+      `Moyasar SDK error: Backend request failed with status code: ${response.status} and message: ${JSON.stringify(responseJson)}`
+    );
+
+    throw new NetworkEndpointError(ApiError.fromJson(responseJson));
+  }
+
+  debugLog(
+    `Moyasar SDK: Backend request successful, ${JSON.stringify(responseJson)}`
+  );
+
+  return responseJson;
+}
+
+/** @throws */
 export async function createPayment(
   paymentRequest: PaymentRequest,
   publishableApiKey: string
 ): Promise<PaymentResponse> {
-  debugLog('Moyasar SDK: Creating payment...');
+  const jsonPayload = JSON.stringify(paymentRequest.toJson());
 
-  const response = await fetch(paymentsApiUrl, {
-    method: 'POST',
-    headers: buildRequestHeaders(publishableApiKey),
-    body: JSON.stringify(paymentRequest.toJson()),
-  });
-  debugLog('Moyasar SDK: Got payment response...');
-
-  const paymentJson = await response.json();
-
-  if (!response.ok) {
-    errorLog(
-      `Moyasar SDK error: Failed to create payment with status code: ${response.status} and message: ${JSON.stringify(paymentJson)}`
-    );
-
-    throw new NetworkEndpointError(ApiError.fromJson(paymentJson));
-  }
-
-  debugLog(
-    `Moyasar SDK: Payment created successfully, ${JSON.stringify(paymentJson)}`
+  const paymentJson = await makeRequest(
+    paymentsApiUrl,
+    jsonPayload,
+    publishableApiKey
   );
 
   return PaymentResponse.fromJson(paymentJson, paymentRequest.source.type);
+}
+
+/** @throws */
+export async function createToken(
+  tokenRequest: TokenRequest,
+  publishableApiKey: string
+): Promise<TokenResponse> {
+  const jsonPayload = JSON.stringify(tokenRequest.toJson());
+
+  const paymentJson = await makeRequest(
+    tokenApiUrl,
+    jsonPayload,
+    publishableApiKey
+  );
+
+  return TokenResponse.fromJson(paymentJson);
 }
 
 function buildRequestHeaders(apiKey: string): Record<string, string> {

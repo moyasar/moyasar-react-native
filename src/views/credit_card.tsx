@@ -17,8 +17,8 @@ import type { MoyasarProps } from '../models/moyasar_props';
 import { formatAmount } from '../helpers/currency_util';
 import { CreditCardPaymentService } from '../services/credit_card_payment_service';
 import { WebviewPaymentAuth } from './webview_payment_auth';
-import type { CreditCardResponseSource } from '../models/sources/credit_card/credit_card_response_source';
-import type { CreditCardProps } from '../models/credit_card_props';
+import type { CreditCardResponseSource } from '../models/api/sources/credit_card/credit_card_response_source';
+import type { CreditCardProps } from '../models/component_models/credit_card_props';
 import { Visa } from '../assets/visa';
 import { Mastercard } from '../assets/mastercard';
 import { Amex } from '../assets/amex';
@@ -291,7 +291,7 @@ const CreditCardView = ({
               ]}
               onPress={async () => {
                 setIsPaymentInProgress(true);
-                const showAuthWebview = await paymentService.payByCreditCard(
+                const showAuthWebview = await paymentService.beginTransaction(
                   paymentConfig,
                   { name, number, expiry, cvc },
                   onPaymentResult
