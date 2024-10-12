@@ -1,6 +1,6 @@
 {
   "name": "react-native-moyasar-sdk",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "React Native Moyasar SDK",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
