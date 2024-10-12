@@ -11,8 +11,6 @@ import type {
 import NativePayments from '../NativeBridge';
 
 export default class PaymentResponse {
-  // Internal Slots
-  _requestId: string;
   _methodName: string;
   _details: PaymentDetailsInit;
   _shippingAddress: null | PaymentAddress;
@@ -23,8 +21,6 @@ export default class PaymentResponse {
   _completeCalled: boolean;
 
   constructor(paymentResponse: Object) {
-    // Set properties as readOnly
-    this._requestId = paymentResponse.requestId;
     this._methodName = paymentResponse.methodName;
     this._details = paymentResponse.details;
     this._shippingAddress = paymentResponse.shippingAddress;
@@ -35,11 +31,6 @@ export default class PaymentResponse {
 
     // Internal Slots
     this._completeCalled = false;
-  }
-
-  // https://www.w3.org/TR/payment-request/#requestid-attribute
-  get requestId(): string {
-    return this._requestId;
   }
 
   // https://www.w3.org/TR/payment-request/#methodname-attribute
