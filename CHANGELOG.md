@@ -1,3 +1,12 @@
+## 0.4.0
+
+- [Credit Card] Support create save only token.
+- [Apple Pay] Fix Apple Pay.
+
+### Required changes:
+
+Change the `paymentResponse` parameter type from `PaymentResponse | MoyasarError` to `PaymentResult` in the CreditCard and ApplePay components `onPaymentResult` callback.
+
 ## 0.3.0
 
 - [Credit Card] Add arabic number mapper.
