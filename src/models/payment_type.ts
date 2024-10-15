@@ -1,6 +1,4 @@
-enum PaymentType {
+export enum PaymentType {
   creditCard = 'creditcard',
   applePay = 'applepay',
 }
-
-export default PaymentType;

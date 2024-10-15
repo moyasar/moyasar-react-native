@@ -14,11 +14,11 @@ import { useState } from 'react';
 const { width, height } = Dimensions.get('window');
 
 /**
- * A webview component to handle payment verification.
+ * A webview component to handle 3DS payment verification.
  * @param transactionUrl - The URL to the payment verification page (3DS challenge).
  * @param onPaymentAuthResult - Callback function to handle the payment verification result.
  *
- * The `callbackUrl` field set in the previous payment setup request must have the host value of `sdk.moyasar.com` (By default handeled if performed the previous request with the SDK's APIs).
+ * The `callbackUrl` field set in the previous payment setup request must have the host value of `sdk.moyasar.com` (By default handeled if performed the previous request with the SDK's view components).
  */
 export const WebviewPaymentAuth = ({
   transactionUrl,

@@ -13,7 +13,7 @@ import { CreditCardNumberValidator } from './validators/credit_card_number_valid
 import { PaymentStatus } from '../models/payment_status';
 import { CreditCardNetwork } from '../models/credit_card_network';
 import { getCreditCardNetworkFromNumber } from '../helpers/credit_card_utils';
-import { isMoyasarError, NetworkError } from '../models/errors/moyasar_errors';
+import { isMoyasarError } from '../models/errors/moyasar_errors';
 import { TokenRequest } from '../models/api/api_requests/token_request';
 import type { ResultCallback } from '../models/payment_result';
 
@@ -101,39 +101,28 @@ export class CreditCardPaymentService {
       callbackUrl: 'https://sdk.moyasar.com/return',
     });
 
-    try {
-      const paymentResponse = await createPayment(
-        paymentRequest,
-        paymentConfig.publishableApiKey
-      );
+    const response = await createPayment(
+      paymentRequest,
+      paymentConfig.publishableApiKey
+    );
 
-      debugLog(
-        `Moyasar SDK: CC Payment created with status: ${paymentResponse.status}`
-      );
-
-      if (paymentResponse.status != PaymentStatus.initiated) {
-        onPaymentResult(paymentResponse);
-        return false;
-      }
-
-      this.payment = paymentResponse;
-
-      return true;
-    } catch (error) {
-      errorLog(`Moyasar SDK: CC Payment failed with error: ${error}`);
-
-      if (isMoyasarError(error)) {
-        onPaymentResult(error);
-      } else {
-        onPaymentResult(
-          new NetworkError(
-            'Moyasar SDK: An error occured while processing a Credit Card payment'
-          )
-        );
-      }
+    if (isMoyasarError(response)) {
+      errorLog(`Moyasar SDK: CC Payment failed with error: ${response}`);
+      onPaymentResult(response);
 
       return false;
     }
+
+    debugLog(`Moyasar SDK: CC Payment created with status: ${response.status}`);
+
+    if (response.status != PaymentStatus.initiated) {
+      onPaymentResult(response);
+      return false;
+    }
+
+    this.payment = response;
+
+    return true;
   }
 
   async beginSaveOnlyToken(
@@ -154,30 +143,21 @@ export class CreditCardPaymentService {
       metadata: paymentConfig.metadata,
     });
 
-    try {
-      const tokenResponse = await createToken(
-        tokenRequest,
-        paymentConfig.publishableApiKey
-      );
+    const response = await createToken(
+      tokenRequest,
+      paymentConfig.publishableApiKey
+    );
 
-      debugLog(
-        `Moyasar SDK: CC token created with status: ${tokenResponse.status}`
-      );
+    if (isMoyasarError(response)) {
+      errorLog(`Moyasar SDK: Save only token failed with error: ${response}`);
+      onPaymentResult(response);
 
-      onPaymentResult(tokenResponse);
-    } catch (error) {
-      errorLog(`Moyasar SDK: Save only token failed with error: ${error}`);
-
-      if (isMoyasarError(error)) {
-        onPaymentResult(error);
-      } else {
-        onPaymentResult(
-          new NetworkError(
-            'Moyasar SDK: An error occured while processing a save only token request'
-          )
-        );
-      }
+      return;
     }
+
+    debugLog(`Moyasar SDK: CC token created with status: ${response.status}`);
+
+    onPaymentResult(response);
   }
 
   validateAllFields(fields: CreditCardFields): boolean {
