@@ -5,7 +5,7 @@
 
 ### Required changes:
 
-Change the `paymentResponse` parameter type from `PaymentResponse | MoyasarError` to `PaymentResult` in the CreditCard and ApplePay components `onPaymentResult` callback.
+Change the `paymentResponse` parameter type from `PaymentResponse | MoyasarError` to `PaymentResult` in the `onPaymentResult` callback of the CreditCard and ApplePay components.
 
 ## 0.3.0
 
