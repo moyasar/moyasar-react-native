@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import { debugLog, errorLog } from '../helpers/debug_log';
 import { ApiError } from '../models/errors/api_error';
 import {
@@ -115,7 +116,7 @@ function buildRequestHeaders(apiKey: string): Record<string, string> {
 
   return {
     'Content-Type': 'application/json',
-    'Authorization': `Basic ${btoa(apiKey)}`,
+    'Authorization': `Basic ${Buffer.from(apiKey).toString('base64')}`,
     'X-MOYASAR-LIB': 'moyasar-react-native-sdk',
     'X-REACT-NATIVE-SDK-VERSION': version,
   };
