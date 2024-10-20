@@ -15,19 +15,20 @@ const { width, height } = Dimensions.get('window');
 
 /**
  * A webview component to handle 3DS payment verification.
- * @param transactionUrl - The URL to the payment verification page (3DS challenge).
+ * @param {string} transactionUrl - The URL to the payment verification page (3DS challenge).
  * @param onPaymentAuthResult - Callback function to handle the payment verification result.
- *
- * The `callbackUrl` field set in the previous payment setup request must have the host value of `sdk.moyasar.com` (By default handeled if performed the previous request with the SDK's view components).
+ * @param {string} [callbackUrl="https://sdk.moyasar.com/return"] - The URL to be redirected to after a 3D secure transaction. Defaults to 'https://sdk.moyasar.com/return'
  */
 export const WebviewPaymentAuth = ({
   transactionUrl,
   onWebviewPaymentAuthResult: onPaymentAuthResult,
+  callbackUrl = 'https://sdk.moyasar.com/return',
 }: {
   transactionUrl: string;
   onWebviewPaymentAuthResult: (
     webviewPaymentResponse: WebviewPaymentAuthResponse
   ) => void;
+  callbackUrl?: string;
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -50,8 +51,9 @@ export const WebviewPaymentAuth = ({
           }}
           onShouldStartLoadWithRequest={(request) => {
             const url = new URL(request.url);
+            const callbackUrlHost = new URL(callbackUrl).host;
 
-            if (url.host === 'sdk.moyasar.com') {
+            if (url.host === callbackUrlHost) {
               const id = url.searchParams.get('id') ?? '';
               const status = url.searchParams.get('status') ?? '';
               const message = url.searchParams.get('message') ?? '';

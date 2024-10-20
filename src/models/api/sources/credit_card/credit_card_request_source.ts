@@ -20,16 +20,16 @@ export class CreditCardRequestSource implements PaymentRequestSource {
     cvc,
     month,
     year,
-    tokenizeCard,
-    manualPayment,
+    tokenizeCard = false,
+    manualPayment = false,
   }: {
     name: string;
     number: string;
     cvc: string;
     month: string;
     year: string;
-    tokenizeCard: boolean;
-    manualPayment: boolean;
+    tokenizeCard?: boolean;
+    manualPayment?: boolean;
   }) {
     this.network = getCreditCardNetworkFromNumber(number);
     this.name = name;
