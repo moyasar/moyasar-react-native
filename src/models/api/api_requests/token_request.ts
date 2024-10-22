@@ -6,7 +6,7 @@
  * @param {string} month - Two digit number representing the Credit Card's expiration month.
  * @param {string} year - Two or four digit number representing the Credit Card's expiration year.
  * @param {boolean | null} [saveOnly] - Optional
- * @param {string} [callbackUrl] - The URL to be redirected to after a 3D secure transaction (e.g., https://sdk.moyasar.com/return).
+ * @param {string} callbackUrl - The URL to be redirected to after a 3D secure transaction (e.g., https://sdk.moyasar.com/return).
  * @param {Record<string, string> | null} metadata - Adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
  */
 export class TokenRequest {
