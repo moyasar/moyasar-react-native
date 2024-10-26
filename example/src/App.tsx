@@ -71,10 +71,14 @@ export default function App() {
       <CreditCard
         paymentConfig={paymentConfig}
         onPaymentResult={onPaymentResult}
+        style={{ textInputs: { borderWidth: 1.25 } }}
       />
       <ApplePay
         paymentConfig={paymentConfig}
         onPaymentResult={onPaymentResult}
+        style={{
+          buttonType: 'buy',
+        }}
       />
     </View>
   );

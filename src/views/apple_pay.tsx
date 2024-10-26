@@ -2,7 +2,7 @@
 import { ApplePayButton, PaymentRequest } from '../react_native_apple_pay';
 import { debugLog, errorLog } from '../helpers/debug_log';
 import { Platform, useColorScheme, View } from 'react-native';
-import type { MoyasarProps } from '../models/moyasar_props';
+import type { ApplePayProps } from '../models/component_models/moyasar_props';
 import { currencyToCountryCodeMap, toMajor } from '../helpers/currency_util';
 import { assert } from '../helpers/assert';
 import { ApplePayRequestSource } from '../models/api/sources/apple_pay/apple_pay_request_source';
@@ -58,7 +58,11 @@ async function onApplePayResponse(
   }
 }
 
-export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
+export function ApplePay({
+  paymentConfig,
+  onPaymentResult,
+  style,
+}: ApplePayProps) {
   const isLightTheme = useColorScheme() === 'light';
 
   if (Platform.OS !== 'ios') {
@@ -70,11 +74,11 @@ export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
   return (
     <View style={{ alignItems: 'center' }}>
       <ApplePayButton
-        type="inStore"
-        height={50}
-        width="90%"
-        cornerRadius={11}
-        style={isLightTheme ? 'black' : 'white'}
+        type={style?.buttonType ?? 'inStore'}
+        height={style?.height ?? 50}
+        width={style?.width ?? '90%'}
+        cornerRadius={style?.cornerRadius ?? 11}
+        style={style?.buttonStyle ?? isLightTheme ? 'black' : 'white'}
         onPress={() => {
           debugLog('Moyasar SDK: Apple Pay button pressed');
 
