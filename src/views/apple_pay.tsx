@@ -78,7 +78,7 @@ export function ApplePay({
         height={style?.height ?? 50}
         width={style?.width ?? '90%'}
         cornerRadius={style?.cornerRadius ?? 11}
-        style={style?.buttonStyle ?? isLightTheme ? 'black' : 'white'}
+        style={style?.buttonStyle ?? (isLightTheme ? 'black' : 'white')}
         onPress={() => {
           debugLog('Moyasar SDK: Apple Pay button pressed');
 

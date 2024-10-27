@@ -121,7 +121,7 @@ const CreditCardView = ({
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView contentContainerStyle={defaultStyle.scrollView}>
-        <View style={defaultStyle.container}>
+        <View style={[defaultStyle.container, customStyle?.container]}>
           <View style={defaultStyle.inputContainer}>
             <View style={defaultStyle.inputSubContainer}>
               <TextInput
