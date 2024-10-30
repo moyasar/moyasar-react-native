@@ -11,7 +11,7 @@ export class TokenResponse {
   year: string;
   name: string;
   lastFour: string;
-  metadata?: Record<string, string> | null;
+  metadata?: Record<string, string | number | boolean> | null;
   message?: string | null;
   verificationUrl?: string | null;
   createdAt: string;
@@ -44,7 +44,7 @@ export class TokenResponse {
     year: string;
     name: string;
     lastFour: string;
-    metadata?: Record<string, string>;
+    metadata?: Record<string, string | number | boolean> | null;
     message?: string;
     verificationUrl?: string;
     createdAt: string;

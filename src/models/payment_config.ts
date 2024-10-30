@@ -10,7 +10,7 @@ export class PaymentConfig {
   amount: number;
   currency: string;
   description: string;
-  metadata?: Record<string, string>;
+  metadata?: Record<string, string | number | boolean> | null;
   supportedNetworks: string[];
   applePay?: ApplePayConfig;
   creditCard: CreditCardConfig;
@@ -43,7 +43,7 @@ export class PaymentConfig {
     amount: number;
     currency?: string;
     description: string;
-    metadata?: Record<string, string>;
+    metadata?: Record<string, string | number | boolean> | null;
     supportedNetworks?: string[];
     applePay?: ApplePayConfig;
     creditCard?: CreditCardConfig;

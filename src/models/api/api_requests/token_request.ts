@@ -7,7 +7,7 @@
  * @param {string} year - Two or four digit number representing the Credit Card's expiration year.
  * @param {boolean | null} [saveOnly] - Optional
  * @param {string} callbackUrl - The URL to be redirected to after a 3D secure transaction (e.g., https://sdk.moyasar.com/return).
- * @param {Record<string, string> | null} metadata - Adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
+ * @param {Record<string, string | number | boolean> | null} [metadata] - Adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
  */
 export class TokenRequest {
   name: string;
@@ -17,7 +17,7 @@ export class TokenRequest {
   year: string;
   saveOnly?: boolean | null;
   callbackUrl: string;
-  metadata?: Record<string, string> | null;
+  metadata?: Record<string, string | number | boolean> | null;
 
   constructor({
     name,
@@ -36,7 +36,7 @@ export class TokenRequest {
     year: string;
     saveOnly?: boolean | null;
     callbackUrl: string;
-    metadata?: Record<string, string> | null;
+    metadata?: Record<string, string | number | boolean> | null;
   }) {
     this.name = name;
     this.number = number;

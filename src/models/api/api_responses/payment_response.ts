@@ -28,7 +28,7 @@ export class PaymentResponse {
   callbackUrl?: string;
   createdAt: string;
   updatedAt: string;
-  metadata?: Record<string, string>;
+  metadata?: Record<string, string | number | boolean> | null;
   source: PaymentResponseSource;
 
   constructor({
@@ -75,7 +75,7 @@ export class PaymentResponse {
     callbackUrl?: string;
     createdAt: string;
     updatedAt: string;
-    metadata?: Record<string, string>;
+    metadata?: Record<string, string | number | boolean> | null;
     source: PaymentResponseSource;
   }) {
     this.id = id;

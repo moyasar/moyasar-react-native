@@ -1,5 +1,6 @@
 ## 0.5.0
 
+- [API] `metadata` parameter type fix.
 - [General] Support customizing the components' style to align with your app's design.
 - [General] Support building your own UI.
 - [General] Enhancements.
