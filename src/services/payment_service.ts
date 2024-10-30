@@ -1,6 +1,12 @@
+import { Buffer } from 'buffer';
 import { debugLog, errorLog } from '../helpers/debug_log';
 import { ApiError } from '../models/errors/api_error';
-import { NetworkEndpointError } from '../models/errors/moyasar_errors';
+import {
+  isMoyasarError,
+  NetworkEndpointError,
+  NetworkError,
+  type MoyasarError,
+} from '../models/errors/moyasar_errors';
 import type { PaymentRequest } from '../models/api/api_requests/payment_request';
 import { PaymentResponse } from '../models/api/api_responses/payment_response';
 import type { TokenRequest } from '../models/api/api_requests/token_request';
@@ -9,6 +15,14 @@ import { TokenResponse } from '../models/api/api_responses/token_response';
 const paymentsApiUrl = 'https://api.moyasar.com/v1/payments';
 const tokenApiUrl = 'https://api.moyasar.com/v1/tokens';
 
+/**
+ * Makes a POST request.
+ * @param url - The URL to send the request to.
+ * @param jsonPayload - The encoded JSON payload to send.
+ * @param publishableApiKey - Moyasar's publishable API key.
+ *
+ * @throws
+ */
 async function makeRequest(
   url: string,
   jsonPayload: string,
@@ -40,36 +54,60 @@ async function makeRequest(
   return responseJson;
 }
 
-/** @throws */
+/**
+ * Initiates a payment.
+ * @param paymentRequest - The payment request object.
+ * @param publishableApiKey - Moyasar's publishable API key.
+ */
 export async function createPayment(
   paymentRequest: PaymentRequest,
   publishableApiKey: string
-): Promise<PaymentResponse> {
+): Promise<PaymentResponse | MoyasarError> {
   const jsonPayload = JSON.stringify(paymentRequest.toJson());
 
-  const paymentJson = await makeRequest(
-    paymentsApiUrl,
-    jsonPayload,
-    publishableApiKey
-  );
+  try {
+    const paymentJson = await makeRequest(
+      paymentsApiUrl,
+      jsonPayload,
+      publishableApiKey
+    );
 
-  return PaymentResponse.fromJson(paymentJson, paymentRequest.source.type);
+    return PaymentResponse.fromJson(paymentJson, paymentRequest.source.type);
+  } catch (error) {
+    return isMoyasarError(error)
+      ? error
+      : new NetworkError(
+          'Moyasar SDK: An error occured while processing a Credit Card payment'
+        );
+  }
 }
 
-/** @throws */
+/**
+ * Creates a Credit Card token.
+ * @param tokenRequest - The token request object.
+ * @param publishableApiKey - Moyasar's publishable API key.
+ */
 export async function createToken(
   tokenRequest: TokenRequest,
   publishableApiKey: string
-): Promise<TokenResponse> {
+): Promise<TokenResponse | MoyasarError> {
   const jsonPayload = JSON.stringify(tokenRequest.toJson());
 
-  const paymentJson = await makeRequest(
-    tokenApiUrl,
-    jsonPayload,
-    publishableApiKey
-  );
+  try {
+    const paymentJson = await makeRequest(
+      tokenApiUrl,
+      jsonPayload,
+      publishableApiKey
+    );
 
-  return TokenResponse.fromJson(paymentJson);
+    return TokenResponse.fromJson(paymentJson);
+  } catch (error) {
+    return isMoyasarError(error)
+      ? error
+      : new NetworkError(
+          'Moyasar SDK: An error occured while creating a token request'
+        );
+  }
 }
 
 function buildRequestHeaders(apiKey: string): Record<string, string> {
@@ -78,7 +116,7 @@ function buildRequestHeaders(apiKey: string): Record<string, string> {
 
   return {
     'Content-Type': 'application/json',
-    'Authorization': `Basic ${btoa(apiKey)}`,
+    'Authorization': `Basic ${Buffer.from(apiKey).toString('base64')}`,
     'X-MOYASAR-LIB': 'moyasar-react-native-sdk',
     'X-REACT-NATIVE-SDK-VERSION': version,
   };

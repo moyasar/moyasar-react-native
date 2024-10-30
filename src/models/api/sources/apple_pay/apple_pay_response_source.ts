@@ -1,4 +1,4 @@
-import PaymentType from '../../../payment_type';
+import { PaymentType } from '../../../payment_type';
 import type { PaymentResponseSource } from '../payment_response_source';
 
 export class ApplePayPaymentResponseSource implements PaymentResponseSource {

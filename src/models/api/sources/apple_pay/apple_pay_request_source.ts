@@ -1,7 +1,7 @@
-import PaymentType from '../../../payment_type';
+import { PaymentType } from '../../../payment_type';
 import type { PaymentRequestSource } from '../payment_request_source';
 
-export class ApplePayPaymentRequestSource implements PaymentRequestSource {
+export class ApplePayRequestSource implements PaymentRequestSource {
   type: PaymentType = PaymentType.applePay;
   applePayToken: string;
   manualPayment: string;

@@ -1,7 +1,8 @@
 import type { PaymentStatus } from '../../payment_status';
-import PaymentType from '../../payment_type';
+import { PaymentType } from '../../payment_type';
 import { ApplePayPaymentResponseSource } from '../sources/apple_pay/apple_pay_response_source';
 import { CreditCardResponseSource } from '../sources/credit_card/credit_card_response_source';
+import type { PaymentResponseSource } from '../sources/payment_response_source';
 
 /**
  Moyasar API response for processing a payment.
@@ -27,8 +28,8 @@ export class PaymentResponse {
   callbackUrl?: string;
   createdAt: string;
   updatedAt: string;
-  metadata?: Record<string, string>;
-  source: any;
+  metadata?: Record<string, string | number | boolean> | null;
+  source: PaymentResponseSource;
 
   constructor({
     id,
@@ -74,8 +75,8 @@ export class PaymentResponse {
     callbackUrl?: string;
     createdAt: string;
     updatedAt: string;
-    metadata?: Record<string, string>;
-    source: any;
+    metadata?: Record<string, string | number | boolean> | null;
+    source: PaymentResponseSource;
   }) {
     this.id = id;
     this.status = status;
@@ -108,7 +109,7 @@ export class PaymentResponse {
     json: Record<string, any>,
     paymentType: PaymentType
   ): PaymentResponse {
-    let paymentSource: any;
+    let paymentSource: PaymentResponseSource;
 
     switch (paymentType) {
       case PaymentType.creditCard:

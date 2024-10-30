@@ -2,10 +2,10 @@
 import { ApplePayButton, PaymentRequest } from '../react_native_apple_pay';
 import { debugLog, errorLog } from '../helpers/debug_log';
 import { Platform, useColorScheme, View } from 'react-native';
-import type { MoyasarProps } from '../models/moyasar_props';
+import type { ApplePayProps } from '../models/component_models/moyasar_props';
 import { currencyToCountryCodeMap, toMajor } from '../helpers/currency_util';
 import { assert } from '../helpers/assert';
-import { ApplePayPaymentRequestSource } from '../models/api/sources/apple_pay/apple_pay_request_source';
+import { ApplePayRequestSource } from '../models/api/sources/apple_pay/apple_pay_request_source';
 import type { PaymentConfig } from '../models/payment_config';
 import { PaymentRequest as MoyasarPaymentRequest } from '../models/api/api_requests/payment_request';
 import { createPayment } from '../services/payment_service';
@@ -21,7 +21,7 @@ async function onApplePayResponse(
   paymentConfig: PaymentConfig,
   onPaymentResult: ResultCallback
 ) {
-  const source = new ApplePayPaymentRequestSource({
+  const source = new ApplePayRequestSource({
     applePayToken: token,
     manualPayment: paymentConfig.applePay?.manual,
   });
@@ -32,7 +32,6 @@ async function onApplePayResponse(
     description: paymentConfig.description,
     metadata: paymentConfig.metadata,
     source: source,
-    callbackUrl: 'https://sdk.moyasar.com/return',
   });
 
   debugLog('Moyasar SDK: Paying with Apple Pay...');
@@ -59,7 +58,11 @@ async function onApplePayResponse(
   }
 }
 
-export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
+export function ApplePay({
+  paymentConfig,
+  onPaymentResult,
+  style,
+}: ApplePayProps) {
   const isLightTheme = useColorScheme() === 'light';
 
   if (Platform.OS !== 'ios') {
@@ -71,11 +74,11 @@ export function ApplePay({ paymentConfig, onPaymentResult }: MoyasarProps) {
   return (
     <View style={{ alignItems: 'center' }}>
       <ApplePayButton
-        type="inStore"
-        height={50}
-        width="90%"
-        cornerRadius={11}
-        style={isLightTheme ? 'black' : 'white'}
+        type={style?.buttonType ?? 'inStore'}
+        height={style?.height ?? 50}
+        width={style?.width ?? '90%'}
+        cornerRadius={style?.cornerRadius ?? 11}
+        style={style?.buttonStyle ?? (isLightTheme ? 'black' : 'white')}
         onPress={() => {
           debugLog('Moyasar SDK: Apple Pay button pressed');
 

@@ -58,9 +58,9 @@ function onPaymentResult(paymentResult: PaymentResult) {
         `Backend endpoint error message: ${paymentResult.error.message}, errors: ${JSON.stringify(paymentResult.error.errors)}, error type: ${paymentResult.error.type}`
       );
     } else if (paymentResult instanceof NetworkError) {
-      console.log(`Error message: ${paymentResult.message}`);
+      console.log(`Network error message: ${paymentResult.message}`);
     } else if (paymentResult instanceof GeneralError) {
-      console.log(`Error message: ${paymentResult.message}`);
+      console.log(`General error message: ${paymentResult.message}`);
     }
   }
 }
@@ -71,10 +71,14 @@ export default function App() {
       <CreditCard
         paymentConfig={paymentConfig}
         onPaymentResult={onPaymentResult}
+        style={{ textInputs: { borderWidth: 1.25 } }}
       />
       <ApplePay
         paymentConfig={paymentConfig}
         onPaymentResult={onPaymentResult}
+        style={{
+          buttonType: 'buy',
+        }}
       />
     </View>
   );

@@ -13,12 +13,11 @@ import {
 import { isArabicLang } from '../localizations/i18n';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { MoyasarProps } from '../models/moyasar_props';
+import type { CreditCardProps } from '../models/component_models/moyasar_props';
 import { formatAmount } from '../helpers/currency_util';
 import { CreditCardPaymentService } from '../services/credit_card_payment_service';
 import { WebviewPaymentAuth } from './webview_payment_auth';
 import type { CreditCardResponseSource } from '../models/api/sources/credit_card/credit_card_response_source';
-import type { CreditCardProps } from '../models/component_models/credit_card_props';
 import { Visa } from '../assets/visa';
 import { Mastercard } from '../assets/mastercard';
 import { Amex } from '../assets/amex';
@@ -44,7 +43,11 @@ function getFormattedAmount(amount: number, currency: string): string {
   return formattedAmount;
 }
 
-export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
+export function CreditCard({
+  paymentConfig,
+  onPaymentResult,
+  style: customStyle,
+}: CreditCardProps) {
   const [isWebviewVisible, setWebviewVisible] = useState(false);
 
   useEffect(() => {
@@ -74,6 +77,7 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
     <CreditCardView
       paymentConfig={paymentConfig}
       onPaymentResult={onPaymentResult}
+      style={customStyle}
       setWebviewVisible={setWebviewVisible}
     />
   );
@@ -83,8 +87,11 @@ export function CreditCard({ paymentConfig, onPaymentResult }: MoyasarProps) {
 const CreditCardView = ({
   paymentConfig,
   onPaymentResult,
+  style: customStyle,
   setWebviewVisible,
-}: CreditCardProps) => {
+}: CreditCardProps & {
+  setWebviewVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { t } = useTranslation();
   const isLightMode = useColorScheme() === 'light';
 
@@ -113,15 +120,18 @@ const CreditCardView = ({
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={styles.container}>
-          <View style={styles.inputContainer}>
-            <View style={styles.inputSubContainer}>
+      <ScrollView contentContainerStyle={defaultStyle.scrollView}>
+        <View style={[defaultStyle.container, customStyle?.container]}>
+          <View style={defaultStyle.inputContainer}>
+            <View style={defaultStyle.inputSubContainer}>
               <TextInput
-                style={{
-                  ...styles.input,
-                  color: isLightMode ? 'black' : 'white',
-                }}
+                style={[
+                  {
+                    ...defaultStyle.input,
+                    color: isLightMode ? 'black' : 'white',
+                  },
+                  customStyle?.textInputs,
+                ]}
                 value={name}
                 onChangeText={(value) => {
                   setName(value);
@@ -135,14 +145,19 @@ const CreditCardView = ({
               />
             </View>
 
-            <Text style={styles.errorText}>{nameError}</Text>
+            <Text style={[defaultStyle.errorText, customStyle?.errorText]}>
+              {nameError}
+            </Text>
 
-            <View style={styles.inputSubContainer}>
+            <View style={defaultStyle.inputSubContainer}>
               <TextInput
-                style={{
-                  ...styles.input,
-                  color: isLightMode ? 'black' : 'white',
-                }}
+                style={[
+                  {
+                    ...defaultStyle.input,
+                    color: isLightMode ? 'black' : 'white',
+                  },
+                  customStyle?.textInputs,
+                ]}
                 value={formatCreditCardNumber(number)}
                 onChangeText={(value) => {
                   const cleanNumber = value
@@ -158,7 +173,7 @@ const CreditCardView = ({
                       mappedCleanNumbers
                     )
                   );
-                  // To better handle Amex card valiadtion
+                  // To better handle Amex card validation
                   setCvcError(
                     paymentService.cvcValidator.visualValidate(
                       cvc,
@@ -176,45 +191,50 @@ const CreditCardView = ({
                     : 19
                 }
               />
-              <View style={styles.cardNetworkLogoContainer}>
+              <View style={defaultStyle.cardNetworkLogoContainer}>
                 {paymentService.shouldShowNetworkLogo(
                   number,
                   CreditCardNetwork.mada
                 ) ? (
-                  <Mada style={styles.cardNetworkLogo} />
+                  <Mada style={defaultStyle.cardNetworkLogo} />
                 ) : null}
 
                 {paymentService.shouldShowNetworkLogo(
                   number,
                   CreditCardNetwork.visa
                 ) ? (
-                  <Visa style={styles.cardNetworkLogo} />
+                  <Visa style={defaultStyle.cardNetworkLogo} />
                 ) : null}
 
                 {paymentService.shouldShowNetworkLogo(
                   number,
                   CreditCardNetwork.master
                 ) ? (
-                  <Mastercard style={styles.cardNetworkLogo} />
+                  <Mastercard style={defaultStyle.cardNetworkLogo} />
                 ) : null}
 
                 {paymentService.shouldShowNetworkLogo(
                   number,
                   CreditCardNetwork.amex
                 ) ? (
-                  <Amex style={styles.cardNetworkLogo} />
+                  <Amex style={defaultStyle.cardNetworkLogo} />
                 ) : null}
               </View>
             </View>
 
-            <Text style={styles.errorText}>{numberError}</Text>
+            <Text style={[defaultStyle.errorText, customStyle?.errorText]}>
+              {numberError}
+            </Text>
 
-            <View style={styles.inputSubContainer}>
+            <View style={defaultStyle.inputSubContainer}>
               <TextInput
-                style={{
-                  ...styles.input,
-                  color: isLightMode ? 'black' : 'white',
-                }}
+                style={[
+                  {
+                    ...defaultStyle.input,
+                    color: isLightMode ? 'black' : 'white',
+                  },
+                  customStyle?.textInputs,
+                ]}
                 value={formatExpiryDate(expiry)}
                 onChangeText={(value) => {
                   const cleanExpiryDate = value
@@ -239,14 +259,19 @@ const CreditCardView = ({
               />
             </View>
 
-            <Text style={styles.errorText}>{expiryError}</Text>
+            <Text style={[defaultStyle.errorText, customStyle?.errorText]}>
+              {expiryError}
+            </Text>
 
-            <View style={styles.inputSubContainer}>
+            <View style={defaultStyle.inputSubContainer}>
               <TextInput
-                style={{
-                  ...styles.input,
-                  color: isLightMode ? 'black' : 'white',
-                }}
+                style={[
+                  {
+                    ...defaultStyle.input,
+                    color: isLightMode ? 'black' : 'white',
+                  },
+                  customStyle?.textInputs,
+                ]}
                 value={cvc}
                 onChangeText={(value) => {
                   const cleanCvc = value
@@ -277,15 +302,17 @@ const CreditCardView = ({
               />
             </View>
 
-            <Text style={styles.errorText}>{cvcError}</Text>
+            <Text style={[defaultStyle.errorText, customStyle?.errorText]}>
+              {cvcError}
+            </Text>
           </View>
 
-          <View style={styles.buttonContainer}>
+          <View style={defaultStyle.buttonContainer}>
             <TouchableOpacity
               style={[
-                styles.button,
+                defaultStyle.button,
+                customStyle?.paymentButton,
                 isButtonDisabled && {
-                  ...styles.button,
                   opacity: 0.5,
                 },
               ]}
@@ -305,7 +332,12 @@ const CreditCardView = ({
               {isPaymentInProgress ? (
                 <ActivityIndicator size="small" color="#ffffff" />
               ) : (
-                <Text style={styles.buttonText}>
+                <Text
+                  style={[
+                    defaultStyle.buttonText,
+                    customStyle?.paymentButtonText,
+                  ]}
+                >
                   {t('pay')}{' '}
                   {getFormattedAmount(
                     paymentConfig.amount,
@@ -321,7 +353,7 @@ const CreditCardView = ({
   );
 };
 
-const styles = StyleSheet.create({
+const defaultStyle = StyleSheet.create({
   scrollView: {
     maxWidth: '100%',
     flexGrow: 1,
