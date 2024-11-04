@@ -101,6 +101,7 @@ const madaRanges: string[] = [
 ];
 
 export const inMadaRange = (number: string): boolean => {
+  // TODO: Optimize to a map
   for (const range of madaRanges) {
     if (number.startsWith(range)) {
       return true;
