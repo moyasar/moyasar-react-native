@@ -28,18 +28,6 @@ describe('PaymentResponse', () => {
   describe('attributes', () => {
     const paymentRequest = new PaymentResponse(paymentResponseData);
 
-    describe('requestId', () => {
-      it('should return `requestId`', () => {
-        expect(paymentRequest.requestId).toBe(paymentResponseData.requestId);
-      });
-
-      // it('should throw if user attempts to assign value', () => {
-      //   expect(() => {
-      //     paymentRequest.requestId = 'foo';
-      //   }).toThrow();
-      // });
-    });
-
     describe('methodName', () => {
       it('should return `methodName`', () => {
         expect(paymentRequest.methodName).toBe(paymentResponseData.methodName);

@@ -16,7 +16,8 @@ import {
 } from '../models/errors/moyasar_errors';
 import type { ResultCallback } from '../models/payment_result';
 
-async function onApplePayResponse(
+// TODO: Move to service module
+export async function onApplePayResponse(
   token: any,
   paymentConfig: PaymentConfig,
   onPaymentResult: ResultCallback

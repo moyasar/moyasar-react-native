@@ -33,6 +33,11 @@ export class ExpiryDateUtil {
   static fromPattern(pattern: string): ExpiryDateUtil | null {
     const clean = pattern.replace(/[\s\/]/g, '');
 
+    // Checks if the cleaned string is digits only
+    if (!/^\d+$/.test(clean)) {
+      return null;
+    }
+
     if (clean.length === 4) {
       // TODO: Optimize to init the Date object once for this class
 

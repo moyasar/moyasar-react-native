@@ -93,7 +93,7 @@
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/",
-      "<rootDir>/src/react_native_apple_pay"
+      "<rootDir>/src/__tests__/__fixtures__"
     ]
   },
   "commitlint": {
