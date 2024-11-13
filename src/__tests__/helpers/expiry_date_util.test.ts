@@ -9,6 +9,13 @@ describe('ExpiryDateUtil.fromPattern', () => {
     expect(result?.year).toBe(2024);
   });
 
+  it('should return an instance of ExpiryDateUtil for a valid 4-digit pattern for a month that begins with a 0', () => {
+    const pattern = '05/24';
+    const result = ExpiryDateUtil.fromPattern(pattern);
+    expect(result?.month).toBe(5);
+    expect(result?.year).toBe(2024);
+  });
+
   it('should return an instance of ExpiryDateUtil for a valid 6-digit pattern', () => {
     const pattern = '102024';
     const result = ExpiryDateUtil.fromPattern(pattern);
