@@ -1,6 +1,11 @@
+import type { PaymentResponse } from '../api/api_responses/payment_response';
 import type { ApiError } from './api_error';
 
-export type MoyasarError = NetworkError | NetworkEndpointError | GeneralError;
+export type MoyasarError =
+  | NetworkError
+  | NetworkEndpointError
+  | GeneralError
+  | UnexpectedError;
 
 // Extend it, don't use it directly
 abstract class MoyasarBaseError extends Error {
@@ -34,6 +39,17 @@ export class GeneralError extends MoyasarBaseError {
     super(message);
 
     this.name = 'MoyasarGeneralError';
+  }
+}
+
+export class UnexpectedError extends MoyasarBaseError {
+  pendingPayment?: PaymentResponse | null;
+
+  constructor(message: string, pendingPayment?: PaymentResponse | null) {
+    super(message);
+
+    this.name = 'MoyasarUnexpectedError';
+    this.pendingPayment = pendingPayment;
   }
 }
 

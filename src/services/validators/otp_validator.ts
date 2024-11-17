@@ -1,0 +1,20 @@
+import i18n from 'i18next';
+import { FieldValidator } from './field_validator';
+
+export class OTPValidator extends FieldValidator {
+  constructor() {
+    super();
+
+    this.addRule(i18n.t('otpRequired'), (value: string) => {
+      return value.length === 0;
+    });
+
+    this.addRule(i18n.t('otpOnlyDigits'), (value: string) => {
+      return !/^\d+$/.test(value);
+    });
+
+    this.addRule(i18n.t('otpInvalidCount'), (value: string) => {
+      return value.length < 4 || value.length > 10;
+    });
+  }
+}
