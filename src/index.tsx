@@ -1,4 +1,6 @@
-import './localizations/i18n';
+import { getConfiguredLocalizations } from './localizations/i18n';
+
+getConfiguredLocalizations();
 
 export * from './views/credit_card';
 export { ApplePay } from './views/apple_pay';

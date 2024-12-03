@@ -1,8 +1,14 @@
 import { CreditCardCvcValidator } from '../../../services/validators/credit_card_cvc_validator';
+import * as Localizations from '../../../localizations/i18n';
+import i18next from 'i18next';
 
 jest.mock('i18next', () => ({
   t: (key: string) => key,
 }));
+
+jest
+  .spyOn(Localizations, 'getConfiguredLocalizations')
+  .mockImplementation(() => i18next);
 
 describe('CreditCardCvcValidator', () => {
   let validator: CreditCardCvcValidator;
@@ -26,41 +32,41 @@ describe('CreditCardCvcValidator', () => {
 
   it('should return error for empty CVC', () => {
     const result = validator.validate('');
-    expect(result).toBe('cvcRequired');
+    expect(result).toContain('cvcRequired');
   });
 
   it('should return error for non-digit CVC', () => {
     const result = validator.validate('abc');
-    expect(result).toBe('onlyDigits');
+    expect(result).toContain('onlyDigits');
 
     const result2 = validator.validate('1!23');
-    expect(result2).toBe('onlyDigits');
+    expect(result2).toContain('onlyDigits');
   });
 
   it('should return error for invalid CVC length for unknown network', () => {
     const result = validator.validate('12', '1234567890123456');
-    expect(result).toBe('invalidCvc');
+    expect(result).toContain('invalidCvc');
 
     const result2 = validator.validate('12345', '1234567890123456');
-    expect(result2).toBe('invalidCvc');
+    expect(result2).toContain('invalidCvc');
   });
 
   it('should return error for invalid CVC length for Amex', () => {
     const result = validator.validate('123', '378282246310005');
-    expect(result).toBe('invalidCvc');
+    expect(result).toContain('invalidCvc');
 
     const result2 = validator.validate('12345', '378282246310005');
-    expect(result2).toBe('invalidCvc');
+    expect(result2).toContain('invalidCvc');
   });
 
   it('should return error for invalid CVC length for non-Amex', () => {
     const result = validator.validate('1234', '4111111111111111');
-    expect(result).toBe('invalidCvc');
+    expect(result).toContain('invalidCvc');
 
     const result2 = validator.validate('12345', '4111111111111111');
-    expect(result2).toBe('invalidCvc');
+    expect(result2).toContain('invalidCvc');
 
     const result3 = validator.validate('12', '4111111111111111');
-    expect(result3).toBe('invalidCvc');
+    expect(result3).toContain('invalidCvc');
   });
 });

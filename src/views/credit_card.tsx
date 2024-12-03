@@ -92,7 +92,7 @@ const CreditCardView = ({
 }: CreditCardProps & {
   setWebviewVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('moyasarTranslation');
   const isLightMode = useColorScheme() === 'light';
 
   const [name, setName] = useState('');

@@ -4,7 +4,7 @@ import { NativeModules, Platform } from 'react-native';
 
 const resources = {
   en: {
-    translation: {
+    moyasarTranslation: {
       nameOnCard: 'Name on Card',
       cardNumber: 'Card Number',
       expiry: 'Expiry (MM/YY)',
@@ -25,7 +25,7 @@ const resources = {
     },
   },
   ar: {
-    translation: {
+    moyasarTranslation: {
       nameOnCard: 'الاسم على البطاقة',
       cardNumber: 'رقم البطاقة',
       expiry: 'تاريخ الانتهاء (شهر/سنة)',
@@ -58,12 +58,35 @@ export function getCurrentLang(): string {
     : NativeModules.I18nManager.localeIdentifier?.substring(0, 2);
 }
 
-i18n.use(initReactI18next).init({
-  resources: resources,
-  compatibilityJSON: 'v3',
-  lng: getCurrentLang(),
-  fallbackLng: ['en', 'ar'],
-});
+// TODO: Optimize and find a better way to handle localizations in an SDK + Make sure that localizations are ready before showing any view
+export function getConfiguredLocalizations(): typeof i18n {
+  if (i18n.isInitialized) {
+    if (!i18n.hasResourceBundle('en', 'moyasarTranslation')) {
+      i18n.addResourceBundle(
+        'en',
+        'moyasarTranslation',
+        resources.en.moyasarTranslation
+      );
+    }
+    if (!i18n.hasResourceBundle('ar', 'moyasarTranslation')) {
+      i18n.addResourceBundle(
+        'ar',
+        'moyasarTranslation',
+        resources.ar.moyasarTranslation
+      );
+    }
+  } else {
+    i18n.use(initReactI18next).init({
+      resources: resources,
+      compatibilityJSON: 'v3',
+      lng: getCurrentLang(),
+      ns: 'moyasarTranslation',
+      fallbackLng: ['en', 'ar'],
+    });
+  }
+
+  return i18n;
+}
 
 export function isArabicLang(): boolean {
   return getCurrentLang() === 'ar';
