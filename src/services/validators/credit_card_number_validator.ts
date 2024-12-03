@@ -9,24 +9,21 @@ import { getConfiguredLocalizations } from '../../localizations/i18n';
 export class CreditCardNumberValidator extends FieldValidator {
   constructor() {
     super();
+    const { t } = getConfiguredLocalizations();
+
     this.addRule(
-      getConfiguredLocalizations().t('moyasarTranslation:cardNumberRequired'),
+      t('moyasarTranslation:cardNumberRequired'),
       (value: string) => {
         return value.length === 0;
       }
     );
 
-    this.addRule(
-      getConfiguredLocalizations().t('moyasarTranslation:invalidCardNumber'),
-      (value: string) => {
-        return value.length < 15 || !isValidLuhn(value);
-      }
-    );
+    this.addRule(t('moyasarTranslation:invalidCardNumber'), (value: string) => {
+      return value.length < 15 || !isValidLuhn(value);
+    });
 
     this.addRule(
-      getConfiguredLocalizations().t(
-        'moyasarTranslation:unsupportedCreditCardNetwork'
-      ),
+      t('moyasarTranslation:unsupportedCreditCardNetwork'),
       (value: string) => {
         return (
           getCreditCardNetworkFromNumber(value) === CreditCardNetwork.unknown

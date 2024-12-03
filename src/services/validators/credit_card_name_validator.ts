@@ -6,26 +6,21 @@ export class CreditCardNameValidator extends FieldValidator {
 
   constructor() {
     super();
+    const { t } = getConfiguredLocalizations();
+
+    this.addRule(t('moyasarTranslation:nameRequired'), (value: string) => {
+      return value.length === 0;
+    });
 
     this.addRule(
-      getConfiguredLocalizations().t('moyasarTranslation:nameRequired'),
-      (value: string) => {
-        return value.length === 0;
-      }
-    );
-
-    this.addRule(
-      getConfiguredLocalizations().t('moyasarTranslation:onlyEnglishAlphabets'),
+      t('moyasarTranslation:onlyEnglishAlphabets'),
       (value: string) => {
         return !this.latinRegex.test(value);
       }
     );
 
-    this.addRule(
-      getConfiguredLocalizations().t('moyasarTranslation:bothNamesRequired'),
-      (value: string) => {
-        return value.split(' ').filter((name) => name !== '').length < 2;
-      }
-    );
+    this.addRule(t('moyasarTranslation:bothNamesRequired'), (value: string) => {
+      return value.split(' ').filter((name) => name !== '').length < 2;
+    });
   }
 }

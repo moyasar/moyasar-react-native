@@ -10,9 +10,11 @@ import {
   ActivityIndicator,
   useColorScheme,
 } from 'react-native';
-import { isArabicLang } from '../localizations/i18n';
+import {
+  getConfiguredLocalizations,
+  isArabicLang,
+} from '../localizations/i18n';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import type { CreditCardProps } from '../models/component_models/moyasar_props';
 import { formatAmount } from '../helpers/currency_util';
 import { CreditCardPaymentService } from '../services/credit_card_payment_service';
@@ -92,7 +94,7 @@ const CreditCardView = ({
 }: CreditCardProps & {
   setWebviewVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { t } = useTranslation('moyasarTranslation');
+  const { t } = getConfiguredLocalizations();
   const isLightMode = useColorScheme() === 'light';
 
   const [name, setName] = useState('');
@@ -139,7 +141,7 @@ const CreditCardView = ({
                     paymentService.nameValidator.visualValidate(value)
                   );
                 }}
-                placeholder={t('nameOnCard')}
+                placeholder={t('moyasarTranslation:nameOnCard')}
                 autoCorrect={false}
                 editable={!isPaymentInProgress}
               />
@@ -181,7 +183,7 @@ const CreditCardView = ({
                     )
                   );
                 }}
-                placeholder={t('cardNumber')}
+                placeholder={t('moyasarTranslation:cardNumber')}
                 keyboardType="numeric"
                 editable={!isPaymentInProgress}
                 maxLength={
@@ -252,7 +254,7 @@ const CreditCardView = ({
                     )
                   );
                 }}
-                placeholder={t('expiry')}
+                placeholder={t('moyasarTranslation:expiry')}
                 keyboardType="numeric"
                 editable={!isPaymentInProgress}
                 maxLength={9}
@@ -288,7 +290,7 @@ const CreditCardView = ({
                     )
                   );
                 }}
-                placeholder={t('cvc')}
+                placeholder={t('moyasarTranslation:cvc')}
                 keyboardType="numeric"
                 maxLength={(() => {
                   const cardNetwork = getCreditCardNetworkFromNumber(number);
@@ -338,7 +340,7 @@ const CreditCardView = ({
                     customStyle?.paymentButtonText,
                   ]}
                 >
-                  {t('pay')}{' '}
+                  {t('moyasarTranslation:pay')}{' '}
                   {getFormattedAmount(
                     paymentConfig.amount,
                     paymentConfig.currency

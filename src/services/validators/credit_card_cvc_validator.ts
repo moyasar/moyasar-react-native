@@ -6,23 +6,18 @@ import { getConfiguredLocalizations } from '../../localizations/i18n';
 export class CreditCardCvcValidator extends FieldValidator {
   constructor() {
     super();
+    const { t } = getConfiguredLocalizations();
+
+    this.addRule(t('moyasarTranslation:cvcRequired'), (value: string) => {
+      return value.length === 0;
+    });
+
+    this.addRule(t('moyasarTranslation:onlyDigits'), (value: string) => {
+      return !/^\d+$/.test(value);
+    });
 
     this.addRule(
-      getConfiguredLocalizations().t('moyasarTranslation:cvcRequired'),
-      (value: string) => {
-        return value.length === 0;
-      }
-    );
-
-    this.addRule(
-      getConfiguredLocalizations().t('moyasarTranslation:onlyDigits'),
-      (value: string) => {
-        return !/^\d+$/.test(value);
-      }
-    );
-
-    this.addRule(
-      getConfiguredLocalizations().t('moyasarTranslation:invalidCvc'),
+      t('moyasarTranslation:invalidCvc'),
       (value: string, creditCardNumber: string | undefined) => {
         const network = getCreditCardNetworkFromNumber(creditCardNumber ?? '');
 
