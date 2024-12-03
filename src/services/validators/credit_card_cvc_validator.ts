@@ -1,22 +1,28 @@
-import i18n from 'i18next';
 import { FieldValidator } from './field_validator';
 import { CreditCardNetwork } from '../../models/credit_card_network';
 import { getCreditCardNetworkFromNumber } from '../../helpers/credit_card_utils';
+import { getConfiguredLocalizations } from '../../localizations/i18n';
 
 export class CreditCardCvcValidator extends FieldValidator {
   constructor() {
     super();
 
-    this.addRule(i18n.t('cvcRequired'), (value: string) => {
-      return value.length === 0;
-    });
-
-    this.addRule(i18n.t('onlyDigits'), (value: string) => {
-      return !/^\d+$/.test(value);
-    });
+    this.addRule(
+      getConfiguredLocalizations().t('moyasarTranslation:cvcRequired'),
+      (value: string) => {
+        return value.length === 0;
+      }
+    );
 
     this.addRule(
-      i18n.t('invalidCvc'),
+      getConfiguredLocalizations().t('moyasarTranslation:onlyDigits'),
+      (value: string) => {
+        return !/^\d+$/.test(value);
+      }
+    );
+
+    this.addRule(
+      getConfiguredLocalizations().t('moyasarTranslation:invalidCvc'),
       (value: string, creditCardNumber: string | undefined) => {
         const network = getCreditCardNetworkFromNumber(creditCardNumber ?? '');
 

@@ -13,8 +13,14 @@ import {
 } from '../__fixtures__/payment_config_fixture';
 import { tokenResponseFixture } from '../__fixtures__/token_response_fixture';
 import { GeneralError } from '../../models/errors/moyasar_errors';
+import * as Localizations from '../../localizations/i18n';
+import i18next from 'i18next';
 
 jest.mock('../../services/payment_service');
+
+jest
+  .spyOn(Localizations, 'getConfiguredLocalizations')
+  .mockImplementation(() => i18next);
 
 describe('CreditCardPaymentService', () => {
   let service: CreditCardPaymentService;
