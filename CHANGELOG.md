@@ -1,3 +1,7 @@
+## 0.5.1
+
+- [Fix] Isolate SDK's localization.
+
 ## 0.5.0
 
 - [API] `metadata` parameter type fix.
