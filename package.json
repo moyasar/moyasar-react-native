@@ -167,7 +167,7 @@
     "type": "modules",
     "jsSrcsDir": "./src/specs",
     "android": {
-      "javaPackageName": "com.moyasar.reactnative"
+      "javaPackageName": "com.moyasarsdk"
     }
   },
   "dependencies": {

@@ -1,7 +1,16 @@
 import { type TurboModule, TurboModuleRegistry } from 'react-native';
 
 export interface Spec extends TurboModule {
-  getSystemLanguage(): string;
+  getPreferredLanguage(): string | null;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('RTNDeviceLanguage');
+let instance: Spec | null = null;
+
+const getInstance = (): Spec | null => {
+  if (!instance) {
+    instance = TurboModuleRegistry.get<Spec>('RTNDeviceLanguage');
+  }
+  return instance;
+};
+
+export default getInstance();
