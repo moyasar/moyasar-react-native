@@ -1,6 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { NativeModules, Platform } from 'react-native';
+import { I18nManager, NativeModules, Platform, Settings } from 'react-native';
+import RTNDeviceLanguage from '../specs/NativeRTNDeviceLanguage';
+import { errorLog } from '../helpers/debug_log';
 
 const resources = {
   en: {
@@ -47,15 +49,43 @@ const resources = {
   },
 };
 
+// App language is currently supported for new arch only, system language for the old arch
 // TODO: Check 'https://www.npmjs.com/package/i18next-browser-languagedetector' when supporting web
 export function getCurrentLang(): string {
-  return Platform.OS === 'ios'
-    ? NativeModules.SettingsManager.settings.AppleLocale?.substring(0, 2) ||
-        NativeModules.SettingsManager.settings.AppleLanguages[0]?.substring(
-          0,
-          2
-        ) // iOS 13
-    : NativeModules.I18nManager.localeIdentifier?.substring(0, 2);
+  let lang: string | null | undefined;
+
+  // iOS old arch
+  if (
+    Platform.OS === 'ios' &&
+    NativeModules &&
+    NativeModules.SettingsManager &&
+    NativeModules.SettingsManager.settings
+  ) {
+    lang =
+      NativeModules.SettingsManager.settings.AppleLocale ||
+      NativeModules.SettingsManager.settings.AppleLanguages[0]; // iOS 13
+    // Android old arch
+  } else if (NativeModules && NativeModules.I18nManager) {
+    lang = NativeModules.I18nManager.localeIdentifier;
+  }
+
+  // New arch
+  if (RTNDeviceLanguage && !lang) {
+    lang = RTNDeviceLanguage.getPreferredLanguage();
+  }
+
+  // Fallback, should not be reached
+  if (Platform.OS === 'ios' && !lang) {
+    lang = Settings.get('AppleLocale') || Settings.get('AppleLanguages')[0];
+  } else if (!lang) {
+    lang = I18nManager.getConstants()?.localeIdentifier;
+  }
+
+  if (!lang) {
+    errorLog('Could not get current language');
+  }
+
+  return lang?.substring(0, 2) || 'en';
 }
 
 // TODO: Optimize and find a better way to handle localizations in an SDK + Make sure that localizations are ready before showing any view

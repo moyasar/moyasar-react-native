@@ -162,6 +162,14 @@
       ]
     ]
   },
+  "codegenConfig": {
+    "name": "RTNMoyasarSpec",
+    "type": "modules",
+    "jsSrcsDir": "./src/specs",
+    "android": {
+      "javaPackageName": "com.moyasarsdk"
+    }
+  },
   "dependencies": {
     "decimal.js": "^10.4.3",
     "es6-error": "^4.0.2",
