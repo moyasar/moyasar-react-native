@@ -1,3 +1,7 @@
+## 0.5.2
+
+- [General Fix] Fix issue with New Architecture.
+
 ## 0.5.1
 
 - [Fix] Isolate SDK's localization.
