@@ -2,6 +2,14 @@
 
 - [General Fix] Fix issue with New Architecture.
 
+### Required changes:
+
+Update native code for iOS by running the following command in the `ios/` directory:
+
+```sh
+pod install
+```
+
 ## 0.5.1
 
 - [Fix] Isolate SDK's localization.
