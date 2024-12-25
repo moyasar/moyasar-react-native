@@ -11,7 +11,7 @@ import {
 import type { PaymentConfig } from '../models/payment_config';
 import type { ResultCallback } from '../models/payment_result';
 import { PaymentStatus } from '../models/payment_status';
-import { createPayment, sendOTP } from './payment_service';
+import { createPayment, sendOtp } from './payment_service';
 import { OTPValidator } from './validators/otp_validator';
 import { PhoneNumberValidator } from './validators/phone_number_validator';
 
@@ -103,7 +103,7 @@ export class StcPayService {
       return;
     }
 
-    const response = await sendOTP(otp, currentPayment.source.transactionUrl);
+    const response = await sendOtp(otp, currentPayment.source.transactionUrl);
 
     // TODO: Handle wrong OTP error
 

@@ -6,7 +6,7 @@ import { errorLog } from '../helpers/debug_log';
 
 const resources = {
   en: {
-    translation: {
+    moyasarTranslation: {
       // Credit Card
       nameOnCard: 'Name on Card',
       cardNumber: 'Card Number',
@@ -39,7 +39,7 @@ const resources = {
     },
   },
   ar: {
-    translation: {
+    moyasarTranslation: {
       // Credit Card
       nameOnCard: 'الاسم على البطاقة',
       cardNumber: 'رقم البطاقة',

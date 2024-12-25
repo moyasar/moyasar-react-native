@@ -113,7 +113,13 @@ export async function createToken(
   }
 }
 
-export async function sendOTP(
+/**
+ * Sends an OTP (One-Time Password) to the specified URL for payment processing.
+ * @param otp - The OTP value to be sent.
+ * @param url - The URL to which the OTP should be sent.
+ * @param paymentSource - The source of the payment, defaults to PaymentType.stcPay.
+ */
+export async function sendOtp(
   otp: string,
   url: string,
   paymentSource: PaymentType = PaymentType.stcPay
