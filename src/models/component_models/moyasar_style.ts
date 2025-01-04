@@ -15,3 +15,12 @@ export interface ApplePayMoyasarStyle {
   width?: string | number;
   cornerRadius?: number;
 }
+
+export interface StcPayMoyasarStyle {
+  container?: ViewStyle;
+  title?: TextStyle;
+  textInput?: TextStyle;
+  paymentButton?: ViewStyle;
+  paymentButtonText?: TextStyle;
+  errorText?: TextStyle;
+}

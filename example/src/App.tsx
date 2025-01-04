@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import {
   ApplePay,
   ApplePayConfig,
@@ -10,6 +10,7 @@ import {
   PaymentConfig,
   PaymentResponse,
   PaymentStatus,
+  StcPay,
   TokenResponse,
   type PaymentResult,
 } from 'react-native-moyasar-sdk';
@@ -67,20 +68,27 @@ function onPaymentResult(paymentResult: PaymentResult) {
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <CreditCard
-        paymentConfig={paymentConfig}
-        onPaymentResult={onPaymentResult}
-        style={{ textInputs: { borderWidth: 1.25 } }}
-      />
-      <ApplePay
-        paymentConfig={paymentConfig}
-        onPaymentResult={onPaymentResult}
-        style={{
-          buttonType: 'buy',
-        }}
-      />
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <StcPay
+          paymentConfig={paymentConfig}
+          onPaymentResult={onPaymentResult}
+          style={{ textInput: { borderWidth: 1.25 } }}
+        />
+        <CreditCard
+          paymentConfig={paymentConfig}
+          onPaymentResult={onPaymentResult}
+          style={{ textInputs: { borderWidth: 1.25 } }}
+        />
+        <ApplePay
+          paymentConfig={paymentConfig}
+          onPaymentResult={onPaymentResult}
+          style={{
+            buttonType: 'buy',
+          }}
+        />
+      </View>
+    </ScrollView>
   );
 }
 

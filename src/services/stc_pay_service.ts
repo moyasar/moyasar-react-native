@@ -2,7 +2,7 @@ import { debugLog, errorLog } from '../helpers/debug_log';
 import { validateField } from '../helpers/validation';
 import { PaymentRequest } from '../models/api/api_requests/payment_request';
 import type { PaymentResponse } from '../models/api/api_responses/payment_response';
-import { STCPayRequestSource } from '../models/api/sources/stc_pay/stc_pay_request_source';
+import { StcPayRequestSource } from '../models/api/sources/stc_pay/stc_pay_request_source';
 import { STCPayResponseSource } from '../models/api/sources/stc_pay/stc_pay_response_source';
 import {
   isMoyasarError,
@@ -37,7 +37,7 @@ export class StcPayService {
       return false;
     }
 
-    const stcPayRequestSource = new STCPayRequestSource({
+    const stcPayRequestSource = new StcPayRequestSource({
       mobile: phonerNumber,
     });
 

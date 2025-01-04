@@ -1,7 +1,7 @@
 import { PaymentType } from '../../../payment_type';
 import type { PaymentRequestSource } from '../payment_request_source';
 
-export class STCPayRequestSource implements PaymentRequestSource {
+export class StcPayRequestSource implements PaymentRequestSource {
   type: PaymentType = PaymentType.stcPay;
   mobile: string;
 

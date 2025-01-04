@@ -5,6 +5,7 @@ getConfiguredLocalizations();
 export * from './views/credit_card';
 export { ApplePay } from './views/apple_pay';
 export { WebviewPaymentAuth } from './views/webview_payment_auth';
+export { StcPay } from './views/stc_pay/stc_pay_phone_number';
 export * from './models/payment_config';
 export * from './models/credit_card_config';
 export * from './models/api/api_responses/payment_response';
