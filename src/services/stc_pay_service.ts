@@ -18,8 +18,8 @@ import { PhoneNumberValidator } from './validators/phone_number_validator';
 export class StcPayService {
   payment: PaymentResponse | null = null;
 
-  phoneNumberValidator = new PhoneNumberValidator();
-  otpValidator = new OTPValidator();
+  readonly phoneNumberValidator = new PhoneNumberValidator();
+  readonly otpValidator = new OTPValidator();
 
   /**
    * @returns {Promise<boolean>} True if the payment process is initiated and should proceed to OTP entry.

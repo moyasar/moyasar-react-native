@@ -16,63 +16,46 @@ import {
   isArabicLang,
   getConfiguredLocalizations,
 } from '../../localizations/i18n';
-import type { StcPayProps } from '../../models/component_models/moyasar_props';
 import { StcPayService } from '../../services/stc_pay_service';
-import { formatAmount } from '../../helpers/currency_util';
 import { mapArabicNumbers } from '../../helpers/arabic_numbers_mapper';
-import { formatMobileNumber } from '../../helpers/formatters';
-import { StcPayOtp } from './stc_pay_otp';
+import type { ResultCallback } from '../../models/payment_result';
+import type { StcPayMoyasarStyle } from '../../models/component_models/moyasar_style';
 
-// TODO: Modify to a better approach rather than global variable
-const stcPayService = new StcPayService();
-
-let formattedAmount: string | null;
-// TODO: Move this to a helper function to be reusable with CC
-function getFormattedAmount(amount: number, currency: string): string {
-  if (!formattedAmount) {
-    return (formattedAmount = formatAmount(amount, currency));
-  }
-  return formattedAmount;
-}
-
-export function StcPay({
-  paymentConfig,
+// TODO: Make this component and it's styles reusable with Stc Pay phone number component and CC
+export function StcPayOtp({
   onPaymentResult,
   style: customStyle,
-}: StcPayProps) {
+  stcPayService,
+}: {
+  onPaymentResult: ResultCallback;
+  style?: StcPayMoyasarStyle;
+  stcPayService: StcPayService;
+}) {
   useEffect(() => {
-    debugLog('Moyasar SDK: stc pay view mounted');
+    debugLog('Moyasar SDK: stc pay OTP view mounted');
     return () => {
-      debugLog('Moyasar SDK: stc pay view unmounted');
+      debugLog('Moyasar SDK: stc pay OTP view unmounted');
     };
   }, []);
 
   const { t } = getConfiguredLocalizations();
   const isLightMode = useColorScheme() === 'light';
 
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [mobileNumberError, setMobileNumberError] = useState<string | null>(
-    null
-  );
+  const [otp, setOtp] = useState('');
+  const [otpError, setOtpError] = useState<string | null>(null);
 
-  const [isOtpVisible, setIsOtpVisible] = useState(false);
   const [isPaymentInProgress, setIsPaymentInProgress] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
     setIsButtonDisabled(
-      !!stcPayService.phoneNumberValidator.validate(mobileNumber) ||
-        isPaymentInProgress
+      !!stcPayService.otpValidator.validate(otp) || isPaymentInProgress
     );
-  }, [mobileNumber, isPaymentInProgress]);
+    // stcPayService is not a changing prop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [otp, isPaymentInProgress]);
 
-  return isOtpVisible ? (
-    <StcPayOtp
-      onPaymentResult={onPaymentResult}
-      style={customStyle}
-      stcPayService={stcPayService}
-    />
-  ) : (
+  return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
@@ -84,7 +67,7 @@ export function StcPay({
               customStyle?.title,
             ]}
           >
-            {t('moyasarTranslation:phoneNumberTitle')}
+            {t('moyasarTranslation:otpTitle')}
           </Text>
           <View style={defaultStyle.inputSubContainer}>
             <TextInput
@@ -95,30 +78,28 @@ export function StcPay({
                 },
                 customStyle?.textInput,
               ]}
-              value={formatMobileNumber({ cleanedNumber: mobileNumber })}
+              value={otp}
               onChangeText={(value) => {
-                const cleanNumber = value
+                const cleanOtp = value
                   .replace(/\s/g, '')
                   .replace(/[^\d٠-٩]/gi, '');
 
-                const mappedCleanNumbers = mapArabicNumbers(cleanNumber);
+                const mappedCleanOtp = mapArabicNumbers(cleanOtp);
 
-                setMobileNumber(mappedCleanNumbers);
-                setMobileNumberError(
-                  stcPayService.phoneNumberValidator.visualValidate(
-                    mappedCleanNumbers
-                  )
+                setOtp(mappedCleanOtp);
+                setOtpError(
+                  stcPayService.otpValidator.visualValidate(mappedCleanOtp)
                 );
               }}
-              placeholder={'05X XXX XXXX'}
+              placeholder={'XXXXXX'}
               keyboardType="numeric"
               editable={!isPaymentInProgress}
-              maxLength={12}
+              maxLength={10}
             />
           </View>
 
           <Text style={[defaultStyle.errorText, customStyle?.errorText]}>
-            {mobileNumberError}
+            {otpError}
           </Text>
 
           <View style={defaultStyle.buttonContainer}>
@@ -130,14 +111,8 @@ export function StcPay({
               ]}
               onPress={async () => {
                 setIsPaymentInProgress(true);
-                const showOtp = await stcPayService.beginStcPayment(
-                  paymentConfig,
-                  mobileNumber,
-                  onPaymentResult
-                );
+                await stcPayService.submitStcPaymentOtp(otp, onPaymentResult);
                 setIsPaymentInProgress(false);
-
-                setIsOtpVisible(showOtp);
               }}
               disabled={isButtonDisabled}
             >
@@ -151,11 +126,7 @@ export function StcPay({
                     customStyle?.paymentButtonText,
                   ]}
                 >
-                  {t('moyasarTranslation:pay')}{' '}
-                  {getFormattedAmount(
-                    paymentConfig.amount,
-                    paymentConfig.currency
-                  )}
+                  {t('moyasarTranslation:otpConfirm')}
                 </Text>
               )}
             </TouchableOpacity>
