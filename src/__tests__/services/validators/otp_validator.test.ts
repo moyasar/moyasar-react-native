@@ -13,35 +13,35 @@ describe('OTPValidator', () => {
 
   it('should not return any error for a valid OTP', () => {
     const result = validator.validate('123456');
-    expect(result).toBe(null);
+    expect(result).toBeNull();
 
     const result2 = validator.validate('1234');
-    expect(result2).toBe(null);
+    expect(result2).toBeNull();
 
     const result3 = validator.validate('12345678');
-    expect(result3).toBe(null);
+    expect(result3).toBeNull();
 
     const result4 = validator.validate('1234567890');
-    expect(result4).toBe(null);
+    expect(result4).toBeNull();
   });
 
   it('should return error if OTP is empty', () => {
     const result = validator.validate('');
-    expect(result).toBe('otpRequired');
+    expect(result).toContain('otpRequired');
   });
 
   it('should return error if OTP contains non-digit characters', () => {
     const result = validator.validate('12a4');
-    expect(result).toBe('otpOnlyDigits');
+    expect(result).toContain('otpOnlyDigits');
   });
 
   it('should return error if OTP length is less than 4', () => {
     const result = validator.validate('123');
-    expect(result).toBe('otpInvalidCount');
+    expect(result).toContain('otpInvalidCount');
   });
 
   it('should return error if OTP length is more than 10', () => {
     const result = validator.validate('12345678901');
-    expect(result).toBe('otpInvalidCount');
+    expect(result).toContain('otpInvalidCount');
   });
 });

@@ -15,7 +15,7 @@ describe('CreditCardExpiryValidator', () => {
 
   const date = new Date();
 
-  const currentMonth = date.getMonth();
+  const currentMonth = (date.getMonth() + 1).toString().padStart(2, '0');
   const futureYear = date.getFullYear() + 1;
 
   beforeEach(() => {
