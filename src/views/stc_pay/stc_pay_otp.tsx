@@ -4,10 +4,7 @@ import {
   TextInput,
   Text,
   StyleSheet,
-  KeyboardAvoidingView,
-  ScrollView,
   TouchableOpacity,
-  Platform,
   useColorScheme,
   ActivityIndicator,
 } from 'react-native';
@@ -56,84 +53,78 @@ export function StcPayOtp({
   }, [otp, isPaymentInProgress]);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <ScrollView contentContainerStyle={defaultStyle.scrollView}>
-        <View style={[defaultStyle.container, customStyle?.container]}>
-          <Text
-            style={[
-              { ...defaultStyle.title, color: isLightMode ? 'black' : 'white' },
-              customStyle?.title,
-            ]}
-          >
-            {t('moyasarTranslation:otpTitle')}
-          </Text>
-          <View style={defaultStyle.inputSubContainer}>
-            <TextInput
+    <View style={[defaultStyle.container, customStyle?.container]}>
+      <Text
+        style={[
+          { ...defaultStyle.title, color: isLightMode ? 'black' : 'white' },
+          customStyle?.title,
+        ]}
+      >
+        {t('moyasarTranslation:otpTitle')}
+      </Text>
+      <View style={defaultStyle.inputSubContainer}>
+        <TextInput
+          style={[
+            {
+              ...defaultStyle.input,
+              color: isLightMode ? 'black' : 'white',
+            },
+            customStyle?.textInput,
+          ]}
+          value={otp}
+          onChangeText={(value) => {
+            const cleanOtp = value.replace(/\s/g, '').replace(/[^\d٠-٩]/gi, '');
+
+            const mappedCleanOtp = mapArabicNumbers(cleanOtp);
+
+            setOtp(mappedCleanOtp);
+            setOtpError(
+              stcPayService.otpValidator.visualValidate(mappedCleanOtp)
+            );
+          }}
+          placeholder={'XXXXXX'}
+          keyboardType="numeric"
+          editable={!isPaymentInProgress}
+          maxLength={10}
+          textContentType="oneTimeCode"
+          autoComplete="sms-otp"
+        />
+      </View>
+
+      <Text style={[defaultStyle.errorText, customStyle?.errorText]}>
+        {otpError}
+      </Text>
+
+      <View style={defaultStyle.buttonContainer}>
+        <TouchableOpacity
+          style={[
+            defaultStyle.button,
+            customStyle?.paymentButton,
+            isButtonDisabled && { opacity: 0.5 },
+          ]}
+          onPress={async () => {
+            setIsPaymentInProgress(true);
+            await stcPayService.submitStcPaymentOtp(otp, onPaymentResult);
+            setIsPaymentInProgress(false);
+          }}
+          disabled={isButtonDisabled}
+        >
+          {isPaymentInProgress ? (
+            <ActivityIndicator size="small" color="#ffffff" />
+          ) : (
+            <Text
               style={[
-                {
-                  ...defaultStyle.input,
-                  color: isLightMode ? 'black' : 'white',
-                },
-                customStyle?.textInput,
+                // TODO: Make this component reusable with CC
+                defaultStyle.buttonText,
+                customStyle?.paymentButtonText,
               ]}
-              value={otp}
-              onChangeText={(value) => {
-                const cleanOtp = value
-                  .replace(/\s/g, '')
-                  .replace(/[^\d٠-٩]/gi, '');
-
-                const mappedCleanOtp = mapArabicNumbers(cleanOtp);
-
-                setOtp(mappedCleanOtp);
-                setOtpError(
-                  stcPayService.otpValidator.visualValidate(mappedCleanOtp)
-                );
-              }}
-              placeholder={'XXXXXX'}
-              keyboardType="numeric"
-              editable={!isPaymentInProgress}
-              maxLength={10}
-            />
-          </View>
-
-          <Text style={[defaultStyle.errorText, customStyle?.errorText]}>
-            {otpError}
-          </Text>
-
-          <View style={defaultStyle.buttonContainer}>
-            <TouchableOpacity
-              style={[
-                defaultStyle.button,
-                customStyle?.paymentButton,
-                isButtonDisabled && { opacity: 0.5 },
-              ]}
-              onPress={async () => {
-                setIsPaymentInProgress(true);
-                await stcPayService.submitStcPaymentOtp(otp, onPaymentResult);
-                setIsPaymentInProgress(false);
-              }}
-              disabled={isButtonDisabled}
             >
-              {isPaymentInProgress ? (
-                <ActivityIndicator size="small" color="#ffffff" />
-              ) : (
-                <Text
-                  style={[
-                    // TODO: Make this component reusable with CC
-                    defaultStyle.buttonText,
-                    customStyle?.paymentButtonText,
-                  ]}
-                >
-                  {t('moyasarTranslation:otpConfirm')}
-                </Text>
-              )}
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+              {t('moyasarTranslation:otpConfirm')}
+            </Text>
+          )}
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 

@@ -66,101 +66,106 @@ export function StcPay({
     );
   }, [mobileNumber, isPaymentInProgress]);
 
-  return isOtpVisible ? (
-    <StcPayOtp
-      onPaymentResult={onPaymentResult}
-      style={customStyle}
-      stcPayService={stcPayService}
-    />
-  ) : (
+  return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView contentContainerStyle={defaultStyle.scrollView}>
-        <View style={[defaultStyle.container, customStyle?.container]}>
-          <Text
-            style={[
-              { ...defaultStyle.title, color: isLightMode ? 'black' : 'white' },
-              customStyle?.title,
-            ]}
-          >
-            {t('moyasarTranslation:phoneNumberTitle')}
-          </Text>
-          <View style={defaultStyle.inputSubContainer}>
-            <TextInput
+        {isOtpVisible ? (
+          <StcPayOtp
+            onPaymentResult={onPaymentResult}
+            style={customStyle}
+            stcPayService={stcPayService}
+          />
+        ) : (
+          <View style={[defaultStyle.container, customStyle?.container]}>
+            <Text
               style={[
                 {
-                  ...defaultStyle.input,
+                  ...defaultStyle.title,
                   color: isLightMode ? 'black' : 'white',
                 },
-                customStyle?.textInput,
+                customStyle?.title,
               ]}
-              value={formatMobileNumber({ cleanedNumber: mobileNumber })}
-              onChangeText={(value) => {
-                const cleanNumber = value
-                  .replace(/\s/g, '')
-                  .replace(/[^\d٠-٩]/gi, '');
-
-                const mappedCleanNumbers = mapArabicNumbers(cleanNumber);
-
-                setMobileNumber(mappedCleanNumbers);
-                setMobileNumberError(
-                  stcPayService.phoneNumberValidator.visualValidate(
-                    mappedCleanNumbers
-                  )
-                );
-              }}
-              placeholder={'05X XXX XXXX'}
-              keyboardType="numeric"
-              editable={!isPaymentInProgress}
-              maxLength={12}
-            />
-          </View>
-
-          <Text style={[defaultStyle.errorText, customStyle?.errorText]}>
-            {mobileNumberError}
-          </Text>
-
-          <View style={defaultStyle.buttonContainer}>
-            <TouchableOpacity
-              style={[
-                defaultStyle.button,
-                customStyle?.paymentButton,
-                isButtonDisabled && { opacity: 0.5 },
-              ]}
-              onPress={async () => {
-                setIsPaymentInProgress(true);
-                const showOtp = await stcPayService.beginStcPayment(
-                  paymentConfig,
-                  mobileNumber,
-                  onPaymentResult
-                );
-                setIsPaymentInProgress(false);
-
-                setIsOtpVisible(showOtp);
-              }}
-              disabled={isButtonDisabled}
             >
-              {isPaymentInProgress ? (
-                <ActivityIndicator size="small" color="#ffffff" />
-              ) : (
-                <Text
-                  style={[
-                    // TODO: Make this component reusable with CC
-                    defaultStyle.buttonText,
-                    customStyle?.paymentButtonText,
-                  ]}
-                >
-                  {t('moyasarTranslation:pay')}{' '}
-                  {getFormattedAmount(
-                    paymentConfig.amount,
-                    paymentConfig.currency
-                  )}
-                </Text>
-              )}
-            </TouchableOpacity>
+              {t('moyasarTranslation:phoneNumberTitle')}
+            </Text>
+            <View style={defaultStyle.inputSubContainer}>
+              <TextInput
+                style={[
+                  {
+                    ...defaultStyle.input,
+                    color: isLightMode ? 'black' : 'white',
+                  },
+                  customStyle?.textInput,
+                ]}
+                value={formatMobileNumber({ cleanedNumber: mobileNumber })}
+                onChangeText={(value) => {
+                  const cleanNumber = value
+                    .replace(/\s/g, '')
+                    .replace(/[^\d٠-٩]/gi, '');
+
+                  const mappedCleanNumbers = mapArabicNumbers(cleanNumber);
+
+                  setMobileNumber(mappedCleanNumbers);
+                  setMobileNumberError(
+                    stcPayService.phoneNumberValidator.visualValidate(
+                      mappedCleanNumbers
+                    )
+                  );
+                }}
+                placeholder={'05X XXX XXXX'}
+                keyboardType="numeric"
+                editable={!isPaymentInProgress}
+                maxLength={12}
+              />
+            </View>
+
+            <Text style={[defaultStyle.errorText, customStyle?.errorText]}>
+              {mobileNumberError}
+            </Text>
+
+            <View style={defaultStyle.buttonContainer}>
+              <TouchableOpacity
+                style={[
+                  defaultStyle.button,
+                  customStyle?.paymentButton,
+                  isButtonDisabled && { opacity: 0.5 },
+                ]}
+                onPress={async () => {
+                  setIsPaymentInProgress(true);
+                  const showOtp = await stcPayService.beginStcPayment(
+                    paymentConfig,
+                    mobileNumber,
+                    onPaymentResult
+                  );
+                  setIsPaymentInProgress(false);
+
+                  setIsOtpVisible(showOtp);
+                }}
+                disabled={isButtonDisabled}
+              >
+                {isPaymentInProgress ? (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                ) : (
+                  <Text
+                    style={[
+                      // TODO: Make this component reusable with CC
+                      defaultStyle.buttonText,
+                      customStyle?.paymentButtonText,
+                    ]}
+                  >
+                    {t('moyasarTranslation:pay')}{' '}
+                    {getFormattedAmount(
+                      paymentConfig.amount,
+                      paymentConfig.currency
+                    )}
+                  </Text>
+                )}
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
