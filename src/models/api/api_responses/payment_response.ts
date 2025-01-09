@@ -3,7 +3,7 @@ import { PaymentType } from '../../payment_type';
 import { ApplePayPaymentResponseSource } from '../sources/apple_pay/apple_pay_response_source';
 import { CreditCardResponseSource } from '../sources/credit_card/credit_card_response_source';
 import type { PaymentResponseSource } from '../sources/payment_response_source';
-import { STCPayResponseSource } from '../sources/stc_pay/stc_pay_response_source';
+import { StcPayResponseSource } from '../sources/stc_pay/stc_pay_response_source';
 
 /**
  Moyasar API response for processing a payment.
@@ -120,7 +120,7 @@ export class PaymentResponse {
         paymentSource = ApplePayPaymentResponseSource.fromJson(json.source);
         break;
       case PaymentType.stcPay:
-        paymentSource = STCPayResponseSource.fromJson(json.source);
+        paymentSource = StcPayResponseSource.fromJson(json.source);
         break;
       default:
         paymentSource = json.source;

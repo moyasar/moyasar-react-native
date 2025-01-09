@@ -1,9 +1,10 @@
+import { Alert } from 'react-native';
 import { debugLog, errorLog } from '../helpers/debug_log';
 import { validateField } from '../helpers/validation';
 import { PaymentRequest } from '../models/api/api_requests/payment_request';
 import type { PaymentResponse } from '../models/api/api_responses/payment_response';
 import { StcPayRequestSource } from '../models/api/sources/stc_pay/stc_pay_request_source';
-import { STCPayResponseSource } from '../models/api/sources/stc_pay/stc_pay_response_source';
+import { StcPayResponseSource } from '../models/api/sources/stc_pay/stc_pay_response_source';
 import {
   isMoyasarError,
   UnexpectedError,
@@ -14,6 +15,7 @@ import { PaymentStatus } from '../models/payment_status';
 import { createPayment, sendOtp } from './payment_service';
 import { OTPValidator } from './validators/otp_validator';
 import { PhoneNumberValidator } from './validators/phone_number_validator';
+import { getConfiguredLocalizations } from '../localizations/i18n';
 
 export class StcPayService {
   payment: PaymentResponse | null = null;
@@ -54,11 +56,32 @@ export class StcPayService {
       paymentConfig.publishableApiKey
     );
 
-    // TODO: Should handle if the mobile is not registered?
-
     if (isMoyasarError(response)) {
       errorLog(`Moyasar SDK: STC Payment failed with error: ${response}`);
       onPaymentResult(response);
+
+      return false;
+    }
+
+    if (response.status == PaymentStatus.failed) {
+      debugLog('Moyasar SDK: STC payment failed');
+
+      if (
+        (response.source as StcPayResponseSource).message?.includes(
+          'Mobile number is not registered'
+        )
+      ) {
+        debugLog(`Moyasar SDK: Phone number is not registered`);
+
+        const { t } = getConfiguredLocalizations();
+
+        Alert.alert(
+          t('phoneNumberNotRegisteredTitle'),
+          t('phoneNumberNotRegisteredBody')
+        );
+      } else {
+        onPaymentResult(response);
+      }
 
       return false;
     }
@@ -93,7 +116,7 @@ export class StcPayService {
 
     if (
       currentPayment == null ||
-      !(currentPayment.source instanceof STCPayResponseSource)
+      !(currentPayment.source instanceof StcPayResponseSource)
     ) {
       errorLog('Moyasar SDK: STC Payment OTP submission failed');
       onPaymentResult(
@@ -104,8 +127,6 @@ export class StcPayService {
     }
 
     const response = await sendOtp(otp, currentPayment.source.transactionUrl);
-
-    // TODO: Handle wrong OTP error
 
     if (isMoyasarError(response)) {
       errorLog(

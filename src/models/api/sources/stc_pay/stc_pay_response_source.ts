@@ -1,7 +1,7 @@
 import { PaymentType } from '../../../payment_type';
 import type { PaymentResponseSource } from '../payment_response_source';
 
-export class STCPayResponseSource implements PaymentResponseSource {
+export class StcPayResponseSource implements PaymentResponseSource {
   type: PaymentType = PaymentType.stcPay;
   mobile?: string | null;
   referenceNumber?: string | null;
@@ -33,8 +33,8 @@ export class STCPayResponseSource implements PaymentResponseSource {
     this.message = message;
   }
 
-  static fromJson(json: Record<string, any>): STCPayResponseSource {
-    return new STCPayResponseSource({
+  static fromJson(json: Record<string, any>): StcPayResponseSource {
+    return new StcPayResponseSource({
       mobile: json.mobile,
       referenceNumber: json.reference_number,
       branch: json.branch,
