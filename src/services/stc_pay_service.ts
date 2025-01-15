@@ -13,7 +13,7 @@ import type { PaymentConfig } from '../models/payment_config';
 import type { ResultCallback } from '../models/payment_result';
 import { PaymentStatus } from '../models/payment_status';
 import { createPayment, sendOtp } from './payment_service';
-import { OTPValidator } from './validators/otp_validator';
+import { OtpValidator } from './validators/otp_validator';
 import { PhoneNumberValidator } from './validators/phone_number_validator';
 import { getConfiguredLocalizations } from '../localizations/i18n';
 
@@ -21,7 +21,7 @@ export class StcPayService {
   payment: PaymentResponse | null = null;
 
   readonly phoneNumberValidator = new PhoneNumberValidator();
-  readonly otpValidator = new OTPValidator();
+  readonly otpValidator = new OtpValidator();
 
   /**
    * @returns {Promise<boolean>} True if the payment process is initiated and should proceed to OTP entry.
@@ -138,7 +138,7 @@ export class StcPayService {
     }
 
     debugLog(
-      `Moyasar SDK: STC Payment created with status: ${response.status}`
+      `Moyasar SDK: STC Payment succeeded after OTP with status: ${response.status}`
     );
 
     onPaymentResult(response);

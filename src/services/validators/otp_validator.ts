@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { FieldValidator } from './field_validator';
 
-export class OTPValidator extends FieldValidator {
+export class OtpValidator extends FieldValidator {
   constructor() {
     super();
 

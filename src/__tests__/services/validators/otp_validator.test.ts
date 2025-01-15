@@ -1,14 +1,14 @@
-import { OTPValidator } from '../../../services/validators/otp_validator';
+import { OtpValidator } from '../../../services/validators/otp_validator';
 
 jest.mock('i18next', () => ({
   t: (key: string) => key,
 }));
 
 describe('OTPValidator', () => {
-  let validator: OTPValidator;
+  let validator: OtpValidator;
 
   beforeEach(() => {
-    validator = new OTPValidator();
+    validator = new OtpValidator();
   });
 
   it('should not return any error for a valid OTP', () => {
