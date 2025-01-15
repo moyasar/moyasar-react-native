@@ -9,6 +9,9 @@ import {
   PaymentRequest,
   PaymentResponse,
   PaymentStatus,
+  sendOtp,
+  StcPayRequestSource,
+  StcPayResponseSource,
   TokenRequest,
 } from 'react-native-moyasar-sdk';
 
@@ -83,6 +86,46 @@ async function payByApplePay() {
   const paymentResponse = await createPayment(applePayPaymentRequest, apiKey);
 
   console.log(`Apple Pay payment result: ${JSON.stringify(paymentResponse)}`);
+}
+
+// Stc Pay payment
+
+const stcPaySource = new StcPayRequestSource({
+  mobile: '0512345678',
+});
+
+const stcPayPaymentRequest = new PaymentRequest({
+  amount: 1000,
+  currency: 'SAR',
+  description: 'Test payment',
+  metadata: { size: '250 g' },
+  source: stcPaySource,
+});
+
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function payUsingStcPay() {
+  const paymentResponse = await createPayment(stcPayPaymentRequest, apiKey);
+
+  if (paymentResponse instanceof PaymentResponse) {
+    if (paymentResponse.status != PaymentStatus.initiated) {
+      // Handle cases where payment status could be paid, failed, authorized, etc...
+      return;
+    }
+
+    if (!(paymentResponse.source instanceof StcPayResponseSource)) {
+      // Handle unexpected STC Pay payment error
+      return;
+    }
+
+    // After the user enters the OTP, send it to Moyasar using the `sendOtp` function
+    await sendOtp('123456', paymentResponse.source.transactionUrl);
+    // Handle result
+  } else {
+    // Handle MoyasarError
+  }
+
+  console.log(`Stc Pay payment result: ${JSON.stringify(paymentResponse)}`);
 }
 
 // Credit Card token
