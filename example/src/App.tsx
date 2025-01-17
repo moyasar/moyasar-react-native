@@ -17,7 +17,7 @@ import {
 
 const paymentConfig = new PaymentConfig({
   publishableApiKey: 'pk_test_U38gMHTgVv4wYCd35Zk1JSEd1ZyMYyA9oQ7T4rKa',
-  amount: 10000,
+  amount: 10001,
   currency: 'SAR',
   description: 'Test payment',
   metadata: { size: '250 g' },
