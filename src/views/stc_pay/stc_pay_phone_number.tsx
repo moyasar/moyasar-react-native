@@ -97,7 +97,7 @@ export function StcPay({
                     ...defaultStyle.input,
                     color: isLightMode ? 'black' : 'white',
                   },
-                  customStyle?.textInput,
+                  customStyle?.textInputs,
                 ]}
                 value={formatMobileNumber({ cleanedNumber: mobileNumber })}
                 onChangeText={(value) => {

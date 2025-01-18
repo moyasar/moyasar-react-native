@@ -69,7 +69,7 @@ export function StcPayOtp({
               ...defaultStyle.input,
               color: isLightMode ? 'black' : 'white',
             },
-            customStyle?.textInput,
+            customStyle?.textInputs,
           ]}
           value={otp}
           onChangeText={(value) => {

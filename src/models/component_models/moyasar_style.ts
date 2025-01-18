@@ -19,7 +19,7 @@ export interface ApplePayMoyasarStyle {
 export interface StcPayMoyasarStyle {
   container?: ViewStyle;
   title?: TextStyle;
-  textInput?: TextStyle;
+  textInputs?: TextStyle;
   paymentButton?: ViewStyle;
   paymentButtonText?: TextStyle;
   errorText?: TextStyle;

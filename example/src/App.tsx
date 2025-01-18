@@ -73,7 +73,7 @@ export default function App() {
         <StcPay
           paymentConfig={paymentConfig}
           onPaymentResult={onPaymentResult}
-          style={{ textInput: { borderWidth: 1.25 } }}
+          style={{ textInputs: { borderWidth: 1.25 } }}
         />
         <CreditCard
           paymentConfig={paymentConfig}
