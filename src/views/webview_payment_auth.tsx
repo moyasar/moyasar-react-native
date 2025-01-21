@@ -10,6 +10,7 @@ import { WebView } from 'react-native-webview';
 import { URL } from 'react-native-url-polyfill';
 import type { WebviewPaymentAuthResponse } from '../models/api/api_responses/webview_payment_auth_response';
 import { useState } from 'react';
+import type { CreditCardMoyasarStyle } from '../models/component_models/moyasar_style';
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,17 +19,20 @@ const { width, height } = Dimensions.get('window');
  * @param {string} transactionUrl - The URL to the payment verification page (3DS challenge).
  * @param onPaymentAuthResult - Callback function to handle the payment verification result.
  * @param {string} [callbackUrl="https://sdk.moyasar.com/return"] - The URL to be redirected to after a 3D secure transaction. Defaults to 'https://sdk.moyasar.com/return'
+ * @param {CreditCardMoyasarStyle} [style] - Optional custom styling for the webview.
  */
 export const WebviewPaymentAuth = ({
   transactionUrl,
   onWebviewPaymentAuthResult: onPaymentAuthResult,
   callbackUrl = 'https://sdk.moyasar.com/return',
+  style: customStyle,
 }: {
   transactionUrl: string;
   onWebviewPaymentAuthResult: (
     webviewPaymentResponse: WebviewPaymentAuthResponse
   ) => void;
   callbackUrl?: string;
+  style?: CreditCardMoyasarStyle;
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +43,10 @@ export const WebviewPaymentAuth = ({
       <View style={styles.container}>
         {loading && (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#235CE1" />
+            <ActivityIndicator
+              size="large"
+              color={customStyle?.webviewActivityIndicatorColor ?? '#235CE1'}
+            />
           </View>
         )}
         <WebView
