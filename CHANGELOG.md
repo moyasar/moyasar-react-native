@@ -1,3 +1,7 @@
+## 0.6.0
+
+- [Stc Pay] Support Stc Pay feature.
+
 ## 0.5.2
 
 - [General Fix] Fix issue with New Architecture.
