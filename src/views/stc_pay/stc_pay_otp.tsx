@@ -83,6 +83,7 @@ export function StcPayOtp({
             );
           }}
           placeholder={'XXXXXX'}
+          placeholderTextColor={customStyle?.textInputsPlaceholderColor}
           keyboardType="numeric"
           editable={!isPaymentInProgress}
           maxLength={10}
@@ -110,7 +111,10 @@ export function StcPayOtp({
           disabled={isButtonDisabled}
         >
           {isPaymentInProgress ? (
-            <ActivityIndicator size="small" color="#ffffff" />
+            <ActivityIndicator
+              size="small"
+              color={customStyle?.activityIndicatorColor ?? '#ffffff'}
+            />
           ) : (
             <Text
               style={[

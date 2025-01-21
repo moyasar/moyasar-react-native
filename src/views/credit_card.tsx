@@ -74,6 +74,7 @@ export function CreditCard({
           onPaymentResult(paymentService.payment);
         }
       }}
+      style={customStyle}
     />
   ) : (
     <CreditCardView
@@ -142,6 +143,7 @@ const CreditCardView = ({
                   );
                 }}
                 placeholder={t('moyasarTranslation:nameOnCard')}
+                placeholderTextColor={customStyle?.textInputsPlaceholderColor}
                 autoCorrect={false}
                 editable={!isPaymentInProgress}
               />
@@ -184,6 +186,7 @@ const CreditCardView = ({
                   );
                 }}
                 placeholder={t('moyasarTranslation:cardNumber')}
+                placeholderTextColor={customStyle?.textInputsPlaceholderColor}
                 keyboardType="numeric"
                 editable={!isPaymentInProgress}
                 maxLength={
@@ -255,6 +258,7 @@ const CreditCardView = ({
                   );
                 }}
                 placeholder={t('moyasarTranslation:expiry')}
+                placeholderTextColor={customStyle?.textInputsPlaceholderColor}
                 keyboardType="numeric"
                 editable={!isPaymentInProgress}
                 maxLength={9}
@@ -291,6 +295,7 @@ const CreditCardView = ({
                   );
                 }}
                 placeholder={t('moyasarTranslation:cvc')}
+                placeholderTextColor={customStyle?.textInputsPlaceholderColor}
                 keyboardType="numeric"
                 maxLength={(() => {
                   const cardNetwork = getCreditCardNetworkFromNumber(number);
@@ -332,7 +337,10 @@ const CreditCardView = ({
               disabled={isButtonDisabled}
             >
               {isPaymentInProgress ? (
-                <ActivityIndicator size="small" color="#ffffff" />
+                <ActivityIndicator
+                  size="small"
+                  color={customStyle?.activityIndicatorColor ?? '#ffffff'}
+                />
               ) : (
                 <Text
                   style={[

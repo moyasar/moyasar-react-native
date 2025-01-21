@@ -1,11 +1,14 @@
-import { type TextStyle, type ViewStyle } from 'react-native';
+import { type ColorValue, type TextStyle, type ViewStyle } from 'react-native';
 
 export interface CreditCardMoyasarStyle {
   container?: ViewStyle;
   textInputs?: TextStyle;
+  textInputsPlaceholderColor?: ColorValue;
   paymentButton?: ViewStyle;
   paymentButtonText?: TextStyle;
   errorText?: TextStyle;
+  activityIndicatorColor?: ColorValue;
+  webviewActivityIndicatorColor?: ColorValue; // Loading indicator color for 3DS webview
 }
 
 export interface ApplePayMoyasarStyle {
@@ -20,7 +23,9 @@ export interface StcPayMoyasarStyle {
   container?: ViewStyle;
   title?: TextStyle;
   textInputs?: TextStyle;
+  textInputsPlaceholderColor?: ColorValue;
   paymentButton?: ViewStyle;
   paymentButtonText?: TextStyle;
   errorText?: TextStyle;
+  activityIndicatorColor?: ColorValue;
 }
