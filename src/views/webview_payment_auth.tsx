@@ -19,6 +19,7 @@ const { width, height } = Dimensions.get('window');
  * @param {string} transactionUrl - The URL to the payment verification page (3DS challenge).
  * @param onPaymentAuthResult - Callback function to handle the payment verification result.
  * @param {string} [callbackUrl="https://sdk.moyasar.com/return"] - The URL to be redirected to after a 3D secure transaction. Defaults to 'https://sdk.moyasar.com/return'
+ * @param {CreditCardMoyasarStyle} [style] - Optional custom styling for the webview.
  */
 export const WebviewPaymentAuth = ({
   transactionUrl,
