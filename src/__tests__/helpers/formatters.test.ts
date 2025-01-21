@@ -1,4 +1,7 @@
-import { formatCreditCardNumber } from '../../helpers/formatters';
+import {
+  formatCreditCardNumber,
+  formatMobileNumber,
+} from '../../helpers/formatters';
 
 describe('formatCreditCardNumber', () => {
   it('should format 16 digits cards correctly', () => {
@@ -48,5 +51,35 @@ describe('formatCreditCardNumber', () => {
 
     const formattedNumber4 = formatCreditCardNumber('37828224631000');
     expect(formattedNumber4).toBe('3782 822463 1000');
+  });
+
+  describe('formatMobileNumber', () => {
+    it('should format numbers with length <= 3 correctly', () => {
+      const formattedNumber = formatMobileNumber({ cleanedNumber: '051' });
+      expect(formattedNumber).toBe('051');
+
+      const formattedNumber2 = formatMobileNumber({ cleanedNumber: '05' });
+      expect(formattedNumber2).toBe('05');
+    });
+
+    it('should format numbers with length <= 6 correctly', () => {
+      const formattedNumber = formatMobileNumber({ cleanedNumber: '051234' });
+      expect(formattedNumber).toBe('051 234');
+
+      const formattedNumber2 = formatMobileNumber({ cleanedNumber: '0512' });
+      expect(formattedNumber2).toBe('051 2');
+    });
+
+    it('should format numbers with length > 6 correctly', () => {
+      const formattedNumber = formatMobileNumber({
+        cleanedNumber: '0512345678',
+      });
+      expect(formattedNumber).toBe('051 234 5678');
+
+      const formattedNumber2 = formatMobileNumber({
+        cleanedNumber: '05123456',
+      });
+      expect(formattedNumber2).toBe('051 234 56');
+    });
   });
 });

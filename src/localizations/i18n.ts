@@ -7,6 +7,7 @@ import { errorLog } from '../helpers/debug_log';
 const resources = {
   en: {
     moyasarTranslation: {
+      // Credit Card
       nameOnCard: 'Name on Card',
       cardNumber: 'Card Number',
       expiry: 'Expiry (MM/YY)',
@@ -19,15 +20,30 @@ const resources = {
       expiredCard: 'Expired card',
       nameRequired: 'Name is required',
       bothNamesRequired: 'Both first and last names are required',
-      onlyEnglishAlphabets: 'Name may only contain english alphabets',
+      onlyEnglishAlphabets: 'Name must only contain english alphabets',
       cvcRequired: 'Security code is required',
-      onlyDigits: 'Security code may only contain numbers',
+      onlyDigits: 'Security code must only contain numbers',
       invalidCvc: 'Invalid security code',
       pay: 'Pay',
+      // STC Pay
+      phoneNumberTitle: 'Mobile Number',
+      phoneNumberRequired: 'Phone number is required',
+      phoneNumberInvalid: 'Phone number should begin with 05',
+      phoneNumberInvalidCount: 'Phone number should be 10 digits',
+      phoneNumberOnlyDigits: 'Phone number must only contain numbers',
+      phoneNumberNotRegisteredTitle: 'Mobile Number Not Registered',
+      phoneNumberNotRegisteredBody:
+        'The mobile number entered is not registered to use stc pay',
+      otpTitle: 'One-time Password',
+      otpRequired: 'One-time password is required',
+      otpOnlyDigits: 'One-time password must only contain numbers',
+      otpInvalidCount: 'One-time password should be 4-10 digits',
+      otpConfirm: 'Confirm',
     },
   },
   ar: {
     moyasarTranslation: {
+      // Credit Card
       nameOnCard: 'الاسم على البطاقة',
       cardNumber: 'رقم البطاقة',
       expiry: 'تاريخ الانتهاء (شهر/سنة)',
@@ -45,6 +61,20 @@ const resources = {
       onlyDigits: 'رمز الأمان يجب أن يحتوي على أرقام فقط',
       invalidCvc: 'رمز الأمان غير صحيح',
       pay: 'ادفع',
+      // STC Pay
+      phoneNumberTitle: 'رقم الجوال',
+      phoneNumberRequired: 'رقم الجوال مطلوب',
+      phoneNumberInvalid: 'رقم الجوال يجب أن يبدأ بـ 05',
+      phoneNumberInvalidCount: 'يجب أن يحتوي رقم الجوال على 10 أرقام فقط',
+      phoneNumberOnlyDigits: 'يجب أن يحتوي رقم الجوال على أرقام فقط',
+      phoneNumberNotRegisteredTitle: 'رقم الجوال غير مسجل',
+      phoneNumberNotRegisteredBody:
+        'رقم الجوال المدخل غير مسجل لإستخدام stc pay',
+      otpTitle: 'رمز التحقق المؤقت',
+      otpRequired: 'رمز التحقق المؤقت مطلوب',
+      otpOnlyDigits: 'رمز التحقق المؤقت يجب أن يحتوي على أرقام فقط',
+      otpInvalidCount: 'رمز التحقق المؤقت يجب أن يكون بين 4-10 أرقام فقط',
+      otpConfirm: 'تأكيد',
     },
   },
 };

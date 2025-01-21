@@ -41,3 +41,20 @@ export function formatExpiryDate(expiryDate: string): string {
 
   return expiryDate;
 }
+
+export function formatMobileNumber({
+  cleanedNumber,
+}: {
+  cleanedNumber: string;
+}): string {
+  if (cleanedNumber.length <= 3) {
+    // XXX
+    return cleanedNumber;
+  } else if (cleanedNumber.length <= 6) {
+    // XXX XXX
+    return `${cleanedNumber.slice(0, 3)} ${cleanedNumber.slice(3)}`;
+  } else {
+    // XXX XXX XXXX...
+    return `${cleanedNumber.slice(0, 3)} ${cleanedNumber.slice(3, 6)} ${cleanedNumber.slice(6)}`;
+  }
+}

@@ -48,3 +48,42 @@ export const paymentResponseWithPaidFixture = PaymentResponse.fromJson(
   jsonPaid,
   PaymentType.creditCard
 );
+
+export const paymentResponseWithInitStcJsonFixture = {
+  ...paymentResponseWithInitJsonFixture,
+  source: {
+    type: 'stcpay',
+    mobile: '0512345678',
+    reference_number: '1017224325884',
+    branch: null,
+    cashier: null,
+    transaction_url:
+      'https://api.moyasar.com/v1/stc_pays/6187b1f9-ihn2-457b-a8bc-e2j5c808ff94/proceed?otp_token=SOQIbUEGsRTLaIoNDUGM',
+    message: null,
+  },
+};
+
+export const paymentResponseWithInitStcFixture = PaymentResponse.fromJson(
+  paymentResponseWithInitStcJsonFixture,
+  PaymentType.stcPay
+);
+
+const jsonStcPaid = {
+  ...paymentResponseWithInitStcJsonFixture,
+  status: 'paid',
+};
+
+export const paymentResponseWithPaidStcFixture = PaymentResponse.fromJson(
+  jsonStcPaid,
+  PaymentType.stcPay
+);
+
+const jsonFailed = {
+  ...paymentResponseWithInitStcJsonFixture,
+  status: 'failed',
+};
+
+export const paymentResponseWithFailedStcFixture = PaymentResponse.fromJson(
+  jsonFailed,
+  PaymentType.stcPay
+);

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import {
   ApplePay,
   ApplePayConfig,
@@ -10,13 +10,14 @@ import {
   PaymentConfig,
   PaymentResponse,
   PaymentStatus,
+  StcPay,
   TokenResponse,
   type PaymentResult,
 } from 'react-native-moyasar-sdk';
 
 const paymentConfig = new PaymentConfig({
   publishableApiKey: 'pk_test_U38gMHTgVv4wYCd35Zk1JSEd1ZyMYyA9oQ7T4rKa',
-  amount: 10000,
+  amount: 10001,
   currency: 'SAR',
   description: 'Test payment',
   metadata: { size: '250 g' },
@@ -67,20 +68,27 @@ function onPaymentResult(paymentResult: PaymentResult) {
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <CreditCard
-        paymentConfig={paymentConfig}
-        onPaymentResult={onPaymentResult}
-        style={{ textInputs: { borderWidth: 1.25 } }}
-      />
-      <ApplePay
-        paymentConfig={paymentConfig}
-        onPaymentResult={onPaymentResult}
-        style={{
-          buttonType: 'buy',
-        }}
-      />
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <StcPay
+          paymentConfig={paymentConfig}
+          onPaymentResult={onPaymentResult}
+          style={{ textInputs: { borderWidth: 1.25 } }}
+        />
+        <CreditCard
+          paymentConfig={paymentConfig}
+          onPaymentResult={onPaymentResult}
+          style={{ textInputs: { borderWidth: 1.25 } }}
+        />
+        <ApplePay
+          paymentConfig={paymentConfig}
+          onPaymentResult={onPaymentResult}
+          style={{
+            buttonType: 'buy',
+          }}
+        />
+      </View>
+    </ScrollView>
   );
 }
 
