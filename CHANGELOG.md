@@ -1,3 +1,7 @@
+## 0.6.1
+
+- [Credit Card & Stc Pay] Support customizing placeholder text color and more styles.
+
 ## 0.6.0
 
 - [Stc Pay] Support Stc Pay feature.
