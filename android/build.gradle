@@ -41,6 +41,9 @@ def supportsNamespace() {
 }
 
 android {
+
+  buildFeatures.dataBinding = true
+
   if (supportsNamespace()) {
     namespace "com.moyasarsdk"
 
@@ -106,6 +109,12 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
 dependencies {
   implementation "com.facebook.react:react-android"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation files('libs/samsungpay_2.22.00.jar')
+  
+  // TODO: Check if below dependencies are needed
+  // implementation 'androidx.databinding:databinding-runtime:4.2.2'
+  // implementation 'androidx.appcompat:appcompat:1.3.1'
+  // implementation 'androidx.fragment:fragment-ktx:1.3.6'
 }
 
 if (isNewArchitectureEnabled()) {
