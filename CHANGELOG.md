@@ -1,3 +1,7 @@
+## 0.6.3
+
+- [Fix] Fix the Saudi Riyal symbol color
+
 ## 0.6.2
 
 - [General] Add the Saudi Riyal symbol
