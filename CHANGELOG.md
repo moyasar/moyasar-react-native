@@ -1,3 +1,7 @@
+## 0.6.2
+
+- [General] Add the Saudi Riyal symbol
+
 ## 0.6.1
 
 - [Credit Card & Stc Pay] Support customizing placeholder text color and more styles.
