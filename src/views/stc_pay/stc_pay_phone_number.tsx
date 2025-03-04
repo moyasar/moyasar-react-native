@@ -18,10 +18,11 @@ import {
 } from '../../localizations/i18n';
 import type { StcPayProps } from '../../models/component_models/moyasar_props';
 import { StcPayService } from '../../services/stc_pay_service';
-import { formatAmount } from '../../helpers/currency_util';
+import { formatAmount, toMajor } from '../../helpers/currency_util';
 import { mapArabicNumbers } from '../../helpers/arabic_numbers_mapper';
 import { formatMobileNumber } from '../../helpers/formatters';
 import { StcPayOtp } from './stc_pay_otp';
+import { SaudiRiyal } from '../../assets/saudi_riyal';
 
 // TODO: Modify to a better approach rather than global variable
 const stcPayService = new StcPayService();
@@ -151,6 +152,45 @@ export function StcPay({
                     size="small"
                     color={customStyle?.activityIndicatorColor ?? '#ffffff'}
                   />
+                ) : paymentConfig.currency === 'SAR' ? ( // TODO: Remove this temp solution when the new symbol is supported by RN dependencies
+                  <View
+                    style={[
+                      defaultStyle.inputSubContainer,
+                      { alignItems: 'center' },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        defaultStyle.buttonText,
+                        { marginEnd: 5 },
+                        customStyle?.paymentButtonText,
+                      ]}
+                    >
+                      {`${t('moyasarTranslation:pay')}`}
+                    </Text>
+                    <View
+                      style={[
+                        defaultStyle.inputSubContainer,
+                        { alignItems: 'center', direction: 'ltr' },
+                      ]}
+                    >
+                      <SaudiRiyal
+                        height="16"
+                        width="16"
+                        isLightMode={isLightMode}
+                        style={customStyle?.paymentButtonText}
+                      />
+                      <Text
+                        style={[
+                          defaultStyle.buttonText,
+                          { marginStart: 4 },
+                          customStyle?.paymentButtonText,
+                        ]}
+                      >
+                        {`${toMajor(paymentConfig.amount, 'SAR')}`}
+                      </Text>
+                    </View>
+                  </View>
                 ) : (
                   <Text
                     style={[
