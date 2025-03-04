@@ -177,7 +177,6 @@ export function StcPay({
                       <SaudiRiyal
                         height="16"
                         width="16"
-                        isLightMode={isLightMode}
                         style={customStyle?.paymentButtonText}
                       />
                       <Text
