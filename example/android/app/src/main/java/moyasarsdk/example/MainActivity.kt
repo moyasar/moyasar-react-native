@@ -1,4 +1,4 @@
-package com.moyasarsdkexample
+package moyasarsdk.example
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
