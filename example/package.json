@@ -12,8 +12,8 @@
   "dependencies": {
     "react": "19.0.0",
     "react-native": "0.78.0",
-    "react-native-svg": "^15.6.0",
-    "react-native-webview": "^13.10.5"
+    "react-native-svg": "^15.11.2",
+    "react-native-webview": "^13.13.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

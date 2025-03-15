@@ -82,8 +82,8 @@
     "react": "19.0.0",
     "react-native": "0.78.0",
     "react-native-builder-bob": "^0.37.0",
-    "react-native-svg": "^15.6.0",
-    "react-native-webview": "^13.10.5",
+    "react-native-svg": "^15.11.2",
+    "react-native-webview": "^13.13.4",
     "release-it": "^17.10.0",
     "turbo": "^1.10.7",
     "typescript": "^5.2.2"
@@ -94,8 +94,8 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-native-svg": "^15.6.0",
-    "react-native-webview": "^13.10.5"
+    "react-native-svg": "^15.11.2",
+    "react-native-webview": "^13.13.4"
   },
   "workspaces": [
     "example"

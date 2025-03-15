@@ -1259,7 +1259,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-webview (13.10.5):
+  - react-native-webview (13.13.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1567,7 +1567,7 @@ PODS:
     - React-logger (= 0.78.0)
     - React-perflogger (= 0.78.0)
     - React-utils (= 0.78.0)
-  - RNSVG (15.6.0):
+  - RNSVG (15.11.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1587,9 +1587,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.6.0)
+    - RNSVG/common (= 15.11.2)
     - Yoga
-  - RNSVG/common (15.6.0):
+  - RNSVG/common (15.11.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1870,7 +1870,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 0502faf46cab8fb89cfc7bf3e6c6109b6ef9b5de
   React-microtasksnativemodule: 663bc64e3a96c5fc91081923ae7481adc1359a78
   react-native-moyasar-sdk: 1baa2a30d75f62bccbc8eca924c906bf06ab4961
-  react-native-webview: de1e81b219e54bf799cd258f044cd06b4cad81be
+  react-native-webview: f174d18dec20376e312bd4e6e76cb21b9abf0ac9
   React-NativeModulesApple: 16fbd5b040ff6c492dacc361d49e63cba7a6a7a1
   React-perflogger: ab51b7592532a0ea45bf6eed7e6cae14a368b678
   React-performancetimeline: bc2e48198ec814d578ac8401f65d78a574358203
@@ -1899,7 +1899,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: f2e81d80afd71a8058589e19d8a134243fa53f17
   ReactCodegen: a63a0ab6ae824aef2e8c744981edd718b16eb9f2
   ReactCommon: 3d39389f8e2a2157d5c999f8fba57bd1c8f226f0
-  RNSVG: e22572d0023ebdf7b72df2556ba061e041d99940
+  RNSVG: 8588ee1ca9b2e6fd2c99466e35b3db0e9f81bb40
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 9b7fb56e7b08cde60e2153344fa6afbd88e5d99f
 
