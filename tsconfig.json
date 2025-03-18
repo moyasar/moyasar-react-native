@@ -9,9 +9,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
-    "lib": ["esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
@@ -20,9 +21,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
+    "resolvePackageJsonImports": false,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext",
+    "target": "ESNext",
     "verbatimModuleSyntax": true
   }
 }

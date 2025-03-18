@@ -140,13 +140,11 @@ export async function sendOtp(
 }
 
 function buildRequestHeaders(apiKey?: string): Record<string, string> {
-  const packageJson = require('../../package.json');
-  const version = packageJson.version;
-
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     'X-MOYASAR-LIB': 'moyasar-react-native-sdk',
-    'X-REACT-NATIVE-SDK-VERSION': version,
+    // TODO: Find a better solution for getting the version number to avoid hardcoding it. Importing the package.json file had its own issues after migrating the SDK's tooling and configuration.
+    'X-REACT-NATIVE-SDK-VERSION': '0.6.3',
   };
 
   if (apiKey) {
