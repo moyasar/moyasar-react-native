@@ -1,3 +1,7 @@
+## 0.6.4
+
+- [General] Update dependencies and tooling.
+
 ## 0.6.3
 
 - [Fix] Fix the Saudi Riyal symbol color
