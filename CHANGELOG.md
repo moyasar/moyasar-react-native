@@ -2,13 +2,16 @@
 
 - [General] Update dependencies and tooling.
 
-### Required action:
+### Required changes:
 
-Update native code for iOS by running the following command in the `ios/` directory:
+- Update native code for iOS by running the following command in the `ios/` directory:
 
 ```sh
 pod install
 ```
+
+- Set react-native-svg version package to '^15.11.2'.
+- Upgrade react-native-webview version package to '^13.13.4'.
 
 ## 0.6.3
 
