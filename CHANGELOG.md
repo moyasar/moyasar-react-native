@@ -2,6 +2,14 @@
 
 - [General] Update dependencies and tooling.
 
+### Required action:
+
+Update native code for iOS by running the following command in the `ios/` directory:
+
+```sh
+pod install
+```
+
 ## 0.6.3
 
 - [Fix] Fix the Saudi Riyal symbol color
