@@ -84,7 +84,7 @@
     "react-native-builder-bob": "^0.37.0",
     "react-native-svg": "^15.11.2",
     "react-native-webview": "^13.13.4",
-    "release-it": "^17.10.0",
+    "release-it": "^18.1.2",
     "turbo": "^1.10.7",
     "typescript": "^5.2.2"
   },
