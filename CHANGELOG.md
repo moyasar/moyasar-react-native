@@ -11,7 +11,7 @@ pod install
 ```
 
 - Set react-native-svg version package to '^15.11.2'.
-- Upgrade react-native-webview version package to '^13.13.4'.
+- Set react-native-webview version package to '^13.13.4'.
 
 ## 0.6.3
 
