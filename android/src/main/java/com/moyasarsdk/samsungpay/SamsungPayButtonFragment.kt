@@ -8,36 +8,36 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import com.moyasarsdk.databinding.FragmentSamsungPayBinding
 import com.moyasarsdk.R
-import android.util.Log
+import com.moyasarsdk.Logger
 
 /**
  * Fragment displaying a button to start Samsung Pay payment flow.
  */
 class SamsungPayButtonFragment : Fragment() {
 
-    private val viewModel: SamsungPayButtonManager = SamsungPayButtonManagerHolder.sharedSamsungPayButtonManager
+    private val viewModel: SamsungPayButtonViewModel = SamsungPayButtonViewModelHolder.sharedSamsungPayButtonViewModel
     private lateinit var mBinding: FragmentSamsungPayBinding
 
     companion object {
         fun newInstance(
-          merchantInfo: MerchantInfo,
-          paymentCallback: (String?) -> Unit,
+            merchantInfo: MerchantInfo,
+            paymentCallback: (String?, String?) -> Unit,
         ): SamsungPayButtonFragment {
-            Log.d("Moyasar SDK", "SamsungPayButtonFragment.newInstance")
+            Logger.d("MoyasarSDK", "SamsungPayButtonFragment.newInstance")
 
-            // Need to set the sharedSamsungPayButtonManager first thing
-            SamsungPayButtonManagerHolder.sharedSamsungPayButtonManager = SamsungPayButtonManager(merchantInfo, paymentCallback)
+            // Need to set the sharedSamsungPayButtonViewModel first thing
+            SamsungPayButtonViewModelHolder.sharedSamsungPayButtonViewModel = SamsungPayButtonViewModel(merchantInfo, paymentCallback)
 
             return SamsungPayButtonFragment()
         }
-      }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("Moyasar SDK", "SamsungPayButtonFragment.onCreateView")
+        Logger.d("MoyasarSDK", "SamsungPayButtonFragment.onCreateView")
 
         mBinding = DataBindingUtil.inflate(
             inflater,
@@ -64,14 +64,14 @@ class SamsungPayButtonFragment : Fragment() {
 
         viewModel.initialize(requireContext()) { success ->
             if (success) {
-                Log.i("Moyasar SDK", "Samsung Pay ready and initialized")
+                Logger.i("MoyasarSDK", "Samsung Pay ready and initialized")
 
                 samsungPayButton.visibility = View.VISIBLE
-            } 
+            }
         }
-        
+
         samsungPayButton.setOnClickListener {
-            Log.i("Moyasar SDK", "Samsung Pay button clicked")
+            Logger.d("MoyasarSDK", "Samsung Pay button clicked")
 
             disablePaymentButton()
 

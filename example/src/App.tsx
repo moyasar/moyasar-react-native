@@ -14,10 +14,12 @@ import {
   TokenResponse,
   type PaymentResult,
 } from 'react-native-moyasar-sdk';
+import { SamsungPay } from '../../src/views/samsung_pay';
+import { SamsungPayConfig } from '../../src/models/samsung_pay_config';
 
 const paymentConfig = new PaymentConfig({
   publishableApiKey: 'pk_test_U38gMHTgVv4wYCd35Zk1JSEd1ZyMYyA9oQ7T4rKa',
-  amount: 10001,
+  amount: 20001,
   currency: 'SAR',
   description: 'Test payment',
   metadata: { size: '250 g' },
@@ -29,6 +31,12 @@ const paymentConfig = new PaymentConfig({
     manual: false,
   }),
   createSaveOnlyToken: false,
+  samsungPay: new SamsungPayConfig({
+    serviceId: 'ea810dafb758408fa530b1',
+    merchantName: 'Test Samsung Pay from app',
+    orderNumber: 'c553ed70-fb79-487c-b3d2-15aca6aff90c',
+    manual: false,
+  }),
 });
 
 function onPaymentResult(paymentResult: PaymentResult) {
@@ -74,6 +82,10 @@ export default function App() {
           paymentConfig={paymentConfig}
           onPaymentResult={onPaymentResult}
           style={{ textInputs: { borderWidth: 1.25 } }}
+        />
+        <SamsungPay
+          paymentConfig={paymentConfig}
+          onPaymentResult={onPaymentResult}
         />
         <CreditCard
           paymentConfig={paymentConfig}

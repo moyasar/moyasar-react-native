@@ -46,9 +46,14 @@
     "release": "release-it"
   },
   "keywords": [
+    "moyasar",
     "react-native",
     "ios",
-    "android"
+    "android",
+    "apple-pay",
+    "samsung-pay",
+    "credit-card",
+    "stc-pay"
   ],
   "repository": {
     "type": "git",

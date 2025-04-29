@@ -1,9 +1,7 @@
 package com.moyasarsdk.samsungpay
 
-import android.app.Application
 import android.os.Bundle
 import android.content.Context
-import android.util.Log
 import com.samsung.android.sdk.samsungpay.v2.SamsungPay
 import com.samsung.android.sdk.samsungpay.v2.StatusListener
 import com.samsung.android.sdk.samsungpay.v2.SpaySdk
@@ -12,6 +10,8 @@ import com.samsung.android.sdk.samsungpay.v2.payment.*
 import com.samsung.android.sdk.samsungpay.v2.payment.sheet.CustomSheet
 import com.samsung.android.sdk.samsungpay.v2.payment.sheet.AmountBoxControl
 import com.samsung.android.sdk.samsungpay.v2.payment.sheet.AmountConstants
+import java.util.UUID
+import com.moyasarsdk.Logger
 
 /**
  * Holds merchant-related information
@@ -21,18 +21,17 @@ data class MerchantInfo(
     val merchantName: String,
     val amount: Double,
     val currency: String,
-    val supportedNetworks: List<String>
+    val supportedNetworks: List<String>,
+    val orderNumber: String?
 )
 
 /**
  * Logic to handle Samsung Pay payment flow
  */
-class SamsungPayButtonManager(
+class SamsungPayButtonViewModel(
     private val merchantInfo: MerchantInfo,
-    private val paymentCallback: (String?) -> Unit
+    private val paymentCallback: (String?, String?) -> Unit
 ) {
-
-    // TODO: Support `supportedNetworks`
 
     // Samsung Pay SDK objects
     private var samsungPay: SamsungPay? = null
@@ -44,18 +43,18 @@ class SamsungPayButtonManager(
             override fun onSuccess(status: Int, bundle: Bundle) {
                 when (status) {
                     SpaySdk.SPAY_READY -> {
-                        Log.d("Moyasar SDK", "Samsung Pay ready")
+                        Logger.d("MoyasarSDK", "Samsung Pay ready")
 
                         shouldShowButtonCallback(true)
                     }
                     SpaySdk.SPAY_NOT_READY -> {
-                        Log.w("Moyasar SDK", "Samsung Pay not ready")
+                        Logger.w("MoyasarSDK", "Samsung Pay not ready")
 
                         // Samsung Pay is supported but not fully ready.
 
                         // TODO: Support updating button visibility after updating or activating
                         shouldShowButtonCallback(false)
-                        
+
                         val extraError = bundle.getInt(SamsungPay.EXTRA_ERROR_REASON)
 
                         if (extraError == SamsungPay.ERROR_SPAY_SETUP_NOT_COMPLETED) {
@@ -66,7 +65,7 @@ class SamsungPayButtonManager(
                         }
                     }
                     SpaySdk.SPAY_NOT_ALLOWED_TEMPORALLY -> {
-                        Log.w("Moyasar SDK", "Samsung Pay not allowed temporarily")
+                        Logger.w("MoyasarSDK", "Samsung Pay not allowed temporarily")
 
                         // TODO: Support below comment
 
@@ -75,21 +74,21 @@ class SamsungPayButtonManager(
                         shouldShowButtonCallback(false)
                     }
                     SpaySdk.SPAY_NOT_SUPPORTED -> {
-                        Log.w("Moyasar SDK", "Samsung Pay not supported on this device")
+                        Logger.w("MoyasarSDK", "Samsung Pay is not supported on this device or emulator/simulator")
 
                         shouldShowButtonCallback(false)
                     }
 
                     else -> {
-                        Log.e("Moyasar SDK", "Samsung Pay unknown status: $status")
+                        Logger.e("MoyasarSDK", "Samsung Pay unknown status: $status")
 
-                        shouldShowButtonCallback(false) 
+                        shouldShowButtonCallback(false)
                     }
                 }
             }
 
             override fun onFail(errorCode: Int, bundle: Bundle) {
-                Log.e("Moyasar SDK", "Samsung Pay status check failed with error code: $errorCode")
+                Logger.e("MoyasarSDK", "Samsung Pay status check failed with error code: $errorCode")
 
                 shouldShowButtonCallback(false)
             }
@@ -98,10 +97,7 @@ class SamsungPayButtonManager(
 
     private fun makeAmountControl(): AmountBoxControl {
         val amountBoxControl = AmountBoxControl(AMOUNT_CONTROL_ID, merchantInfo.currency)
-        // TODO: Check if below is needed
-        // amountBoxControl.addItem(PRODUCT_ITEM_ID, "Item", 1199.00, "")
-		// amountBoxControl.addItem(PRODUCT_TAX_ID, "Tax", 5.0, "")
-		amountBoxControl.setAmountTotal(merchantInfo.amount, AmountConstants.FORMAT_TOTAL_PRICE_ONLY)
+        amountBoxControl.setAmountTotal(merchantInfo.amount, AmountConstants.FORMAT_TOTAL_PRICE_ONLY)
         return amountBoxControl
     }
 
@@ -113,7 +109,7 @@ class SamsungPayButtonManager(
                  * Newly selected cardInfo is passed and partner app can update transaction amount based on new card (if needed).
                  * Calling updateSheet() is mandatory.
                  */
-                Log.d("Moyasar SDK", "Samsung Pay updating card info in `startInAppPayWithCustomSheet`")
+                Logger.d("MoyasarSDK", "Samsung Pay updating card info in `startInAppPayWithCustomSheet`")
 
                 paymentManager?.updateSheet(customSheet)
             }
@@ -123,15 +119,15 @@ class SamsungPayButtonManager(
                 paymentCredential: String,
                 extraPaymentData: Bundle
             ) {
-                Log.d("Moyasar SDK", "Samsung Pay succeeded in `startInAppPayWithCustomSheet`")
-                
-                paymentCallback(paymentCredential)
+                Logger.d("MoyasarSDK", "Samsung Pay succeeded in `startInAppPayWithCustomSheet`")
+
+                paymentCallback(paymentCredential, response.orderNumber)
             }
 
             override fun onFailure(errorCode: Int, errorData: Bundle?) {
-                Log.e("Moyasar SDK", "Samsung Pay failed in `startInAppPayWithCustomSheet`: $errorCode")
+                Logger.e("MoyasarSDK", "Samsung Pay failed in `startInAppPayWithCustomSheet`: $errorCode")
 
-                paymentCallback(null)
+                paymentCallback(null, null)
             }
         }
 
@@ -141,7 +137,7 @@ class SamsungPayButtonManager(
      */
     fun initialize(context: Context, shouldShowButtonCallback: (Boolean) -> Unit) {
         try {
-            Log.d("Moyasar SDK", "Initializing Samsung Pay....")
+            Logger.d("MoyasarSDK", "Initializing Samsung Pay....")
 
             val bundle = Bundle()
             bundle.putString(SpaySdk.PARTNER_SERVICE_TYPE, SpaySdk.ServiceType.INAPP_PAYMENT.toString())
@@ -151,7 +147,7 @@ class SamsungPayButtonManager(
 
             checkSamsungPayStatus(shouldShowButtonCallback)
         } catch (ex: Exception) {
-            Log.e("Moyasar SDK", "Initializing Samsung Pay failed", ex)
+            Logger.e("MoyasarSDK", "Initializing Samsung Pay failed", ex)
 
             shouldShowButtonCallback(false)
         }
@@ -167,13 +163,18 @@ class SamsungPayButtonManager(
         onResponse: () -> Unit
     ) {
         try {
-            Log.d("Moyasar SDK", "Showing Samsung Pay payment sheet....")
+            Logger.d("MoyasarSDK", "Showing Samsung Pay payment sheet....")
+
+            Logger.d("MoyasarSDK", "Supplied order number: ${merchantInfo.orderNumber} will generate one if null")
 
             val customSheet = CustomSheet()
             customSheet.addControl(makeAmountControl())
 
             val customSheetPaymentInfo = CustomSheetPaymentInfo.Builder()
+                // .setMerchantId("123456") // TODO: Must for MADA token
                 .setMerchantName(merchantInfo.merchantName)
+                .setOrderNumber(merchantInfo.orderNumber ?: UUID.randomUUID().toString()) // Must for VISA
+                .setAllowedCardBrands(brandList)
                 .setCustomSheet(customSheet)
                 .build()
 
@@ -186,16 +187,31 @@ class SamsungPayButtonManager(
 
             onResponse()
         } catch (ex: Exception) {
-            Log.e("Moyasar SDK", "Showing Samsung Pay payment sheet failed", ex)
+            Logger.e("MoyasarSDK", "Showing Samsung Pay payment sheet failed", ex)
 
             onResponse()
         }
     }
-    
+
+    private val brandList: ArrayList<SpaySdk.Brand>
+        get() {
+            val brandList = ArrayList<SpaySdk.Brand>()
+
+            // Map string network names to Samsung Pay SDK Brand enums
+            merchantInfo.supportedNetworks.forEach { network ->
+                when (network) {
+                    "mada" -> brandList.add(SpaySdk.Brand.MADA)
+                    "visa" -> brandList.add(SpaySdk.Brand.VISA)
+                    "mastercard" -> brandList.add(SpaySdk.Brand.MASTERCARD)
+                    "amex" -> brandList.add(SpaySdk.Brand.AMERICANEXPRESS)
+                    else -> Logger.w("MoyasarSDK", "Unknown card network: $network, skipping")
+                }
+            }
+
+            return brandList
+        }
+
     companion object {
         private const val AMOUNT_CONTROL_ID = "amountControlId"
-        // TODO: Check if below is needed
-        // private const val PRODUCT_ITEM_ID = "productItemId"
-        // private const val PRODUCT_TAX_ID = "productTaxId"
     }
 }
