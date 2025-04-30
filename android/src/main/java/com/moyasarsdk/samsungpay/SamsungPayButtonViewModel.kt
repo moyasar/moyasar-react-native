@@ -19,6 +19,8 @@ import com.moyasarsdk.Logger
 data class MerchantInfo(
     val serviceId: String,
     val merchantName: String,
+    val merchantId: String,
+    val merchantCountryCode: String,
     val amount: Double,
     val currency: String,
     val supportedNetworks: List<String>,
@@ -171,11 +173,12 @@ class SamsungPayButtonViewModel(
             customSheet.addControl(makeAmountControl())
 
             val customSheetPaymentInfo = CustomSheetPaymentInfo.Builder()
-                // .setMerchantId("123456") // TODO: Must for MADA token
+                .setMerchantId(merchantInfo.merchantId) // Must for MADA
                 .setMerchantName(merchantInfo.merchantName)
                 .setOrderNumber(merchantInfo.orderNumber ?: UUID.randomUUID().toString()) // Must for VISA
                 .setAllowedCardBrands(brandList)
                 .setCustomSheet(customSheet)
+                .setMerchantCountryCode(merchantInfo.merchantCountryCode) // Must for MADA
                 .build()
 
             paymentManager = PaymentManager(context, partnerInfo)

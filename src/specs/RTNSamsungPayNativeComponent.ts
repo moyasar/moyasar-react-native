@@ -8,6 +8,8 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 export interface MerchantInfo {
   serviceId: string;
   merchantName: string;
+  merchantId: string;
+  merchantCountryCode: string;
   amount: Double;
   currency: string;
   supportedNetworks: string[];

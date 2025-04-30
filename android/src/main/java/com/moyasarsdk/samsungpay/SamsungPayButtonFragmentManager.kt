@@ -84,6 +84,8 @@ public class SamsungPayButtonFragmentManager(private val reactContext: ReactAppl
         // Parse data from TS layer
         val serviceId = merchantInfoMap.getString("serviceId") ?: ""
         val merchantName = merchantInfoMap.getString("merchantName") ?: ""
+        val merchantId = merchantInfoMap.getString("merchantId") ?: ""
+        val merchantCountryCode = merchantInfoMap.getString("merchantCountryCode") ?: ""
         val amount = merchantInfoMap.getDouble("amount") ?: 0.0
         val currency = merchantInfoMap.getString("currency") ?: ""
         val supportedNetworksArray = merchantInfoMap.getArray("supportedNetworks") ?: Arguments.createArray()
@@ -102,6 +104,8 @@ public class SamsungPayButtonFragmentManager(private val reactContext: ReactAppl
         this.propMerchantInfo = MerchantInfo(
             serviceId = serviceId,
             merchantName = merchantName,
+            merchantId = merchantId,
+            merchantCountryCode = merchantCountryCode,
             amount = amount,
             currency = currency,
             supportedNetworks = supportedNetworks,
