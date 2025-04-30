@@ -127,6 +127,11 @@ class SamsungPayButtonViewModel(
             }
 
             override fun onFailure(errorCode: Int, errorData: Bundle?) {
+                if (errorCode == PaymentManager.ERROR_USER_CANCELED) {
+                    Logger.i("MoyasarSDK", "Samsung Pay sheet canceled by user")
+                    return
+                }
+
                 Logger.e("MoyasarSDK", "Samsung Pay failed in `startInAppPayWithCustomSheet`: $errorCode")
 
                 paymentCallback(null, null)
