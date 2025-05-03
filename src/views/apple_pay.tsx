@@ -3,7 +3,7 @@ import { ApplePayButton, PaymentRequest } from '../react_native_apple_pay';
 import { debugLog, errorLog } from '../helpers/debug_log';
 import { Platform, useColorScheme, View } from 'react-native';
 import type { ApplePayProps } from '../models/component_models/moyasar_props';
-import { currencyToCountryCodeMap, toMajor } from '../helpers/currency_util';
+import { toMajor } from '../helpers/currency_util';
 import { assert } from '../helpers/assert';
 import { ApplePayRequestSource } from '../models/api/sources/apple_pay/apple_pay_request_source';
 import type { PaymentConfig } from '../models/payment_config';
@@ -64,9 +64,18 @@ export function ApplePay({
   onPaymentResult,
   style,
 }: ApplePayProps) {
+  assert(
+    !!paymentConfig.applePay,
+    'Apple Pay config is required to use Apple Pay, you have to configure the `applePay` property in the `PaymentConfig` object'
+  );
+
   const isLightTheme = useColorScheme() === 'light';
 
-  if (Platform.OS !== 'ios') {
+  if (Platform.OS !== 'ios' || !paymentConfig.applePay) {
+    debugLog(
+      'Moyasar SDK: Apple Pay is not supported on this device or the `applePay` property is not set, showing empty view'
+    );
+
     return <View />;
   }
 
@@ -85,18 +94,18 @@ export function ApplePay({
 
           const methodData = {
             supportedMethods: ['apple-pay'],
+            // TODO: Test what happens if the merchantId was not set
             data: {
-              merchantIdentifier: paymentConfig.applePay!.merchantId,
+              merchantIdentifier: paymentConfig.applePay?.merchantId,
               supportedNetworks: paymentConfig.supportedNetworks,
-              countryCode:
-                currencyToCountryCodeMap[paymentConfig.currency] || 'SA',
+              countryCode: paymentConfig.merchantCountryCode,
               currencyCode: paymentConfig.currency,
             },
           };
 
           const details = {
             total: {
-              label: paymentConfig.applePay!.label,
+              label: paymentConfig.applePay?.label,
               amount: {
                 currency: paymentConfig.currency,
                 value: toMajor(paymentConfig.amount, paymentConfig.currency),
@@ -125,6 +134,7 @@ export function ApplePay({
                   onPaymentResult
                 );
 
+                // TODO: Better handle completion based on `onApplePayResponse` response
                 paymentResponse.complete('success');
               } else {
                 errorLog(
@@ -140,6 +150,7 @@ export function ApplePay({
               }
             })
             .catch((error: any) => {
+              // TODO: Should we call the `onPaymentResult` callback here?
               errorLog(`Moyasar SDK: Apple Pay payment error: ${error}`);
             });
         }}

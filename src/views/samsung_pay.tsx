@@ -20,7 +20,7 @@ import {
   NetworkError,
 } from '../models/errors/moyasar_errors';
 import { PaymentConfig } from '../models/payment_config';
-import { currencyToCountryCodeMap, toMajor } from '../helpers/currency_util';
+import { toMajor } from '../helpers/currency_util';
 import { assert } from '../helpers/assert';
 
 // TODO: Fix width and positioning when orientation changes
@@ -150,9 +150,8 @@ export function SamsungPay({
         merchantInfo={{
           serviceId: paymentConfig.samsungPay?.serviceId,
           merchantName: paymentConfig.samsungPay?.merchantName,
-          merchantId: paymentConfig.publishableApiKey.substring(0, 15),
-          merchantCountryCode:
-            currencyToCountryCodeMap[paymentConfig.currency] || 'SA',
+          merchantId: paymentConfig.publishableApiKey.substring(0, 15), // Currently, the merchantId will be part of the publishable API key
+          merchantCountryCode: paymentConfig.merchantCountryCode,
           amount: toMajor(paymentConfig.amount, paymentConfig.currency),
           currency: paymentConfig.currency,
           supportedNetworks: paymentConfig.supportedNetworks,

@@ -21,6 +21,7 @@ const paymentConfig = new PaymentConfig({
   publishableApiKey: 'pk_test_U38gMHTgVv4wYCd35Zk1JSEd1ZyMYyA9oQ7T4rKa',
   amount: 20001,
   currency: 'SAR',
+  merchantCountryCode: 'SA',
   description: 'Test payment',
   metadata: { size: '250 g' },
   supportedNetworks: ['mada', 'visa', 'mastercard', 'amex'],
