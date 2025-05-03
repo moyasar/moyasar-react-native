@@ -7,7 +7,7 @@ export class SamsungPayRequestSource implements PaymentRequestSource {
   manualPayment: string;
 
   constructor({
-    samsungPayToken: samsungPayToken,
+    samsungPayToken,
     manualPayment = false,
   }: {
     samsungPayToken: string;
