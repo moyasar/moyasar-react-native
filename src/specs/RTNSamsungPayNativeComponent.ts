@@ -13,7 +13,7 @@ export interface MerchantInfo {
   amount: Double;
   currency: string;
   supportedNetworks: string[];
-  orderNumber?: string; // Must for VISA payments
+  orderNumber?: string | null; // Must for VISA payments
 }
 
 type SamsungPayPaymentResultEvent = {
