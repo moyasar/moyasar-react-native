@@ -5,6 +5,8 @@ import type {
 } from 'react-native/Libraries/Types/CodegenTypes';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 
+export const SAMSUNG_PAY_BUTTON_COMPONENT_NAME = 'RTNSamsungPayButton';
+
 export interface MerchantInfo {
   serviceId: string;
   merchantName: string;

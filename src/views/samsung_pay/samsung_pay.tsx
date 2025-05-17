@@ -6,22 +6,22 @@ import {
   Dimensions,
   NativeModules,
 } from 'react-native';
-import RTNSamsungPayButton from '../specs/RTNSamsungPayNativeComponent';
-import type { SamsungPayProps } from '../models/component_models/moyasar_props';
-import { debugLog, errorLog } from '../helpers/debug_log';
+import { SamsungPayButton } from './index';
+import type { SamsungPayProps } from '../../models/component_models/moyasar_props';
+import { debugLog, errorLog } from '../../helpers/debug_log';
 import { useEffect, useRef } from 'react';
-import type { ResultCallback } from '../models/payment_result';
-import { PaymentRequest } from '../models/api/api_requests/payment_request';
-import { SamsungPayRequestSource } from '../models/api/sources/samsung_pay/samsung_pay_request_source';
-import { createPayment } from '../services/payment_service';
+import type { ResultCallback } from '../../models/payment_result';
+import { PaymentRequest } from '../../models/api/api_requests/payment_request';
+import { SamsungPayRequestSource } from '../../models/api/sources/samsung_pay/samsung_pay_request_source';
+import { createPayment } from '../../services/payment_service';
 import {
   GeneralError,
   isMoyasarError,
   NetworkError,
-} from '../models/errors/moyasar_errors';
-import { PaymentConfig } from '../models/payment_config';
-import { toMajor } from '../helpers/currency_util';
-import { assert } from '../helpers/assert';
+} from '../../models/errors/moyasar_errors';
+import { PaymentConfig } from '../../models/payment_config';
+import { toMajor } from '../../helpers/currency_util';
+import { assert } from '../../helpers/assert';
 
 // TODO: Fix width and positioning when orientation changes
 const screenWidth = Dimensions.get('window').width;
@@ -142,7 +142,7 @@ export function SamsungPay({
   // or the device is not configured for it yet (There are other rare cases as well as implmented by Samsung)
   return (
     <View style={{ alignItems: 'center' }}>
-      <RTNSamsungPayButton
+      <SamsungPayButton
         style={{
           height: 75,
           width: samsungPayButtonWidth,

@@ -4,7 +4,7 @@
 export class SamsungPayConfig {
   serviceId: string;
   merchantName: string;
-  orderNumber?: string;
+  orderNumber?: string | null;
   manual: boolean;
 
   /**
@@ -29,7 +29,7 @@ export class SamsungPayConfig {
   }: {
     serviceId: string;
     merchantName: string;
-    orderNumber?: string;
+    orderNumber?: string | null;
     manual?: boolean;
   }) {
     this.serviceId = serviceId;

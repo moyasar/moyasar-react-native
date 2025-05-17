@@ -14,7 +14,7 @@ import {
   TokenResponse,
   type PaymentResult,
 } from 'react-native-moyasar-sdk';
-import { SamsungPay } from '../../src/views/samsung_pay';
+import { SamsungPay } from '../../src/views/samsung_pay/samsung_pay';
 import { SamsungPayConfig } from '../../src/models/samsung_pay_config';
 
 const paymentConfig = new PaymentConfig({
