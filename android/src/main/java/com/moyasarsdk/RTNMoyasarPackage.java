@@ -31,7 +31,7 @@ public class RTNMoyasarPackage extends TurboReactPackage implements ReactPackage
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         Logger.d("MoyasarSDK", "createViewManagers");
-        return Collections.singletonList(new RTNSamsungPayButtonFragmentManager(reactContext));
+        return Collections.singletonList(new RTNSamsungPayButtonFragment(reactContext));
     }
 
     @Override
