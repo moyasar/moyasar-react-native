@@ -26,7 +26,7 @@ import com.moyasarsdk.samsungpay.SamsungPayButtonFragment
 
 // TODO: Re-check this entire file once official docs for creating a native fragment in the new architecture of React Native are available (03/2025). Implementing it was very tricky and tedious.
 // This file is resposible for the integration between React Native layer and the Android native layer
-object SamsungPayButtonFragmentManagerImpl {
+object RTNSamsungPayButtonFragmentManagerImpl {
 
     private lateinit var propMerchantInfo: MerchantInfo
 

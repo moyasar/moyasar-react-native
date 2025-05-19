@@ -17,12 +17,12 @@ import com.moyasarsdk.Logger
 
 public class RTNSamsungPayButtonFragmentManager(var reactContext: ReactApplicationContext) : ViewGroupManager<FrameLayout>() {
  
-    override fun getName() = SamsungPayButtonFragmentManagerImpl.REACT_CLASS
+    override fun getName() = RTNSamsungPayButtonFragmentManagerImpl.REACT_CLASS
 
     /**
      * Return a FrameLayout which will later hold the Fragment
      */
-    public override fun createViewInstance(reactContext: ThemedReactContext) = SamsungPayButtonFragmentManagerImpl.createViewInstance(reactContext)
+    public override fun createViewInstance(reactContext: ThemedReactContext) = RTNSamsungPayButtonFragmentManagerImpl.createViewInstance(reactContext)
 
     /**
      * Handle "create" command id (called from JS) and call createFragment method
@@ -35,7 +35,7 @@ public class RTNSamsungPayButtonFragmentManager(var reactContext: ReactApplicati
         Logger.d("MoyasarSDK", "receiveCommand")
         super.receiveCommand(root, commandId, args)
 
-        SamsungPayButtonFragmentManagerImpl.receiveCommand(
+        RTNSamsungPayButtonFragmentManagerImpl.receiveCommand(
             root,
             commandId,
             args,
@@ -47,7 +47,7 @@ public class RTNSamsungPayButtonFragmentManager(var reactContext: ReactApplicati
     fun setMerchantInfo(view: FrameLayout, merchantInfoMap: ReadableMap?) {
         Logger.d("MoyasarSDK", "setMerchantInfo old arch")
 
-        SamsungPayButtonFragmentManagerImpl.setMerchantInfo(view, merchantInfoMap)
+        RTNSamsungPayButtonFragmentManagerImpl.setMerchantInfo(view, merchantInfoMap)
     }
 
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {

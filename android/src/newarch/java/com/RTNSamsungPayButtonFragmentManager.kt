@@ -22,19 +22,19 @@ import com.facebook.react.viewmanagers.RTNSamsungPayButtonManagerDelegate
 import com.moyasarsdk.Logger
 
 // TODO: Re-check this entire file once official docs for creating a native fragment in the new architecture of React Native are available (03/2025). Implementing it was very tricky and tedious.
-@ReactModule(name = SamsungPayButtonFragmentManagerImpl.REACT_CLASS)
+@ReactModule(name = RTNSamsungPayButtonFragmentManagerImpl.REACT_CLASS)
 public class RTNSamsungPayButtonFragmentManager(private val reactContext: ReactApplicationContext) : ViewGroupManager<FrameLayout>(), RTNSamsungPayButtonManagerInterface<FrameLayout> {
 
     private val delegate = RTNSamsungPayButtonManagerDelegate(this)
 
     override fun getDelegate(): ViewManagerDelegate<FrameLayout> = delegate
 
-    override fun getName() = SamsungPayButtonFragmentManagerImpl.REACT_CLASS
+    override fun getName() = RTNSamsungPayButtonFragmentManagerImpl.REACT_CLASS
 
     /**
      * Return a FrameLayout which will later hold the Fragment
      */
-    override fun createViewInstance(reactContext: ThemedReactContext) = SamsungPayButtonFragmentManagerImpl.createViewInstance(reactContext)
+    override fun createViewInstance(reactContext: ThemedReactContext) = RTNSamsungPayButtonFragmentManagerImpl.createViewInstance(reactContext)
 
     /**
      * Handle "create" command id (called from JS) and call createFragment method
@@ -47,7 +47,7 @@ public class RTNSamsungPayButtonFragmentManager(private val reactContext: ReactA
         Logger.d("MoyasarSDK", "receiveCommand")
         super.receiveCommand(root, commandId, args)
 
-        SamsungPayButtonFragmentManagerImpl.receiveCommand(
+        RTNSamsungPayButtonFragmentManagerImpl.receiveCommand(
             root,
             commandId,
             args,
@@ -59,6 +59,6 @@ public class RTNSamsungPayButtonFragmentManager(private val reactContext: ReactA
     override fun setMerchantInfo(view: FrameLayout, merchantInfoMap: ReadableMap?) {
         Logger.d("MoyasarSDK", "setMerchantInfo new arch")
 
-        SamsungPayButtonFragmentManagerImpl.setMerchantInfo(view, merchantInfoMap)
+        RTNSamsungPayButtonFragmentManagerImpl.setMerchantInfo(view, merchantInfoMap)
     }
 }
