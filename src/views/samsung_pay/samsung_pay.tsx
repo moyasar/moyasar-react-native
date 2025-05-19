@@ -6,7 +6,7 @@ import {
   Dimensions,
   NativeModules,
 } from 'react-native';
-import { SamsungPayButton } from './index';
+import RTNSamsungPayButton from '../../specs/RTNSamsungPayNativeComponent';
 import type { SamsungPayProps } from '../../models/component_models/moyasar_props';
 import { debugLog, errorLog } from '../../helpers/debug_log';
 import { useEffect, useRef } from 'react';
@@ -142,7 +142,7 @@ export function SamsungPay({
   // or the device is not configured for it yet (There are other rare cases as well as implmented by Samsung)
   return (
     <View style={{ alignItems: 'center' }}>
-      <SamsungPayButton
+      <RTNSamsungPayButton
         style={{
           height: 75,
           width: samsungPayButtonWidth,
