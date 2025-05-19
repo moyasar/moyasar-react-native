@@ -8,6 +8,7 @@ import com.facebook.react.module.model.ReactModuleInfo;
 import com.facebook.react.module.model.ReactModuleInfoProvider;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.uimanager.ViewManager;
+import com.moyasarsdk.samsungpay.SamsungPayButtonFragmentManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package com.moyasarsdk
+package com.moyasarsdk.samsungpay
 
 import android.view.Choreographer
 import android.view.View
@@ -18,33 +18,42 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.ViewManagerDelegate
 import com.facebook.react.uimanager.UIManagerHelper
 import com.facebook.react.uimanager.events.Event
-import com.facebook.react.uimanager.events.RCTEventEmitter
-import com.moyasarsdk.BuildConfig
+import com.facebook.react.viewmanagers.RTNSamsungPayButtonManagerInterface
+import com.facebook.react.viewmanagers.RTNSamsungPayButtonManagerDelegate
 import com.moyasarsdk.Logger
-import com.moyasarsdk.samsungpay.MerchantInfo
-import com.moyasarsdk.samsungpay.SamsungPayButtonFragment
 
 // TODO: Re-check this entire file once official docs for creating a native fragment in the new architecture of React Native are available (03/2025). Implementing it was very tricky and tedious.
-// This file is resposible for the integration between React Native layer and the Android native layer
-object RTNSamsungPayButtonFragmentManagerImpl {
+@ReactModule(name = SamsungPayButtonFragmentManager.REACT_CLASS)
+public class SamsungPayButtonFragmentManager(private val reactContext: ReactApplicationContext) : ViewGroupManager<FrameLayout>(), RTNSamsungPayButtonManagerInterface<FrameLayout> {
 
     private lateinit var propMerchantInfo: MerchantInfo
 
-    const val REACT_CLASS = "RTNSamsungPayButton"
-    private const val COMMAND_CREATE = "CreateSamsungPayButtonFragment"
+    private val delegate = RTNSamsungPayButtonManagerDelegate(this)
 
-    fun createViewInstance(reactContext: ThemedReactContext) = FrameLayout(reactContext)
-    
-    fun receiveCommand(
+    override fun getDelegate(): ViewManagerDelegate<FrameLayout> = delegate
+
+    override fun getName() = REACT_CLASS
+
+    /**
+     * Return a FrameLayout which will later hold the Fragment
+     */
+    override fun createViewInstance(reactContext: ThemedReactContext) = FrameLayout(reactContext)
+
+    /**
+     * Handle "create" command (called from JS) and call createFragment method
+     */
+    override fun receiveCommand(
         root: FrameLayout,
         commandId: String,
-        args: ReadableArray?,
-        reactContext: ReactApplicationContext
+        args: ReadableArray?
     ) {
+        Logger.d("MoyasarSDK", "receiveCommand")
+        super.receiveCommand(root, commandId, args)
+
         val reactNativeViewId = requireNotNull(args).getInt(0)
 
         when (commandId) {
-            COMMAND_CREATE -> createFragment(root, reactNativeViewId, reactContext)
+            COMMAND_CREATE -> createFragment(root, reactNativeViewId)
         }
     }
 
@@ -65,7 +74,8 @@ object RTNSamsungPayButtonFragmentManagerImpl {
         }
     }
 
-    fun setMerchantInfo(view: FrameLayout, merchantInfoMap: ReadableMap?) {
+    @ReactProp(name = "merchantInfo")
+    override fun setMerchantInfo(view: FrameLayout, merchantInfoMap: ReadableMap?) {
         Logger.d("MoyasarSDK", "setMerchantInfo")
         if (merchantInfoMap == null) return
 
@@ -109,7 +119,7 @@ object RTNSamsungPayButtonFragmentManagerImpl {
     /**
      * Replace your React Native view with a custom fragment
      */
-    fun createFragment(root: FrameLayout, reactNativeViewId: Int, reactContext: ReactApplicationContext) {
+    fun createFragment(root: FrameLayout, reactNativeViewId: Int) {
         Logger.d("MoyasarSDK", "createFragment")
 
         // TODO: Test behaviour when the view is not found / null and decide if we should handle nullability here
@@ -121,7 +131,7 @@ object RTNSamsungPayButtonFragmentManagerImpl {
         if (parentView.isLaidOut && parentView.isAttachedToWindow) {
             Logger.d("MoyasarSDK", "Already laid out")
 
-            replaceFragment(parentView.id, reactContext)
+            replaceFragment(parentView.id)
         } else {
             Logger.d("MoyasarSDK", "View not laid out yet")
 
@@ -135,20 +145,20 @@ object RTNSamsungPayButtonFragmentManagerImpl {
                         Logger.d("MoyasarSDK", "Now the view is laid out")
 
                         parentView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                        replaceFragment(parentView.id, reactContext)
+                        replaceFragment(parentView.id)
                     }
                 }
             })
         }
     }
 
-    private fun replaceFragment(containerId: Int, reactContext: ReactApplicationContext) {
+    private fun replaceFragment(containerId: Int) {
         Logger.d("MoyasarSDK", "replaceFragment")
 
         val paymentCallback: (String?, String?) -> Unit = { paymentResult: String?, orderNumber: String? ->
             Logger.d("MoyasarSDK", "Received Payment result. Order number: $orderNumber")
 
-            emitOnPaymentResult(containerId, paymentResult, orderNumber, reactContext)
+            emitOnPaymentResult(containerId, paymentResult, orderNumber)
         }
 
         val activity = reactContext.currentActivity as? FragmentActivity ?: return
@@ -160,6 +170,32 @@ object RTNSamsungPayButtonFragmentManagerImpl {
             .beginTransaction()
             .replace(containerId, samsungPayButtonFragment, containerId.toString())
             .commit()
+    }
+
+    private fun emitOnPaymentResult(viewId: Int, paymentResult: String?, orderNumber: String?) {
+        val safeResult = paymentResult ?: ""
+        val safeOrderNumber = orderNumber ?: ""
+
+        val surfaceId = UIManagerHelper.getSurfaceId(reactContext)
+        val eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewId)
+        val payload =
+            Arguments.createMap().apply {
+                putString("result", safeResult)
+                putString("orderNumber", safeOrderNumber)
+            }
+        val event = OnPaymentResultEvent(surfaceId, viewId, payload)
+
+        eventDispatcher?.dispatchEvent(event)
+    }
+
+    inner class OnPaymentResultEvent(
+        surfaceId: Int,
+        viewId: Int,
+        private val payload: WritableMap
+    ) : Event<OnPaymentResultEvent>(surfaceId, viewId) {
+        override fun getEventName() = "onPaymentResult"
+
+        override fun getEventData() = payload
     }
 
     fun setupLayout(view: ViewGroup) {
@@ -175,49 +211,8 @@ object RTNSamsungPayButtonFragmentManagerImpl {
         })
     }
 
-    private fun emitOnPaymentResult(viewId: Int, paymentResult: String?, orderNumber: String?, reactContext: ReactApplicationContext) {
-        val safeResult = paymentResult ?: ""
-        val safeOrderNumber = orderNumber ?: ""
-        val payload =
-            Arguments.createMap().apply {
-                putString("result", safeResult)
-                putString("orderNumber", safeOrderNumber)
-            }
-
-        try {
-            if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-                // New architecture
-                Logger.d("MoyasarSDK", "Emitting event using new architecture")
-                val surfaceId = UIManagerHelper.getSurfaceId(reactContext)
-                val eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewId)
-                
-                if (eventDispatcher == null) {
-                    Logger.e("MoyasarSDK", "Failed to get event dispatcher for view $viewId")
-                    return
-                }
-                
-                val event = OnPaymentResultEvent(surfaceId, viewId, payload)
-                eventDispatcher.dispatchEvent(event)
-            } else {
-                // Old architecture
-                Logger.d("MoyasarSDK", "Emitting event using old architecture")
-                reactContext
-                    .getJSModule(RCTEventEmitter::class.java)
-                    .receiveEvent(viewId, "paymentResult", payload)
-            }
-        } catch (e: Exception) {
-            Logger.e("MoyasarSDK", "Error emitting payment result event", e)
-        }
-    }
-
-    // For new architecture
-    class OnPaymentResultEvent(
-        surfaceId: Int,
-        viewId: Int,
-        private val payload: WritableMap
-    ) : Event<OnPaymentResultEvent>(surfaceId, viewId) {
-        override fun getEventName() = "onPaymentResult"
-
-        override fun getEventData() = payload
+    companion object {
+        const val REACT_CLASS = "RTNSamsungPayButton"
+        private const val COMMAND_CREATE = "CreateSamsungPayButtonFragment"
     }
 }
