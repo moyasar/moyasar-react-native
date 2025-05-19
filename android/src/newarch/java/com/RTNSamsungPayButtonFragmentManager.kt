@@ -20,7 +20,6 @@ import com.facebook.react.uimanager.events.Event
 import com.facebook.react.viewmanagers.RTNSamsungPayButtonManagerInterface
 import com.facebook.react.viewmanagers.RTNSamsungPayButtonManagerDelegate
 import com.moyasarsdk.Logger
-import com.moyasarsdk.samsungpay.SamsungPayButtonFragmentManagerImpl
 
 // TODO: Re-check this entire file once official docs for creating a native fragment in the new architecture of React Native are available (03/2025). Implementing it was very tricky and tedious.
 @ReactModule(name = SamsungPayButtonFragmentManagerImpl.REACT_CLASS)

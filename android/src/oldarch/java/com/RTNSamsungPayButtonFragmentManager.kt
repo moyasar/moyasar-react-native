@@ -13,7 +13,6 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.moyasarsdk.Logger
-import com.moyasarsdk.samsungpay.SamsungPayButtonFragmentManagerImpl
 
 
 public class RTNSamsungPayButtonFragmentManager(var reactContext: ReactApplicationContext) : ViewGroupManager<FrameLayout>() {

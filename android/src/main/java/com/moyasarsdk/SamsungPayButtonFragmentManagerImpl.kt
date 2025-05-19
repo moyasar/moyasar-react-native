@@ -1,4 +1,4 @@
-package com.moyasarsdk.samsungpay
+package com.moyasarsdk
 
 import android.view.Choreographer
 import android.view.View
@@ -21,6 +21,8 @@ import com.facebook.react.uimanager.events.Event
 import com.facebook.react.uimanager.events.RCTEventEmitter
 import com.moyasarsdk.BuildConfig
 import com.moyasarsdk.Logger
+import com.moyasarsdk.samsungpay.MerchantInfo
+import com.moyasarsdk.samsungpay.SamsungPayButtonFragment
 
 // TODO: Re-check this entire file once official docs for creating a native fragment in the new architecture of React Native are available (03/2025). Implementing it was very tricky and tedious.
 // This file is resposible for the integration between React Native layer and the Android native layer
