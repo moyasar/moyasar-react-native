@@ -1,6 +1,6 @@
 import {
+  Platform,
   requireNativeComponent,
-  UIManager,
   View,
   type HostComponent,
 } from 'react-native';
@@ -11,8 +11,8 @@ import type {
 import { SAMSUNG_PAY_BUTTON_COMPONENT_NAME } from '../../specs/RTNSamsungPayNativeComponent';
 import { debugLog, errorLog } from '../../helpers/debug_log';
 
-const isSamsungPayComponentAvailable =
-  UIManager.getViewManagerConfig(SAMSUNG_PAY_BUTTON_COMPONENT_NAME) != null;
+// Just a simple check for optimization when we are sure that the component will not be available on other devices
+const isSamsungPayComponentAvailable = Platform.OS === 'android';
 
 let SamsungPayButton: HostComponent<NativeProps>;
 
@@ -58,7 +58,7 @@ if (isSamsungPayComponentAvailable) {
     'Moyasar SDK: Samsung Pay component is not available on this device.'
   );
 
-  // Shouldn't really happen because the Samsung Pay compoent checks if the device is an Android device, but if it does, we will use a fallback component
+  // Shouldn't really render because the Samsung Pay compoent checks if the device is an Android device, but if it does, we will use a fallback component
 
   SamsungPayButton = FallbackComponent;
 }

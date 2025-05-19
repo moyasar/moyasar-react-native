@@ -8,34 +8,22 @@ import android.view.ViewTreeObserver
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.module.annotations.ReactModule
-import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
-import com.facebook.react.uimanager.ViewManagerDelegate
-import com.facebook.react.uimanager.UIManagerHelper
-import com.facebook.react.uimanager.events.Event
-import com.facebook.react.viewmanagers.RTNSamsungPayButtonManagerInterface
-import com.facebook.react.viewmanagers.RTNSamsungPayButtonManagerDelegate
 import com.moyasarsdk.Logger
 import com.moyasarsdk.samsungpay.SamsungPayButtonFragmentManagerImpl
 
-// TODO: Re-check this entire file once official docs for creating a native fragment in the new architecture of React Native are available (03/2025). Implementing it was very tricky and tedious.
-@ReactModule(name = SamsungPayButtonFragmentManagerImpl.REACT_CLASS)
-public class SamsungPayButtonFragmentManager(private val reactContext: ReactApplicationContext) : ViewGroupManager<FrameLayout>(), RTNSamsungPayButtonManagerInterface<FrameLayout> {
 
-    private val delegate = RTNSamsungPayButtonManagerDelegate(this)
-
-    override fun getDelegate(): ViewManagerDelegate<FrameLayout> = delegate
-
+public class RTNSamsungPayButtonFragmentManager(var reactContext: ReactApplicationContext) : ViewGroupManager<FrameLayout>() {
+ 
     override fun getName() = SamsungPayButtonFragmentManagerImpl.REACT_CLASS
 
     /**
      * Return a FrameLayout which will later hold the Fragment
      */
-    override fun createViewInstance(reactContext: ThemedReactContext) = SamsungPayButtonFragmentManagerImpl.createViewInstance(reactContext)
+    public override fun createViewInstance(reactContext: ThemedReactContext) = SamsungPayButtonFragmentManagerImpl.createViewInstance(reactContext)
 
     /**
      * Handle "create" command id (called from JS) and call createFragment method
@@ -57,9 +45,17 @@ public class SamsungPayButtonFragmentManager(private val reactContext: ReactAppl
     }
 
     @ReactProp(name = "merchantInfo")
-    override fun setMerchantInfo(view: FrameLayout, merchantInfoMap: ReadableMap?) {
-        Logger.d("MoyasarSDK", "setMerchantInfo new arch")
+    fun setMerchantInfo(view: FrameLayout, merchantInfoMap: ReadableMap?) {
+        Logger.d("MoyasarSDK", "setMerchantInfo old arch")
 
         SamsungPayButtonFragmentManagerImpl.setMerchantInfo(view, merchantInfoMap)
+    }
+
+    override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {
+        return mapOf(
+            "paymentResult" to mapOf(
+                "registrationName" to "onPaymentResult"
+            )
+        )
     }
 }
