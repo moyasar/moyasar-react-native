@@ -1,4 +1,4 @@
-package com.moyasarsdk.samsungpay
+package com.moyasarsdk
 
 import android.view.Choreographer
 import android.view.View
@@ -28,7 +28,7 @@ object SamsungPayButtonFragmentManagerImpl {
 
     private lateinit var propMerchantInfo: MerchantInfo
 
-    const val REACT_CLASS = "RTNSamsungPayButtonFragmentManager"
+    const val REACT_CLASS = "RTNSamsungPayButton"
     private const val COMMAND_CREATE = "CreateSamsungPayButtonFragment"
 
     fun createViewInstance(reactContext: ThemedReactContext) = FrameLayout(reactContext)
