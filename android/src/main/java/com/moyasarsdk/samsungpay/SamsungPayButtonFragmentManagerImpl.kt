@@ -28,7 +28,7 @@ object SamsungPayButtonFragmentManagerImpl {
 
     private lateinit var propMerchantInfo: MerchantInfo
 
-    const val REACT_CLASS = "RTNSamsungPayButton"
+    const val REACT_CLASS = "RTNSamsungPayButtonFragmentManager"
     private const val COMMAND_CREATE = "CreateSamsungPayButtonFragment"
 
     fun createViewInstance(reactContext: ThemedReactContext) = FrameLayout(reactContext)
