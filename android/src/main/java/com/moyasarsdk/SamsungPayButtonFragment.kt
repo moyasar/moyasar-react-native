@@ -1,4 +1,4 @@
-package com.moyasarsdk.samsungpay
+package com.moyasarsdk
 
 import android.os.Bundle
 import android.view.LayoutInflater

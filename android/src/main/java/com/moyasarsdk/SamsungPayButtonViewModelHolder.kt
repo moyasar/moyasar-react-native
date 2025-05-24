@@ -1,4 +1,4 @@
-package com.moyasarsdk.samsungpay
+package com.moyasarsdk
 
 // TODO: Implement a better way than this
 internal object SamsungPayButtonViewModelHolder {
