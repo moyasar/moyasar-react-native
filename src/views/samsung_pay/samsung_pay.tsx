@@ -155,7 +155,7 @@ export function SamsungPay({
           amount: toMajor(paymentConfig.amount, paymentConfig.currency),
           currency: paymentConfig.currency,
           supportedNetworks: paymentConfig.supportedNetworks,
-          orderNumber: paymentConfig.samsungPay?.orderNumber,
+          orderNumber: paymentConfig.samsungPay?.orderNumber || null,
         }}
         onPaymentResult={(result) => {
           if (!result.nativeEvent.result) {

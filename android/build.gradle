@@ -108,7 +108,7 @@ dependencies {
 if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
-    libraryName = "MoyasarSdk"
+    libraryName = "react-native-moyasar-sdk"
     codegenJavaPackageName = "com.moyasarsdk"
   }
 }

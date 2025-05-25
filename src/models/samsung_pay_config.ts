@@ -29,7 +29,7 @@ export class SamsungPayConfig {
   }: {
     serviceId: string;
     merchantName: string;
-    orderNumber?: string | null;
+    orderNumber?: string;
     manual?: boolean;
   }) {
     this.serviceId = serviceId;
