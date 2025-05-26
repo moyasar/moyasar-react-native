@@ -4,7 +4,7 @@
   "description": "React Native Moyasar SDK",
   "react-native": "./src/index.tsx",
   "source": "./src/index.tsx",
-  "main": "./lib/commonjs/index.js",
+  "main": "./index.js",
   "module": "./index.js",
   "exports": {
     ".": {
@@ -14,7 +14,7 @@
       },
       "require": {
         "types": "./lib/typescript/commonjs/src/index.d.ts",
-        "default": "./lib/commonjs/index.js"
+        "default": "./index.js"
       }
     }
   },
