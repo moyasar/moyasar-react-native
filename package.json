@@ -199,8 +199,7 @@
     },
     "android": {
       "javaPackageName": "com.moyasarsdk"
-    },
-    "includesGeneratedCode": false
+    }
   },
   "create-react-native-library": {
     "languages": "kotlin-objc",
