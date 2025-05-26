@@ -2,9 +2,10 @@
   "name": "react-native-moyasar-sdk",
   "version": "0.6.4",
   "description": "React Native Moyasar SDK",
+  "react-native": "./src/index.tsx",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
-  "module": "index.js",
+  "module": "./index.js",
   "exports": {
     ".": {
       "import": {
