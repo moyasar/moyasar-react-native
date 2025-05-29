@@ -4,17 +4,17 @@
   "description": "React Native Moyasar SDK",
   "react-native": "./src/index.tsx",
   "source": "./src/index.tsx",
-  "main": "./index.js",
-  "module": "./index.js",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
   "exports": {
     ".": {
       "import": {
         "types": "./lib/typescript/module/src/index.d.ts",
-        "default": "./index.js"
+        "default": "./lib/module/index.js"
       },
       "require": {
         "types": "./lib/typescript/commonjs/src/index.d.ts",
-        "default": "./index.js"
+        "default": "./lib/commonjs/index.js"
       }
     }
   },
