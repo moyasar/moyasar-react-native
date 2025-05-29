@@ -1,7 +1,12 @@
+/**
+ * @type {import('@react-native-community/cli-types').UserDependencyConfig}
+ */
 module.exports = {
-  dependencies: {
-    'react-native-moyasar-sdk': {
-      root: __dirname,
+  dependency: {
+    platforms: {
+      android: {
+        cmakeListsPath: 'generated/jni/CMakeLists.txt',
+      },
     },
   },
 };
