@@ -4,8 +4,8 @@
   "description": "React Native Moyasar SDK",
   "react-native": "./src/index.tsx",
   "source": "./src/index.tsx",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "./index.js",
+  "module": "./index.js",
   "exports": {
     ".": {
       "import": {
