@@ -27,6 +27,7 @@ describe('PaymentRequest', () => {
       callbackUrl: 'https://example.com/callback',
     });
 
+    expect(paymentRequest.givenId).toBeUndefined();
     expect(paymentRequest.amount).toBe(1000);
     expect(paymentRequest.currency).toBe('SAR');
     expect(paymentRequest.description).toBeUndefined();
@@ -59,6 +60,7 @@ describe('PaymentRequest', () => {
     expect(ccSource.manual).toBe('true');
 
     const paymentRequest = new PaymentRequest({
+      givenId: '123e4567-e89b-12d3-a456-426614174000',
       amount: 1000,
       currency: 'USD',
       description: 'Test payment',
@@ -67,6 +69,7 @@ describe('PaymentRequest', () => {
       callbackUrl: 'https://example.com/callback',
     });
 
+    expect(paymentRequest.givenId).toBe('123e4567-e89b-12d3-a456-426614174000');
     expect(paymentRequest.amount).toBe(1000);
     expect(paymentRequest.currency).toBe('USD');
     expect(paymentRequest.description).toBe('Test payment');
@@ -89,6 +92,7 @@ describe('PaymentRequest', () => {
     expect(applePaySource.manualPayment).toBe('true');
 
     const paymentRequest = new PaymentRequest({
+      givenId: '123e4567-e89b-12d3-a456-426614174000',
       amount: 10000,
       currency: 'SAR',
       description: 'Test payment',
@@ -96,6 +100,7 @@ describe('PaymentRequest', () => {
       source: applePaySource,
     });
 
+    expect(paymentRequest.givenId).toBe('123e4567-e89b-12d3-a456-426614174000');
     expect(paymentRequest.amount).toBe(10000);
     expect(paymentRequest.currency).toBe('SAR');
     expect(paymentRequest.description).toBe('Test payment');
@@ -116,6 +121,7 @@ describe('PaymentRequest', () => {
     });
 
     const paymentRequest = new PaymentRequest({
+      givenId: '123e4567-e89b-12d3-a456-426614174000',
       amount: 1000,
       currency: 'USD',
       description: 'Test payment',
@@ -127,6 +133,7 @@ describe('PaymentRequest', () => {
     const json = paymentRequest.toJson();
 
     expect(json).toEqual({
+      given_id: '123e4567-e89b-12d3-a456-426614174000',
       amount: 1000,
       currency: 'USD',
       description: 'Test payment',
