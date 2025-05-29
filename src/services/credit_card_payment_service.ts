@@ -93,6 +93,7 @@ export class CreditCardPaymentService {
     debugLog('Moyasar SDK: Begin CC payment process...');
 
     const paymentRequest = new PaymentRequest({
+      givenId: paymentConfig.givenId,
       amount: paymentConfig.amount,
       currency: paymentConfig.currency,
       description: paymentConfig.description,

@@ -28,6 +28,7 @@ export async function onApplePayResponse(
   });
 
   const paymentRequest = new MoyasarPaymentRequest({
+    givenId: paymentConfig.givenId,
     amount: paymentConfig.amount,
     currency: paymentConfig.currency,
     description: paymentConfig.description,

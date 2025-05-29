@@ -44,6 +44,7 @@ export class StcPayService {
     });
 
     const paymentRequest = new PaymentRequest({
+      givenId: paymentConfig.givenId,
       amount: paymentConfig.amount,
       currency: paymentConfig.currency,
       description: paymentConfig.description,
