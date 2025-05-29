@@ -11,11 +11,11 @@ import {
   PaymentResponse,
   PaymentStatus,
   StcPay,
+  SamsungPay,
+  SamsungPayConfig,
   TokenResponse,
   type PaymentResult,
 } from 'react-native-moyasar-sdk';
-import { SamsungPay } from '../../src/views/samsung_pay/samsung_pay';
-import { SamsungPayConfig } from '../../src/models/samsung_pay_config';
 
 const paymentConfig = new PaymentConfig({
   // givenId: '013d92f2-c67b-49c6-ae03-d7c548c771a2',
