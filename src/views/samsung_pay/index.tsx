@@ -27,11 +27,9 @@ let FallbackComponent = (() => {
 if (isSamsungPayComponentAvailable) {
   // We will Use either codegen or requireNativeComponent based on availability
 
-  // Try to import from the spec (new arch)
+  // Try to import from the spec
   try {
-    debugLog(
-      'Moyasar SDK: Importing Samsung Pay component from spec (new arch)...'
-    );
+    debugLog('Moyasar SDK: Importing Samsung Pay component from spec...');
 
     SamsungPayButton =
       require('../../specs/RTNSamsungPayNativeComponent').default;
