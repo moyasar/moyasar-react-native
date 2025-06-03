@@ -15,6 +15,7 @@ import {
   SamsungPayConfig,
   TokenResponse,
   type PaymentResult,
+  UnexpectedError,
 } from 'react-native-moyasar-sdk';
 
 const paymentConfig = new PaymentConfig({
@@ -26,7 +27,7 @@ const paymentConfig = new PaymentConfig({
   description: 'Test payment',
   metadata: { size: '250 g' },
   supportedNetworks: ['mada', 'visa', 'mastercard', 'amex'],
-  creditCard: new CreditCardConfig({ saveCard: true, manual: false }),
+  creditCard: new CreditCardConfig({ saveCard: false, manual: false }),
   applePay: new ApplePayConfig({
     merchantId: 'merchant.mysr.aalrabiah',
     label: 'Test Apple Pay from app',
@@ -72,6 +73,8 @@ function onPaymentResult(paymentResult: PaymentResult) {
       console.log(`Network error message: ${paymentResult.message}`);
     } else if (paymentResult instanceof GeneralError) {
       console.log(`General error message: ${paymentResult.message}`);
+    } else if (paymentResult instanceof UnexpectedError) {
+      console.log(`Unexpected error message: ${paymentResult.message}`);
     }
   }
 }

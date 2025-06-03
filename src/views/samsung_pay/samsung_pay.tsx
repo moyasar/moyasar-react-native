@@ -120,7 +120,7 @@ export function SamsungPay({
       }
 
       debugLog('Moyasar SDK: Initializing Samsung Pay fragment...');
-      // try catch
+      // TODO: Try catch
       createFragment(viewId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

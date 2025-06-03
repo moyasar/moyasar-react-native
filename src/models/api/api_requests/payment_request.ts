@@ -2,7 +2,7 @@ import type { PaymentRequestSource } from '../sources/payment_request_source';
 
 /**
  * Constructs a PaymentRequest object for creating a payment.
- * @param {givenId | null} [givenId] - Optional unique identifier for the payment (UUID v4 is recommended). It will be attached with the payment creation request to support idempotency. `It is going be the ID of the created payment`.
+ * @param {givenId | null} [givenId] - Optional UUID for the payment (UUID v4 is recommended). It will be attached with the payment creation request to support idempotency. `It is going be the ID of the created payment`.
  * @param {number} amount - The amount to be charged in the smallest currency unit. For example, to charge `SAR 257.58` you will have the [amount] as `25758`. In other words, 10 SAR = 10 * 100 Halalas. Integer values only.
  * @param {string} [currency='SAR'] - The currency code for the payment. Defaults to 'SAR'. Must be in ISO 4217 3-letter currency code format.
  * @param {string | null} [description] - Can be any string you want to tag the payment. For example `Payment for Order #34321`.

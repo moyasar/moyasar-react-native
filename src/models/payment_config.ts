@@ -22,7 +22,7 @@ export class PaymentConfig {
 
   /**
    * Constructs a new PaymentConfig instance with the provided settings.
-   * @param givenId - Optional unique identifier for the payment (UUID v4 is recommended). It will be attached with the payment creation request to support idempotency. `It is going be the ID of the created payment`.
+   * @param givenId - Optional UUID for the payment (UUID v4 is recommended). It will be attached with the payment creation request to support idempotency. `It is going be the ID of the created payment`.
    * @param publishableApiKey - Your Moyasar publishable API key - https://docs.moyasar.com/get-your-api-keys.
    * @param amount - The amount to be charged in the smallest currency unit. For example, to charge `SAR 257.58` you will have the [amount] as `25758`. In other words, 10 SAR = 10 * 100 Halalas. Integer values only.
    * @param merchantCountryCode - The country code of the merchant’s principle place of business. Defaults to 'SA'. Must be in ISO 3166-1 alpha-2 country code format.

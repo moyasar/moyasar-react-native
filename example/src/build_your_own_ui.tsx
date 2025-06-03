@@ -9,6 +9,7 @@ import {
   PaymentRequest,
   PaymentResponse,
   PaymentStatus,
+  SamsungPayRequestSource,
   sendOtp,
   StcPayRequestSource,
   StcPayResponseSource,
@@ -30,6 +31,7 @@ const ccSource = new CreditCardRequestSource({
 });
 
 const ccPaymentRequest = new PaymentRequest({
+  // givenId: '013d92f2-c67b-49c6-ae03-d7c548c771a2',
   amount: 1000,
   currency: 'SAR',
   description: 'Test payment',
@@ -73,7 +75,8 @@ const applePaySource = new ApplePayRequestSource({
 });
 
 const applePayPaymentRequest = new PaymentRequest({
-  amount: 1000,
+  // givenId: '013d92f2-c67b-49c6-ae03-d7c548c771a2',
+  amount: 20000,
   currency: 'SAR',
   description: 'Test payment',
   metadata: { size: '250 g' },
@@ -88,6 +91,29 @@ async function payByApplePay() {
   console.log(`Apple Pay payment result: ${JSON.stringify(paymentResponse)}`);
 }
 
+// Samsung Pay payment
+
+const samsungPaySource = new SamsungPayRequestSource({
+  samsungPayToken: 'SAMSUNG_PAY_PAYMENT_TOKEN', // Replace with actual Samsung Pay payment token from Samsung Pay APIs
+});
+
+const samsungPayPaymentRequest = new PaymentRequest({
+  // givenId: '013d92f2-c67b-49c6-ae03-d7c548c771a2',
+  amount: 20000,
+  currency: 'SAR',
+  description: 'Test payment',
+  metadata: { size: '250 g' },
+  source: samsungPaySource,
+});
+
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function payBySamsungePay() {
+  const paymentResponse = await createPayment(samsungPayPaymentRequest, apiKey);
+
+  console.log(`Samsung Pay payment result: ${JSON.stringify(paymentResponse)}`);
+}
+
 // Stc Pay payment
 
 const stcPaySource = new StcPayRequestSource({
@@ -95,6 +121,7 @@ const stcPaySource = new StcPayRequestSource({
 });
 
 const stcPayPaymentRequest = new PaymentRequest({
+  // givenId: '013d92f2-c67b-49c6-ae03-d7c548c771a2',
   amount: 1000,
   currency: 'SAR',
   description: 'Test payment',
@@ -119,8 +146,20 @@ async function payUsingStcPay() {
     }
 
     // After the user enters the OTP, send it to Moyasar using the `sendOtp` function
-    await sendOtp('123456', paymentResponse.source.transactionUrl);
+    const response = await sendOtp(
+      '123456',
+      paymentResponse.source.transactionUrl
+    );
+
     // Handle result
+
+    if (response instanceof PaymentResponse) {
+      // Handle successful payment
+      console.log(`STC Pay payment succeeded: ${JSON.stringify(response)}`);
+    } else {
+      // Handle error cases
+      console.error(`STC Pay payment failed: ${JSON.stringify(response)}`);
+    }
   } else {
     // Handle MoyasarError
   }
