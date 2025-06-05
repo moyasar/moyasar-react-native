@@ -18,8 +18,8 @@ If you are utilizing the `TokenRequest` class directly, change the following:
 ### Needs attention:
 
 - Supply the `merchantCountryCode` field in the `PaymentConfig` to indicate your merchant’s principle place of business. Previously, this was based on the currency, which was less precise. Now, you should explicitly set this code for accurate payment processing (defaults to SA).
-- Supply the `givenId` field in the `PaymentConfig` object to support [Idempotency](https://docs.moyasar.com/docs/api/idempotency).
-- Check [Installation](installation) and [Basic Integration](basic-integration) documents to support and configure Samsung Pay.
+- Supply the `givenId` field in the `PaymentConfig` object to support [Idempotency](https://docs.moyasar.com/api/idempotency).
+- Check [Installation](https://docs.moyasar.com/sdk/react-native/installation) and [Basic Integration](https://docs.moyasar.com/sdk/react-native/basic-integration) documents to support and configure Samsung Pay.
 
 ## 0.6.4
 
