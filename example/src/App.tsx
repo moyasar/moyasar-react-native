@@ -11,24 +11,35 @@ import {
   PaymentResponse,
   PaymentStatus,
   StcPay,
+  SamsungPay,
+  SamsungPayConfig,
   TokenResponse,
   type PaymentResult,
+  UnexpectedError,
 } from 'react-native-moyasar-sdk';
 
 const paymentConfig = new PaymentConfig({
+  // givenId: '013d92f2-c67b-49c6-ae03-d7c548c771a2',
   publishableApiKey: 'pk_test_U38gMHTgVv4wYCd35Zk1JSEd1ZyMYyA9oQ7T4rKa',
-  amount: 10001,
+  amount: 20001,
   currency: 'SAR',
+  merchantCountryCode: 'SA',
   description: 'Test payment',
   metadata: { size: '250 g' },
   supportedNetworks: ['mada', 'visa', 'mastercard', 'amex'],
-  creditCard: new CreditCardConfig({ saveCard: true, manual: false }),
+  creditCard: new CreditCardConfig({ saveCard: false, manual: false }),
   applePay: new ApplePayConfig({
     merchantId: 'merchant.mysr.aalrabiah',
     label: 'Test Apple Pay from app',
     manual: false,
   }),
   createSaveOnlyToken: false,
+  samsungPay: new SamsungPayConfig({
+    serviceId: 'ea810dafb758408fa530b1',
+    merchantName: 'Test Samsung Pay from app',
+    orderNumber: 'c553ed70-fb79-487c-b3d2-15aca6aff90c',
+    manual: false,
+  }),
 });
 
 function onPaymentResult(paymentResult: PaymentResult) {
@@ -62,6 +73,8 @@ function onPaymentResult(paymentResult: PaymentResult) {
       console.log(`Network error message: ${paymentResult.message}`);
     } else if (paymentResult instanceof GeneralError) {
       console.log(`General error message: ${paymentResult.message}`);
+    } else if (paymentResult instanceof UnexpectedError) {
+      console.log(`Unexpected error message: ${paymentResult.message}`);
     }
   }
 }
@@ -74,6 +87,10 @@ export default function App() {
           paymentConfig={paymentConfig}
           onPaymentResult={onPaymentResult}
           style={{ textInputs: { borderWidth: 1.25 } }}
+        />
+        <SamsungPay
+          paymentConfig={paymentConfig}
+          onPaymentResult={onPaymentResult}
         />
         <CreditCard
           paymentConfig={paymentConfig}

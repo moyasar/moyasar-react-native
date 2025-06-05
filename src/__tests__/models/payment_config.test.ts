@@ -39,6 +39,7 @@ describe('PaymentConfig', () => {
 
   it('should create an instance with all valid parameters', () => {
     const config = new PaymentConfig({
+      givenId: '123e4567-e89b-12d3-a456-426614174000',
       publishableApiKey: 'test_key',
       amount: 1000,
       currency: 'SAR',
@@ -61,6 +62,7 @@ describe('PaymentConfig', () => {
       createSaveOnlyToken: true,
     });
 
+    expect(config.givenId).toBe('123e4567-e89b-12d3-a456-426614174000');
     expect(config.publishableApiKey).toBe('test_key');
     expect(config.amount).toBe(1000);
     expect(config.currency).toBe('SAR');

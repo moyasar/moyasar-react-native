@@ -3,6 +3,7 @@ import { PaymentType } from '../../payment_type';
 import { ApplePayPaymentResponseSource } from '../sources/apple_pay/apple_pay_response_source';
 import { CreditCardResponseSource } from '../sources/credit_card/credit_card_response_source';
 import type { PaymentResponseSource } from '../sources/payment_response_source';
+import { SamsungPayPaymentResponseSource } from '../sources/samsung_pay/samsung_pay_response_source';
 import { StcPayResponseSource } from '../sources/stc_pay/stc_pay_response_source';
 
 /**
@@ -121,6 +122,9 @@ export class PaymentResponse {
         break;
       case PaymentType.stcPay:
         paymentSource = StcPayResponseSource.fromJson(json.source);
+        break;
+      case PaymentType.samsungPay:
+        paymentSource = SamsungPayPaymentResponseSource.fromJson(json.source);
         break;
       default:
         paymentSource = json.source;

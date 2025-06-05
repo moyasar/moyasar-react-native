@@ -1,2 +1,14 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- Looks like there are 2 manifests for supporting different AGP versions, see build.gradle 'supportsNamespace()' -->
+<manifest xmlns:tools="http://schemas.android.com/tools"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+        <package android:name="com.samsung.android.spay" />
+        <package android:name="com.samsung.android.samsungpay.gear" />
+   </queries>
+   <application>
+        <meta-data
+            android:name="spay_sdk_api_level"
+            android:value="2.22"
+            tools:node="merge"/>
+    </application>
 </manifest>

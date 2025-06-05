@@ -5,7 +5,6 @@
  * @param {string} cvc - Credit Card's security code.
  * @param {string} month - Two digit number representing the Credit Card's expiration month.
  * @param {string} year - Two or four digit number representing the Credit Card's expiration year.
- * @param {boolean | null} [saveOnly] - Optional
  * @param {string} callbackUrl - The URL to be redirected to after a 3D secure transaction (e.g., https://sdk.moyasar.com/return).
  * @param {Record<string, string | number | boolean> | null} [metadata] - Adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
  */
@@ -15,7 +14,6 @@ export class TokenRequest {
   cvc: string;
   month: string;
   year: string;
-  saveOnly?: boolean | null;
   callbackUrl: string;
   metadata?: Record<string, string | number | boolean> | null;
 
@@ -25,7 +23,6 @@ export class TokenRequest {
     cvc,
     month,
     year,
-    saveOnly,
     callbackUrl,
     metadata,
   }: {
@@ -34,7 +31,6 @@ export class TokenRequest {
     cvc: string;
     month: string;
     year: string;
-    saveOnly?: boolean | null;
     callbackUrl: string;
     metadata?: Record<string, string | number | boolean> | null;
   }) {
@@ -43,7 +39,6 @@ export class TokenRequest {
     this.cvc = cvc;
     this.month = month;
     this.year = year;
-    this.saveOnly = saveOnly;
     this.callbackUrl = callbackUrl;
     this.metadata = metadata;
   }
@@ -55,7 +50,7 @@ export class TokenRequest {
       cvc: this.cvc,
       month: this.month,
       year: this.year,
-      save_only: this.saveOnly,
+      save_only: true,
       callback_url: this.callbackUrl,
       metadata: this.metadata,
     };

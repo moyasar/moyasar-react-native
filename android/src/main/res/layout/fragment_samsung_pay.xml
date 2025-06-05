@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <FrameLayout 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+<!-- TODO: Support below contentDescription -->
+        <ImageView
+            android:id="@+id/samsung_pay_button"
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
+            android:contentDescription="pay_with_samsung_pay"
+            android:src="@drawable/samsung_pay_button_basic"
+            android:visibility="invisible" />
+
+    </FrameLayout>
+</layout>

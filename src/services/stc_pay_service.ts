@@ -44,6 +44,7 @@ export class StcPayService {
     });
 
     const paymentRequest = new PaymentRequest({
+      givenId: paymentConfig.givenId,
       amount: paymentConfig.amount,
       currency: paymentConfig.currency,
       description: paymentConfig.description,
@@ -128,6 +129,7 @@ export class StcPayService {
 
     const response = await sendOtp(otp, currentPayment.source.transactionUrl);
 
+    // TODO: Refactor to handle `instanceof PaymentResponse` to check for success rather than `isMoyasarError`
     if (isMoyasarError(response)) {
       errorLog(
         `Moyasar SDK: STC Payment OTP submission response failed with error: ${response}`

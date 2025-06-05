@@ -2,18 +2,19 @@
   "name": "react-native-moyasar-sdk",
   "version": "0.6.4",
   "description": "React Native Moyasar SDK",
+  "react-native": "./src/index.tsx",
   "source": "./src/index.tsx",
-  "main": "./lib/commonjs/index.js",
-  "module": "./lib/module/index.js",
+  "main": "index.js",
+  "module": "index.js",
   "exports": {
     ".": {
       "import": {
         "types": "./lib/typescript/module/src/index.d.ts",
-        "default": "./lib/module/index.js"
+        "default": "./index.js"
       },
       "require": {
         "types": "./lib/typescript/commonjs/src/index.d.ts",
-        "default": "./lib/commonjs/index.js"
+        "default": "./index.js"
       }
     }
   },
@@ -46,9 +47,14 @@
     "release": "release-it"
   },
   "keywords": [
+    "moyasar",
     "react-native",
     "ios",
-    "android"
+    "android",
+    "apple-pay",
+    "samsung-pay",
+    "credit-card",
+    "stc-pay"
   ],
   "repository": {
     "type": "git",

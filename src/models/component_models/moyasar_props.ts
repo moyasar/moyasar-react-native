@@ -18,6 +18,11 @@ export interface ApplePayProps {
   style?: ApplePayMoyasarStyle;
 }
 
+export interface SamsungPayProps {
+  paymentConfig: PaymentConfig;
+  onPaymentResult: ResultCallback;
+}
+
 export interface StcPayProps {
   paymentConfig: PaymentConfig;
   onPaymentResult: ResultCallback;

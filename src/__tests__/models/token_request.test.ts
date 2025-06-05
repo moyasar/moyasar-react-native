@@ -16,7 +16,6 @@ describe('TokenRequest', () => {
     expect(tokenRequest.cvc).toBe('123');
     expect(tokenRequest.month).toBe('12');
     expect(tokenRequest.year).toBe('28');
-    expect(tokenRequest.saveOnly).toBe(undefined);
     expect(tokenRequest.callbackUrl).toBe('https://sdk.moyasar.com/return');
     expect(tokenRequest.metadata).toBe(undefined);
   });
@@ -28,7 +27,6 @@ describe('TokenRequest', () => {
       cvc: '123',
       month: '12',
       year: '2028',
-      saveOnly: true,
       callbackUrl: 'https://sdk.moyasar.com/return',
       metadata: { orderId: '12345' },
     });
@@ -38,7 +36,6 @@ describe('TokenRequest', () => {
     expect(tokenRequest.cvc).toBe('123');
     expect(tokenRequest.month).toBe('12');
     expect(tokenRequest.year).toBe('2028');
-    expect(tokenRequest.saveOnly).toBe(true);
     expect(tokenRequest.callbackUrl).toBe('https://sdk.moyasar.com/return');
     expect(tokenRequest.metadata?.orderId).toEqual('12345');
   });
@@ -50,7 +47,6 @@ describe('TokenRequest', () => {
       cvc: '123',
       month: '12',
       year: '2028',
-      saveOnly: true,
       callbackUrl: 'https://sdk.moyasar.com/return',
       metadata: { orderId: '12345' },
     });
