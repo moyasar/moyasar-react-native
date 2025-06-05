@@ -1,3 +1,26 @@
+## 0.7.0
+
+- [Samsung Pay] Support Samsung Pay feature.
+- [General] Support customizing merchant's country code.
+- [General] Support `givenId` feature.
+- [Credit Card Token Fix] Always enforce the `saveOnly` field as `true` in the `TokenRequest` class, and remove it from the public SDK API.
+- [General] Enhancements.
+
+If you encounter any issues, make sure to clean your project and rebuild it.
+
+### Required changes (only if consuming the `TokenRequest` class directly):
+
+If you are utilizing the `TokenRequest` class directly, change the following:
+
+- If you supplied `saveOnly` parameter as `true`. Remove it since now it will be always true in this context.
+- If you didn't supply the `saveOnly` parameter (or made it `false`). Switch to using the `PaymentRequest` class with the `CreditCardRequestSource` class and set the `tokenizeCard` option to `true`. It will achieve the same result.
+
+### Needs attention:
+
+- Supply the `merchantCountryCode` field in the `PaymentConfig` to indicate your merchant’s principle place of business. Previously, this was based on the currency, which was less precise. Now, you should explicitly set this code for accurate payment processing (defaults to SA).
+- Supply the `givenId` field in the `PaymentConfig` object to support [Idempotency](https://docs.moyasar.com/docs/api/idempotency).
+- Check [Installation](installation) and [Basic Integration](basic-integration) documents to support and configure Samsung Pay.
+
 ## 0.6.4
 
 - [General] Update dependencies and tooling.

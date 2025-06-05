@@ -144,7 +144,7 @@ function buildRequestHeaders(apiKey?: string): Record<string, string> {
     'Content-Type': 'application/json',
     'X-MOYASAR-LIB': 'moyasar-react-native-sdk',
     // TODO: Find a better solution for getting the version number to avoid hardcoding it. Importing the package.json file had its own issues after migrating the SDK's tooling and configuration.
-    'X-REACT-NATIVE-SDK-VERSION': '0.6.3',
+    'X-REACT-NATIVE-SDK-VERSION': '0.7.0',
   };
 
   if (apiKey) {
