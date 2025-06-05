@@ -105,7 +105,6 @@ describe('PaymentService', () => {
       cvc: '123',
       month: '12',
       year: '2028',
-      saveOnly: true,
       callbackUrl: 'https://sdk.moyasar.com/return',
       metadata: { orderId: '12345' },
     });

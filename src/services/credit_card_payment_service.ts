@@ -139,7 +139,6 @@ export class CreditCardPaymentService {
       cvc: creditCardRequestSource.cvc,
       month: creditCardRequestSource.month,
       year: creditCardRequestSource.year,
-      saveOnly: true,
       callbackUrl: 'https://sdk.moyasar.com/return',
       metadata: paymentConfig.metadata,
     });

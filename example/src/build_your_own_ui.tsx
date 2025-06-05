@@ -175,7 +175,6 @@ const tokenRequest = new TokenRequest({
   cvc: '123',
   month: '12',
   year: '28',
-  saveOnly: true,
   callbackUrl: 'https://example.com/callback', // Replace with the URL to be redirected to after a 3D secure transaction
 });
 
