@@ -32,6 +32,7 @@ const paymentConfig = new PaymentConfig({
     merchantId: 'merchant.mysr.aalrabiah',
     label: 'Test Apple Pay from app',
     manual: false,
+    saveCard: false,
   }),
   createSaveOnlyToken: false,
   samsungPay: new SamsungPayConfig({
