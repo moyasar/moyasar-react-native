@@ -25,6 +25,7 @@ export async function onApplePayResponse(
   const source = new ApplePayRequestSource({
     applePayToken: token,
     manualPayment: paymentConfig.applePay?.manual,
+    saveCard: paymentConfig.applePay?.saveCard,
   });
 
   const paymentRequest = new MoyasarPaymentRequest({
