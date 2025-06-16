@@ -1,3 +1,7 @@
+## 0.8.0
+
+- [Apple Pay] Support Apple Pay tokenization (`saveCard` field).
+
 ## 0.7.0
 
 - [Samsung Pay] Support Samsung Pay feature.
