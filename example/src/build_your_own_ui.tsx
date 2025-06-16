@@ -26,7 +26,7 @@ const ccSource = new CreditCardRequestSource({
   cvc: '123',
   month: '12',
   year: '28',
-  tokenizeCard: false,
+  tokenizeCard: false, // Set to true if you want to save (tokenize) the card after a successful payment.
   manualPayment: false,
 });
 
@@ -72,6 +72,7 @@ async function startCcPaymentAuthProcess(paymentResponse: PaymentResponse) {
 
 const applePaySource = new ApplePayRequestSource({
   applePayToken: 'APPLE_PAY_PAYMENT_TOKEN', // Replace with actual Apple Pay payment token from Apple Pay APIs
+  saveCard: false, // Set to true if you want to save (tokenize) the card after a successful payment.
 });
 
 const applePayPaymentRequest = new PaymentRequest({
