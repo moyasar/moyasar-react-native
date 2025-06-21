@@ -2,20 +2,15 @@
   "name": "react-native-moyasar-sdk",
   "version": "0.8.0",
   "description": "React Native Moyasar SDK",
+  "main": "./lib/module/index.js",
+  "module": "./lib/module/index.js",
+  "types": "./lib/typescript/src/index.d.ts",
   "react-native": "./src/index.tsx",
-  "source": "./src/index.tsx",
-  "main": "index.js",
-  "module": "index.js",
   "exports": {
     ".": {
-      "import": {
-        "types": "./lib/typescript/module/src/index.d.ts",
-        "default": "./index.js"
-      },
-      "require": {
-        "types": "./lib/typescript/commonjs/src/index.d.ts",
-        "default": "./index.js"
-      }
+      "source": "./src/index.tsx",
+      "types": "./lib/typescript/src/index.d.ts",
+      "default": "./lib/module/index.js"
     },
     "./package.json": "./package.json"
   },
@@ -144,13 +139,6 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      "codegen",
-      [
-        "commonjs",
-        {
-          "esm": true
-        }
-      ],
       [
         "module",
         {
@@ -160,8 +148,7 @@
       [
         "typescript",
         {
-          "project": "tsconfig.build.json",
-          "esm": true
+          "project": "tsconfig.build.json"
         }
       ]
     ]
