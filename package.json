@@ -5,9 +5,9 @@
   "main": "./lib/module/index.js",
   "module": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
-  "react-native": "./src/index.tsx",
   "exports": {
     ".": {
+      "react-native": "./src/index.tsx",
       "source": "./src/index.tsx",
       "types": "./lib/typescript/src/index.d.ts",
       "default": "./lib/module/index.js"
