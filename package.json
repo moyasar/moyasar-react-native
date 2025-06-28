@@ -86,7 +86,7 @@
     "prettier": "^3.0.3",
     "react": "19.0.0",
     "react-native": "0.79.2",
-    "react-native-builder-bob": "^0.40.11",
+    "react-native-builder-bob": "^0.40.12",
     "react-native-svg": "^15.11.2",
     "react-native-webview": "^13.13.4",
     "release-it": "^18.1.2",
@@ -164,7 +164,7 @@
   "create-react-native-library": {
     "languages": "kotlin-objc",
     "type": "fabric-view",
-    "version": "0.50.3"
+    "version": "0.51.1"
   },
   "dependencies": {
     "decimal.js": "^10.4.3",
