@@ -1,5 +1,3 @@
-// @flow
-
 // https://www.w3.org/TR/payment-request/#paymentmethoddata-dictionary
 export type PaymentMethodData = {
   supportedMethods: Array<string>,

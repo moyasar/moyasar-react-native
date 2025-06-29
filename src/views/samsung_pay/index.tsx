@@ -7,8 +7,8 @@ import {
 import type {
   MerchantInfo,
   NativeProps,
-} from '../../specs/RTNSamsungPayNativeComponent';
-import { SAMSUNG_PAY_BUTTON_COMPONENT_NAME } from '../../specs/RTNSamsungPayNativeComponent';
+} from '../../specs/RTNSamsungPayNativeComponent.android';
+import { SAMSUNG_PAY_BUTTON_COMPONENT_NAME } from '../../specs/RTNSamsungPayNativeComponent.android';
 import { debugLog, errorLog } from '../../helpers/debug_log';
 
 // Just a simple check for optimization when we are sure that the component will not be available on other devices

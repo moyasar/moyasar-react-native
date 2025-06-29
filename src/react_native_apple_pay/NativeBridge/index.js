@@ -1,5 +1,3 @@
-// @flow
-
 import type { PaymentDetailsBase, PaymentComplete } from './types';
 
 import { NativeModules, Platform } from 'react-native';

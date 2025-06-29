@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
-#import <RTNMoyasarSpec.h>
+#import "RTNMoyasarSpec.h"
 #else
 #import <React/RCTBridgeModule.h>
 #endif
