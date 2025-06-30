@@ -1,3 +1,29 @@
+## 0.8.1
+
+- [General] Support older React Native versions.
+- [General] Enhancements.
+
+If you encounter any issues, make sure to fully clean your project and rebuild it.
+
+### Needs attention:
+
+- Make sure you have one of the followng Node.js versions installed:
+
+  - v20.19 or higher
+  - v22.12 or higher
+  - v23.4 or higher
+
+- If you are using [Jest](https://jestjs.io) and encountering issues, update your Jest configuration (likely found in your package.json or any jest.config.\* file) with the following:
+
+```js
+module.exports = {
+  // ... The rest of your configuration
+  transformIgnorePatterns: [
+    'node_modules/(?!((@)?react-native|react-native-moyasar-sdk)/)',
+  ],
+};
+```
+
 ## 0.8.0
 
 - [Apple Pay] Support Apple Pay tokenization (`saveCard` field).
