@@ -7,7 +7,7 @@ If you encounter any issues, make sure to fully clean your project and rebuild i
 
 ### Needs attention:
 
-- Make sure you have one of the followng Node.js versions installed:
+- Make sure you have one of the following Node.js versions installed:
 
   - v20.19 or higher
   - v22.12 or higher
@@ -19,7 +19,7 @@ If you encounter any issues, make sure to fully clean your project and rebuild i
 module.exports = {
   // ... The rest of your configuration
   transformIgnorePatterns: [
-    'node_modules/(?!((@)?react-native|react-native-moyasar-sdk)/)',
+    "node_modules/(?!((@)?react-native|react-native-moyasar-sdk)/)",
   ],
 };
 ```
