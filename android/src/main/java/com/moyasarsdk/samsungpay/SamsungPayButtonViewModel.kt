@@ -24,14 +24,15 @@ data class MerchantInfo(
     val amount: Double,
     val currency: String,
     val supportedNetworks: List<String>,
-    val orderNumber: String?
+    val orderNumber: String?,
+    val buttonBorderRadius: Double?
 )
 
 /**
  * Logic to handle Samsung Pay payment flow
  */
 class SamsungPayButtonViewModel(
-    private val merchantInfo: MerchantInfo,
+    val merchantInfo: MerchantInfo,
     private val paymentCallback: (String?, String?) -> Unit
 ) {
 

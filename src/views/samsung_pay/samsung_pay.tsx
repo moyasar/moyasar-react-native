@@ -1,11 +1,4 @@
-import {
-  View,
-  Platform,
-  findNodeHandle,
-  UIManager,
-  Dimensions,
-  NativeModules,
-} from 'react-native';
+import { View, Platform, findNodeHandle, UIManager } from 'react-native';
 import { SamsungPayButton } from './index';
 import type { SamsungPayProps } from '../../models/component_models/moyasar_props';
 import { debugLog, errorLog } from '../../helpers/debug_log';
@@ -22,10 +15,6 @@ import {
 import { PaymentConfig } from '../../models/payment_config';
 import { toMajor } from '../../helpers/currency_util';
 import { assert } from '../../helpers/assert';
-
-// TODO: Fix width and positioning when orientation changes
-const screenWidth = Dimensions.get('window').width;
-const samsungPayButtonWidth = screenWidth * 0.9;
 
 export async function onSamsungPayResponse(
   token: string,
@@ -79,7 +68,7 @@ function isSamsungDevice(): boolean {
   if (Platform.OS !== 'android') return false;
 
   try {
-    const manufacturer = NativeModules.PlatformConstants?.Manufacturer;
+    const manufacturer = Platform.constants.Manufacturer;
     if (!manufacturer) return true;
 
     const sanitized = manufacturer.toLowerCase().trim();
@@ -102,6 +91,7 @@ const createFragment = (viewId: number | null) =>
 export function SamsungPay({
   paymentConfig,
   onPaymentResult,
+  style,
 }: SamsungPayProps) {
   assert(
     !!paymentConfig.samsungPay,
@@ -135,8 +125,6 @@ export function SamsungPay({
     return <View />;
   }
 
-  debugLog(`Moyasar SDK: Samsung Pay button width: ${screenWidth}`);
-
   // TODO: Check why the button takes some top and bottom padding
   // If the below view is rendered but not visible,
   // it mostly mean that the Samsung device does not support Samsung Pay
@@ -145,18 +133,19 @@ export function SamsungPay({
     <View style={{ alignItems: 'center' }}>
       <SamsungPayButton
         style={{
-          height: 75,
-          width: samsungPayButtonWidth,
+          height: style?.height ?? 65,
+          width: style?.width ?? '90%',
         }}
         merchantInfo={{
-          serviceId: paymentConfig.samsungPay?.serviceId,
-          merchantName: paymentConfig.samsungPay?.merchantName,
+          serviceId: paymentConfig.samsungPay?.serviceId ?? '',
+          merchantName: paymentConfig.samsungPay?.merchantName ?? '',
           merchantId: paymentConfig.publishableApiKey.substring(0, 15), // Currently, the merchantId will be part of the publishable API key
           merchantCountryCode: paymentConfig.merchantCountryCode,
           amount: toMajor(paymentConfig.amount, paymentConfig.currency),
           currency: paymentConfig.currency,
           supportedNetworks: paymentConfig.supportedNetworks,
           orderNumber: paymentConfig.samsungPay?.orderNumber,
+          buttonBorderRadius: style?.cornerRadius,
         }}
         onPaymentResult={(result) => {
           if (!result.nativeEvent.result) {

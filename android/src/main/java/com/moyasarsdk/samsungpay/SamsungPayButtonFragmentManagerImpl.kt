@@ -78,7 +78,19 @@ object SamsungPayButtonFragmentManagerImpl {
         val currency = merchantInfoMap.getString("currency") ?: ""
         val supportedNetworksArray = merchantInfoMap.getArray("supportedNetworks") ?: Arguments.createArray()
         val supportedNetworks = mutableListOf<String>()
-        val orderNumber = merchantInfoMap.getString("orderNumber")
+
+        var orderNumber: String? = null
+        var buttonBorderRadius: Double? = null
+
+        if (merchantInfoMap.hasKey("orderNumber") && !merchantInfoMap.isNull("orderNumber")) {
+            Logger.d("MoyasarSDK", "Order number will be set")
+            orderNumber = merchantInfoMap.getString("orderNumber")
+        }
+
+        if (merchantInfoMap.hasKey("buttonBorderRadius") && !merchantInfoMap.isNull("buttonBorderRadius")) {
+            Logger.d("MoyasarSDK", "Button border radius will be set")
+            buttonBorderRadius = merchantInfoMap.getDouble("buttonBorderRadius")
+        }
 
         // TODO: Optimize if needed like this or we can use the array directly
         for (i in 0 until (supportedNetworksArray.size())) {
@@ -97,7 +109,8 @@ object SamsungPayButtonFragmentManagerImpl {
             amount = amount,
             currency = currency,
             supportedNetworks = supportedNetworks,
-            orderNumber = orderNumber
+            orderNumber = orderNumber,
+            buttonBorderRadius = buttonBorderRadius
         )
 
         Logger.d("MoyasarSDK", "Merchant info has been set: $propMerchantInfo")

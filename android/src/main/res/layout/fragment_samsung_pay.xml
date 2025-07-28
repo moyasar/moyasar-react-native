@@ -8,10 +8,16 @@
 <!-- TODO: Support below contentDescription -->
         <ImageView
             android:id="@+id/samsung_pay_button"
-            android:layout_width="wrap_content"
-            android:layout_height="75dp"
-            android:contentDescription="pay_with_samsung_pay"
-            android:src="@drawable/samsung_pay_button_basic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:src="@drawable/samsung_pay_logo"
+            android:background="@drawable/samsung_pay_button_background"
+            android:contentDescription="Pay with Samsung Pay"
+            android:layout_gravity="center" 
             android:visibility="invisible" />
 
     </FrameLayout>

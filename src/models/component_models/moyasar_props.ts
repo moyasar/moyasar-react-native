@@ -2,6 +2,7 @@ import type {
   ApplePayMoyasarStyle,
   CreditCardMoyasarStyle,
   StcPayMoyasarStyle,
+  SamsungPayMoyasarStyle,
 } from './moyasar_style';
 import type { PaymentConfig } from '../payment_config';
 import type { ResultCallback } from '../payment_result';
@@ -21,6 +22,7 @@ export interface ApplePayProps {
 export interface SamsungPayProps {
   paymentConfig: PaymentConfig;
   onPaymentResult: ResultCallback;
+  style?: SamsungPayMoyasarStyle;
 }
 
 export interface StcPayProps {
