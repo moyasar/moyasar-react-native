@@ -1,10 +1,4 @@
-import {
-  View,
-  Platform,
-  findNodeHandle,
-  UIManager,
-  NativeModules,
-} from 'react-native';
+import { View, Platform, findNodeHandle, UIManager } from 'react-native';
 import { SamsungPayButton } from './index';
 import type { SamsungPayProps } from '../../models/component_models/moyasar_props';
 import { debugLog, errorLog } from '../../helpers/debug_log';
@@ -74,7 +68,7 @@ function isSamsungDevice(): boolean {
   if (Platform.OS !== 'android') return false;
 
   try {
-    const manufacturer = NativeModules.PlatformConstants?.Manufacturer;
+    const manufacturer = Platform.constants.Manufacturer;
     if (!manufacturer) return true;
 
     const sanitized = manufacturer.toLowerCase().trim();
