@@ -92,6 +92,7 @@ export default function App() {
         <SamsungPay
           paymentConfig={paymentConfig}
           onPaymentResult={onPaymentResult}
+          style={{ width: '90%' }}
         />
         <CreditCard
           paymentConfig={paymentConfig}
@@ -101,9 +102,7 @@ export default function App() {
         <ApplePay
           paymentConfig={paymentConfig}
           onPaymentResult={onPaymentResult}
-          style={{
-            buttonType: 'buy',
-          }}
+          style={{ buttonType: 'buy' }}
         />
       </View>
     </ScrollView>

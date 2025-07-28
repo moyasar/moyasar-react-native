@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import android.graphics.drawable.GradientDrawable
 import com.moyasarsdk.databinding.FragmentSamsungPayBinding
 import com.moyasarsdk.R
 import com.moyasarsdk.Logger
@@ -61,6 +62,15 @@ class SamsungPayButtonFragment : Fragment() {
 
     private fun initView() {
         val samsungPayButton = mBinding.samsungPayButton
+
+         val backgroundDrawable = mBinding.samsungPayButton.background
+
+        if (backgroundDrawable is GradientDrawable) {
+            val radiusDp = (viewModel.merchantInfo.buttonBorderRadius)?.toFloat() ?: 12f
+            val radiusPx = radiusDp * requireContext().resources.displayMetrics.density
+            
+            backgroundDrawable.cornerRadius = radiusPx
+        }
 
         viewModel.initialize(requireContext()) { success ->
             if (success) {

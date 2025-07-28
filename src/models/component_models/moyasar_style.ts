@@ -1,4 +1,9 @@
-import { type ColorValue, type TextStyle, type ViewStyle } from 'react-native';
+import {
+  type ColorValue,
+  type DimensionValue,
+  type TextStyle,
+  type ViewStyle,
+} from 'react-native';
 
 export interface CreditCardMoyasarStyle {
   container?: ViewStyle;
@@ -11,11 +16,23 @@ export interface CreditCardMoyasarStyle {
   webviewActivityIndicatorColor?: ColorValue; // Loading indicator color for 3DS webview
 }
 
+/**
+ * Height and width can accept relative values (like '100%') or absolute values (like 50).
+ */
 export interface ApplePayMoyasarStyle {
   buttonType?: string; // 'plain' | 'buy' | 'inStore' | 'donate' | 'setUp'
   buttonStyle?: string; // 'black' | 'white' | 'whiteOutline'
-  height?: string | number;
-  width?: string | number;
+  height?: DimensionValue;
+  width?: DimensionValue;
+  cornerRadius?: number;
+}
+
+/**
+ * Height and width can accept relative values (like '100%') or absolute values (like 50).
+ */
+export interface SamsungPayMoyasarStyle {
+  height?: DimensionValue;
+  width?: DimensionValue;
   cornerRadius?: number;
 }
 

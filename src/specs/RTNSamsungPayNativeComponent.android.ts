@@ -16,6 +16,8 @@ export interface MerchantInfo {
   currency: string;
   supportedNetworks: string[];
   orderNumber?: string | null; // Must for VISA payments
+  /** Corner radius in DP unit */
+  buttonBorderRadius?: Double | null;
 }
 
 type SamsungPayPaymentResultEvent = {
