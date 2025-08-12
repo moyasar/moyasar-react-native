@@ -223,7 +223,8 @@ const defaultStyle = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 25,
+    paddingHorizontal: 25,
+    paddingVertical: 8,
   },
   title: {
     fontSize: 18,
@@ -255,14 +256,14 @@ const defaultStyle = StyleSheet.create({
   button: {
     minWidth: '100%',
     justifyContent: 'center',
-    backgroundColor: '#480986',
+    backgroundColor: '#4F008C',
     borderRadius: 9,
     padding: 10,
     height: 50,
   },
   buttonText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '500',
     textAlign: 'center',
   },

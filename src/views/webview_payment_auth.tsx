@@ -45,7 +45,7 @@ export const WebviewPaymentAuth = ({
           <View style={styles.loadingContainer}>
             <ActivityIndicator
               size="large"
-              color={customStyle?.webviewActivityIndicatorColor ?? '#235CE1'}
+              color={customStyle?.webviewActivityIndicatorColor ?? '#768DFF'}
             />
           </View>
         )}
