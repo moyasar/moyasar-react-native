@@ -14,7 +14,7 @@ import {
   getConfiguredLocalizations,
   isArabicLang,
 } from '../localizations/i18n';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { CreditCardProps } from '../models/component_models/moyasar_props';
 import { formatAmount, toMajor } from '../helpers/currency_util';
 import { CreditCardPaymentService } from '../services/credit_card_payment_service';
@@ -116,8 +116,9 @@ const CreditCardView = ({
   const [isPaymentInProgress, setIsPaymentInProgress] =
     useState<boolean>(false);
 
-  const supportedNetworks = mapCardNetworkStrings(
-    paymentConfig.supportedNetworks
+  const supportedNetworks = useMemo(
+    () => mapCardNetworkStrings(paymentConfig.supportedNetworks),
+    [paymentConfig.supportedNetworks]
   );
 
   useEffect(() => {
