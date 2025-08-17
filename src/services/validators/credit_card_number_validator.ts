@@ -24,9 +24,13 @@ export class CreditCardNumberValidator extends FieldValidator {
 
     this.addRule(
       t('moyasarTranslation:unsupportedCreditCardNetwork'),
-      (value: string) => {
+      (value: string, _?: string, supportedNetworks?: CreditCardNetwork[]) => {
+        const cardNetwork = getCreditCardNetworkFromNumber(value);
+
+        // Checks for the supported card only if supportedNetworks is provided
         return (
-          getCreditCardNetworkFromNumber(value) === CreditCardNetwork.unknown
+          cardNetwork === CreditCardNetwork.unknown ||
+          (!!supportedNetworks && !supportedNetworks.includes(cardNetwork))
         );
       }
     );
