@@ -35,3 +35,33 @@ export function isValidLuhn(cardNumber: string): boolean {
   }, 0);
   return sum % 10 === 0;
 }
+
+/**
+ * Maps an array of network strings to CreditCardNetwork enum values
+ * @param networks Array of network strings (e.g. ["visa", "mada"])
+ * @returns Array of CreditCardNetwork enum values
+ */
+export function mapCardNetworkStrings(networks: string[]): CreditCardNetwork[] {
+  return networks
+    .map((network) => {
+      const normalizedNetwork = network.toLowerCase().trim();
+
+      switch (normalizedNetwork) {
+        case 'mada':
+          return CreditCardNetwork.mada;
+        case 'visa':
+          return CreditCardNetwork.visa;
+        case 'master':
+        case 'mastercard':
+        case 'master card':
+          return CreditCardNetwork.master;
+        case 'amex':
+        case 'americanexpress':
+        case 'american express':
+          return CreditCardNetwork.amex;
+        default:
+          return CreditCardNetwork.unknown;
+      }
+    })
+    .filter((network) => network !== CreditCardNetwork.unknown);
+}

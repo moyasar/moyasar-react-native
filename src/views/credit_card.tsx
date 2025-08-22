@@ -15,7 +15,7 @@ import {
   getConfiguredLocalizations,
   isArabicLang,
 } from '../localizations/i18n';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { CreditCardProps } from '../models/component_models/moyasar_props';
 import { formatAmount, toMajor } from '../helpers/currency_util';
 import { CreditCardPaymentService } from '../services/credit_card_payment_service';
@@ -30,7 +30,10 @@ import {
   formatCreditCardNumber,
   formatExpiryDate,
 } from '../helpers/formatters';
-import { getCreditCardNetworkFromNumber } from '../helpers/credit_card_utils';
+import {
+  getCreditCardNetworkFromNumber,
+  mapCardNetworkStrings,
+} from '../helpers/credit_card_utils';
 import { mapArabicNumbers } from '../helpers/arabic_numbers_mapper';
 import { debugLog } from '../helpers/debug_log';
 import { SaudiRiyal } from '../assets/saudi_riyal';
@@ -116,15 +119,22 @@ const CreditCardView = ({
   const [isPaymentInProgress, setIsPaymentInProgress] =
     useState<boolean>(false);
 
+  const supportedNetworks = useMemo(
+    () => mapCardNetworkStrings(paymentConfig.supportedNetworks),
+    [paymentConfig.supportedNetworks]
+  );
+
   const { width, height } = useWindowDimensions();
   const isPortrait = height > width;
 
   useEffect(() => {
     setIsButtonDisabled(
-      !paymentService.validateAllFields({ name, number, expiry, cvc }) ||
-        isPaymentInProgress
+      !paymentService.validateAllFields(
+        { name, number, expiry, cvc },
+        supportedNetworks
+      ) || isPaymentInProgress
     );
-  }, [name, number, expiry, cvc, isPaymentInProgress]);
+  }, [name, number, expiry, cvc, isPaymentInProgress, supportedNetworks]);
 
   return (
     <KeyboardAvoidingView
@@ -181,7 +191,9 @@ const CreditCardView = ({
                   setNumber(mappedCleanNumbers);
                   setNumberError(
                     paymentService.numberValidator.visualValidate(
-                      mappedCleanNumbers
+                      mappedCleanNumbers,
+                      undefined,
+                      supportedNetworks
                     )
                   );
                   // To better handle Amex card validation
@@ -207,28 +219,32 @@ const CreditCardView = ({
               <View style={defaultStyle.cardNetworkLogoContainer}>
                 {paymentService.shouldShowNetworkLogo(
                   number,
-                  CreditCardNetwork.mada
+                  CreditCardNetwork.mada,
+                  supportedNetworks
                 ) ? (
                   <Mada style={defaultStyle.cardNetworkLogo} />
                 ) : null}
 
                 {paymentService.shouldShowNetworkLogo(
                   number,
-                  CreditCardNetwork.visa
+                  CreditCardNetwork.visa,
+                  supportedNetworks
                 ) ? (
                   <Visa style={defaultStyle.cardNetworkLogo} />
                 ) : null}
 
                 {paymentService.shouldShowNetworkLogo(
                   number,
-                  CreditCardNetwork.master
+                  CreditCardNetwork.master,
+                  supportedNetworks
                 ) ? (
                   <Mastercard style={defaultStyle.cardNetworkLogo} />
                 ) : null}
 
                 {paymentService.shouldShowNetworkLogo(
                   number,
-                  CreditCardNetwork.amex
+                  CreditCardNetwork.amex,
+                  supportedNetworks
                 ) ? (
                   <Amex style={defaultStyle.cardNetworkLogo} />
                 ) : null}

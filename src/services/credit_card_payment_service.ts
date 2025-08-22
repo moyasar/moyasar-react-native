@@ -12,7 +12,10 @@ import { CreditCardNameValidator } from './validators/credit_card_name_validator
 import { CreditCardNumberValidator } from './validators/credit_card_number_validator';
 import { PaymentStatus } from '../models/payment_status';
 import { CreditCardNetwork } from '../models/credit_card_network';
-import { getCreditCardNetworkFromNumber } from '../helpers/credit_card_utils';
+import {
+  getCreditCardNetworkFromNumber,
+  mapCardNetworkStrings,
+} from '../helpers/credit_card_utils';
 import { isMoyasarError } from '../models/errors/moyasar_errors';
 import { TokenRequest } from '../models/api/api_requests/token_request';
 import type { ResultCallback } from '../models/payment_result';
@@ -25,8 +28,16 @@ export class CreditCardPaymentService {
   expiryValidator = new CreditCardExpiryValidator();
   cvcValidator = new CreditCardCvcValidator();
 
-  shouldShowNetworkLogo(number: string, network: CreditCardNetwork): boolean {
+  shouldShowNetworkLogo(
+    number: string,
+    network: CreditCardNetwork,
+    supportedNetworks: CreditCardNetwork[]
+  ): boolean {
     const inferredNetwork = getCreditCardNetworkFromNumber(number);
+
+    if (!supportedNetworks.includes(network)) {
+      return false;
+    }
 
     switch (inferredNetwork) {
       case CreditCardNetwork.unknown:
@@ -46,7 +57,12 @@ export class CreditCardPaymentService {
   ): Promise<boolean> {
     debugLog('Moyasar SDK: Begin CC transaction...');
 
-    if (!this.validateAllFields(fields)) {
+    if (
+      !this.validateAllFields(
+        fields,
+        mapCardNetworkStrings(paymentConfig.supportedNetworks)
+      )
+    ) {
       // TODO: Alert user about invalid fields
       return false;
     }
@@ -160,10 +176,17 @@ export class CreditCardPaymentService {
     onPaymentResult(response);
   }
 
-  validateAllFields(fields: CreditCardFields): boolean {
+  validateAllFields(
+    fields: CreditCardFields,
+    supportedNetworks: CreditCardNetwork[]
+  ): boolean {
     const validations = [
       this.nameValidator.validate(fields.name),
-      this.numberValidator.validate(fields.number),
+      this.numberValidator.validate(
+        fields.number,
+        undefined,
+        supportedNetworks
+      ),
       this.expiryValidator.validate(fields.expiry),
       this.cvcValidator.validate(fields.cvc, fields.number),
     ];

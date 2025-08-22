@@ -22,6 +22,13 @@ jest
   .spyOn(Localizations, 'getConfiguredLocalizations')
   .mockImplementation(() => i18next);
 
+const allNetworks = [
+  CreditCardNetwork.mada,
+  CreditCardNetwork.visa,
+  CreditCardNetwork.master,
+  CreditCardNetwork.amex,
+];
+
 describe('CreditCardPaymentService', () => {
   let service: CreditCardPaymentService;
 
@@ -53,7 +60,9 @@ describe('CreditCardPaymentService', () => {
   describe('shouldShowNetworkLogo', () => {
     it('should return true for unknown network', () => {
       expect(
-        service.shouldShowNetworkLogo('123456', CreditCardNetwork.unknown)
+        service.shouldShowNetworkLogo('123456', CreditCardNetwork.unknown, [
+          CreditCardNetwork.unknown,
+        ])
       ).toBe(true);
     });
 
@@ -61,7 +70,8 @@ describe('CreditCardPaymentService', () => {
       expect(
         service.shouldShowNetworkLogo(
           '4111111111111111',
-          CreditCardNetwork.visa
+          CreditCardNetwork.visa,
+          [CreditCardNetwork.visa, CreditCardNetwork.mada]
         )
       ).toBe(true);
     });
@@ -70,19 +80,39 @@ describe('CreditCardPaymentService', () => {
       expect(
         service.shouldShowNetworkLogo(
           '4111111111111111',
-          CreditCardNetwork.master
+          CreditCardNetwork.master,
+          [CreditCardNetwork.master]
         )
       ).toBe(false);
       expect(
         service.shouldShowNetworkLogo(
           '4201320111111010',
-          CreditCardNetwork.visa
+          CreditCardNetwork.visa,
+          [CreditCardNetwork.visa]
         )
       ).toBe(false);
       expect(
         service.shouldShowNetworkLogo(
           '4201320111111010',
-          CreditCardNetwork.unknown
+          CreditCardNetwork.unknown,
+          [CreditCardNetwork.unknown]
+        )
+      ).toBe(false);
+    });
+
+    it('should return false for non-supported networks', () => {
+      expect(
+        service.shouldShowNetworkLogo(
+          '4111111111111111',
+          CreditCardNetwork.visa,
+          [CreditCardNetwork.mada]
+        )
+      ).toBe(false);
+      expect(
+        service.shouldShowNetworkLogo(
+          '4201320111111010',
+          CreditCardNetwork.mada,
+          [CreditCardNetwork.visa, CreditCardNetwork.master]
         )
       ).toBe(false);
     });
@@ -303,19 +333,19 @@ describe('CreditCardPaymentService', () => {
 
   describe('validateAllFields', () => {
     it('should return true if all fields are valid', () => {
-      const result = service.validateAllFields(validFields);
+      const result = service.validateAllFields(validFields, allNetworks);
 
       expect(result).toBe(true);
     });
 
     it('should return false if any field is invalid', () => {
-      const result = service.validateAllFields(expiredCcFields);
+      const result = service.validateAllFields(expiredCcFields, allNetworks);
 
       expect(result).toBe(false);
     });
 
     it('should return false if all fields are invalid', () => {
-      const result = service.validateAllFields(invalidFields);
+      const result = service.validateAllFields(invalidFields, allNetworks);
 
       expect(result).toBe(false);
     });
