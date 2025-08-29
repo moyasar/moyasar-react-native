@@ -35,6 +35,7 @@ export async function onApplePayResponse(
     description: paymentConfig.description,
     metadata: paymentConfig.metadata,
     source: source,
+    applyCoupon: paymentConfig.applyCoupon,
   });
 
   debugLog('Moyasar SDK: Paying with Apple Pay...');

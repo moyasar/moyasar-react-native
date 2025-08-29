@@ -37,6 +37,7 @@ export async function onSamsungPayResponse(
       samsungpay_order_id: orderNumber, // This value must be supplied to native layer for Visa payments. Also for refund & chargebacks that's why we will send it to the backend
     },
     source: source,
+    applyCoupon: paymentConfig.applyCoupon,
   });
 
   debugLog('Moyasar SDK: Paying with Samsung Pay...');

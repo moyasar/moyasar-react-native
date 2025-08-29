@@ -9,6 +9,7 @@ import type { PaymentRequestSource } from '../sources/payment_request_source';
  * @param {Record<string, string | number | boolean> | null} [metadata] - Adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
  * @param {PaymentRequestSource} source - A payment source object to be charged, such as Apple Pay source or Credit Card source.
  * @param {string | null} [callbackUrl] - The URL to be redirected to after a 3D secure transaction (e.g., https://sdk.moyasar.com/return). Required for Credit Card payments.
+ * @param {boolean} [applyCoupon=true] - A flag to control the coupon application (based on the BIN). This key is required only if you don't want to apply the coupon. Otherwise, the coupon is going to be applied. Defaults to true.
  */
 export class PaymentRequest {
   givenId?: string | null;
@@ -18,6 +19,7 @@ export class PaymentRequest {
   metadata?: Record<string, string | number | boolean> | null;
   source: PaymentRequestSource;
   callbackUrl?: string | null;
+  applyCoupon?: boolean;
 
   constructor({
     givenId,
@@ -27,6 +29,7 @@ export class PaymentRequest {
     metadata,
     source,
     callbackUrl,
+    applyCoupon = true,
   }: {
     givenId?: string | null;
     amount: number;
@@ -35,6 +38,7 @@ export class PaymentRequest {
     metadata?: Record<string, string | number | boolean> | null;
     source: PaymentRequestSource;
     callbackUrl?: string | null;
+    applyCoupon?: boolean;
   }) {
     this.givenId = givenId;
     this.amount = amount;
@@ -43,6 +47,7 @@ export class PaymentRequest {
     this.metadata = metadata;
     this.source = source;
     this.callbackUrl = callbackUrl;
+    this.applyCoupon = applyCoupon;
   }
 
   toJson(): Record<string, any> {
@@ -54,6 +59,7 @@ export class PaymentRequest {
       metadata: this.metadata,
       source: this.source.toJson(),
       callback_url: this.callbackUrl,
+      apply_coupon: this.applyCoupon ?? true,
     };
   }
 }
