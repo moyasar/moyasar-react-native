@@ -19,6 +19,7 @@ export class PaymentConfig {
   creditCard: CreditCardConfig;
   createSaveOnlyToken: boolean;
   samsungPay?: SamsungPayConfig;
+  applyCoupon?: boolean;
 
   /**
    * Constructs a new PaymentConfig instance with the provided settings.
@@ -34,6 +35,7 @@ export class PaymentConfig {
    * @param creditCard - Optional for Credit Card feature.
    * @param createSaveOnlyToken - Optional to process a save only token flow for a Credit Card. Defaults to false - https://docs.moyasar.com/create-token
    * @param samsungPay - Required for Samsung Pay feature.
+   * @param applyCoupon - A flag to control the coupon application (based on the BIN). This key is required only if you don't want to apply the coupon. Otherwise, the coupon is going to be applied. Defaults to true.
    */
   constructor({
     givenId,
@@ -48,6 +50,7 @@ export class PaymentConfig {
     creditCard = new CreditCardConfig({}),
     createSaveOnlyToken = false,
     samsungPay,
+    applyCoupon = true,
   }: {
     givenId?: string | null;
     publishableApiKey: string;
@@ -61,6 +64,7 @@ export class PaymentConfig {
     creditCard?: CreditCardConfig;
     createSaveOnlyToken?: boolean;
     samsungPay?: SamsungPayConfig;
+    applyCoupon?: boolean;
   }) {
     assert(
       publishableApiKey.length > 0,
@@ -96,5 +100,6 @@ export class PaymentConfig {
     this.creditCard = creditCard;
     this.createSaveOnlyToken = createSaveOnlyToken;
     this.samsungPay = samsungPay;
+    this.applyCoupon = applyCoupon;
   }
 }

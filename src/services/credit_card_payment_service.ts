@@ -116,6 +116,7 @@ export class CreditCardPaymentService {
       metadata: paymentConfig.metadata,
       source: creditCardRequestSource,
       callbackUrl: 'https://sdk.moyasar.com/return',
+      applyCoupon: paymentConfig.applyCoupon,
     });
 
     const response = await createPayment(

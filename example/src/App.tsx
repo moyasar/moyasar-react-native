@@ -41,6 +41,7 @@ const paymentConfig = new PaymentConfig({
     orderNumber: 'c553ed70-fb79-487c-b3d2-15aca6aff90c',
     manual: false,
   }),
+  applyCoupon: true,
 });
 
 function onPaymentResult(paymentResult: PaymentResult) {

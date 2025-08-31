@@ -150,6 +150,51 @@ describe('PaymentRequest', () => {
         manual: 'false',
       },
       callback_url: 'https://example.com/callback',
+      apply_coupon: true,
+    });
+  });
+
+  it('should correctly apply the false coupon param', () => {
+    const ccSource = new CreditCardRequestSource({
+      name: 'John Doe',
+      number: '4111111111111111',
+      cvc: '123',
+      month: '12',
+      year: '2028',
+    });
+
+    const paymentRequest = new PaymentRequest({
+      givenId: '123e4567-e89b-12d3-a456-426614174000',
+      amount: 1000,
+      currency: 'USD',
+      description: 'Test payment',
+      metadata: { orderId: 12345 },
+      source: ccSource,
+      callbackUrl: 'https://example.com/callback',
+      applyCoupon: false,
+    });
+
+    const json = paymentRequest.toJson();
+
+    expect(json).toEqual({
+      given_id: '123e4567-e89b-12d3-a456-426614174000',
+      amount: 1000,
+      currency: 'USD',
+      description: 'Test payment',
+      metadata: { orderId: 12345 },
+      source: {
+        type: 'creditcard',
+        company: 'visa',
+        name: 'John Doe',
+        number: '4111111111111111',
+        cvc: '123',
+        month: '12',
+        year: '2028',
+        save_card: 'false',
+        manual: 'false',
+      },
+      callback_url: 'https://example.com/callback',
+      apply_coupon: false,
     });
   });
 });

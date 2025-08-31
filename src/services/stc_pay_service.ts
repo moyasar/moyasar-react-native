@@ -50,6 +50,7 @@ export class StcPayService {
       description: paymentConfig.description,
       metadata: paymentConfig.metadata,
       source: stcPayRequestSource,
+      applyCoupon: paymentConfig.applyCoupon,
     });
 
     const response = await createPayment(
