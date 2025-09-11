@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { debugLog } from '../../helpers/debug_log';
 import {
@@ -17,6 +18,7 @@ import { StcPayService } from '../../services/stc_pay_service';
 import { mapArabicNumbers } from '../../helpers/arabic_numbers_mapper';
 import type { ResultCallback } from '../../models/payment_result';
 import type { StcPayMoyasarStyle } from '../../models/component_models/moyasar_style';
+import { readexMedium, readexRegular } from '../../helpers/fonts';
 
 // TODO: Make this component and it's styles reusable with Stc Pay phone number component and CC
 export function StcPayOtp({
@@ -149,6 +151,8 @@ const defaultStyle = StyleSheet.create({
     marginTop: 4,
     textAlign: 'left',
     direction: isArabicLang() ? 'rtl' : 'ltr',
+    lineHeight: Platform.OS === 'ios' ? 26 : undefined, // Text gets cutoff in the custom font in AR
+    ...readexRegular,
   },
   inputSubContainer: {
     flexDirection: 'row',
@@ -163,12 +167,15 @@ const defaultStyle = StyleSheet.create({
   input: {
     width: '100%',
     fontSize: 18,
+    direction: 'ltr',
     textAlign: isArabicLang() ? 'right' : 'left',
     borderWidth: 1.25,
     borderColor: '#DCDCDC',
     borderRadius: 7,
-    margin: 8,
+    marginTop: 10,
+    marginBottom: 2,
     padding: 10,
+    ...readexRegular,
   },
   button: {
     minWidth: '100%',
@@ -180,14 +187,18 @@ const defaultStyle = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '500',
     textAlign: 'center',
+    lineHeight: Platform.OS === 'ios' ? 26 : undefined, // Text gets cutoff in the custom font in AR
+    ...readexMedium,
   },
   errorText: {
     color: 'red',
     fontSize: 12,
     textAlign: 'left',
     direction: isArabicLang() ? 'rtl' : 'ltr',
+    lineHeight: Platform.OS === 'ios' ? 26 : undefined, // Text gets cutoff in the custom font in AR
+    ...readexRegular,
   },
 });

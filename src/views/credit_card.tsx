@@ -9,6 +9,7 @@ import {
   Platform,
   ActivityIndicator,
   useColorScheme,
+  useWindowDimensions,
 } from 'react-native';
 import {
   getConfiguredLocalizations,
@@ -36,6 +37,8 @@ import {
 import { mapArabicNumbers } from '../helpers/arabic_numbers_mapper';
 import { debugLog } from '../helpers/debug_log';
 import { SaudiRiyal } from '../assets/saudi_riyal';
+import { PoweredByLogo } from '../assets/powered_logo';
+import { readexMedium, readexRegular } from '../helpers/fonts';
 
 // TODO: Modify to a better approach rather than global variable
 const paymentService = new CreditCardPaymentService();
@@ -49,6 +52,7 @@ function getFormattedAmount(amount: number, currency: string): string {
   return formattedAmount;
 }
 
+// TODO: Test support against autofilling card details
 export function CreditCard({
   paymentConfig,
   onPaymentResult,
@@ -120,6 +124,9 @@ const CreditCardView = ({
     () => mapCardNetworkStrings(paymentConfig.supportedNetworks),
     [paymentConfig.supportedNetworks]
   );
+
+  const { width, height } = useWindowDimensions();
+  const isPortrait = height > width;
 
   useEffect(() => {
     setIsButtonDisabled(
@@ -198,6 +205,7 @@ const CreditCardView = ({
                     )
                   );
                 }}
+                // TODO: Test formatting for amex and 19 digit cards
                 placeholder={t('moyasarTranslation:cardNumber')}
                 placeholderTextColor={customStyle?.textInputsPlaceholderColor}
                 keyboardType="numeric"
@@ -363,6 +371,7 @@ const CreditCardView = ({
                   style={[
                     defaultStyle.inputSubContainer,
                     { alignItems: 'center' },
+                    { minHeight: 26 },
                   ]}
                 >
                   <Text
@@ -412,6 +421,15 @@ const CreditCardView = ({
               )}
             </TouchableOpacity>
           </View>
+
+          <View
+            style={[
+              defaultStyle.moyasarLogo,
+              { width: isPortrait ? '50%' : '30%' },
+            ]}
+          >
+            <PoweredByLogo />
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -444,33 +462,38 @@ const defaultStyle = StyleSheet.create({
   input: {
     width: '100%',
     fontSize: 18,
+    direction: 'ltr',
     textAlign: isArabicLang() ? 'right' : 'left',
     borderWidth: 1.25,
     borderColor: '#DCDCDC',
     borderRadius: 7,
-    margin: 8,
+    margin: 2,
     padding: 10,
+    ...readexRegular,
   },
   button: {
     minWidth: '100%',
     justifyContent: 'center',
-    backgroundColor: '#235CE1',
+    backgroundColor: '#768DFF',
     borderRadius: 9,
-    marginTop: 30,
+    marginTop: 10,
     padding: 10,
     height: 50,
   },
   buttonText: {
     color: 'white',
-    fontSize: 20,
-    fontWeight: '500',
+    fontSize: 16,
     textAlign: 'center',
+    lineHeight: Platform.OS === 'ios' ? 26 : undefined, // Text gets cutoff in the custom font in AR
+    ...readexMedium,
   },
   errorText: {
     color: 'red',
     fontSize: 12,
     textAlign: 'left',
     direction: isArabicLang() ? 'rtl' : 'ltr',
+    lineHeight: Platform.OS === 'ios' ? 26 : undefined, // Text gets cutoff in the custom font in AR
+    ...readexRegular,
   },
   cardNetworkLogoContainer: {
     flexDirection: 'row',
@@ -483,5 +506,11 @@ const defaultStyle = StyleSheet.create({
     marginEnd: 8,
     height: 37,
     width: 37,
+  },
+  moyasarLogo: {
+    paddingTop: 20,
+    alignItems: 'center',
+    alignSelf: 'center',
+    height: 40,
   },
 });

@@ -23,6 +23,7 @@ import { mapArabicNumbers } from '../../helpers/arabic_numbers_mapper';
 import { formatMobileNumber } from '../../helpers/formatters';
 import { StcPayOtp } from './stc_pay_otp';
 import { SaudiRiyal } from '../../assets/saudi_riyal';
+import { readexMedium, readexRegular } from '../../helpers/fonts';
 
 // TODO: Modify to a better approach rather than global variable
 const stcPayService = new StcPayService();
@@ -223,7 +224,8 @@ const defaultStyle = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 25,
+    paddingHorizontal: 25,
+    paddingVertical: 8,
   },
   title: {
     fontSize: 18,
@@ -231,6 +233,8 @@ const defaultStyle = StyleSheet.create({
     marginTop: 4,
     textAlign: 'left',
     direction: isArabicLang() ? 'rtl' : 'ltr',
+    lineHeight: Platform.OS === 'ios' ? 26 : undefined, // Text gets cutoff in the custom font in AR
+    ...readexRegular,
   },
   inputSubContainer: {
     flexDirection: 'row',
@@ -245,31 +249,38 @@ const defaultStyle = StyleSheet.create({
   input: {
     width: '100%',
     fontSize: 18,
+    direction: 'ltr',
     textAlign: isArabicLang() ? 'right' : 'left',
     borderWidth: 1.25,
     borderColor: '#DCDCDC',
     borderRadius: 7,
-    margin: 8,
+    marginTop: 10,
+    marginBottom: 2,
     padding: 10,
+    ...readexRegular,
   },
   button: {
     minWidth: '100%',
     justifyContent: 'center',
-    backgroundColor: '#480986',
+    backgroundColor: '#4F008C',
     borderRadius: 9,
     padding: 10,
     height: 50,
   },
   buttonText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '500',
     textAlign: 'center',
+    lineHeight: Platform.OS === 'ios' ? 26 : undefined, // Text gets cutoff in the custom font in AR
+    ...readexMedium,
   },
   errorText: {
     color: 'red',
     fontSize: 12,
     textAlign: 'left',
     direction: isArabicLang() ? 'rtl' : 'ltr',
+    lineHeight: Platform.OS === 'ios' ? 26 : undefined, // Text gets cutoff in the custom font in AR
+    ...readexRegular,
   },
 });
