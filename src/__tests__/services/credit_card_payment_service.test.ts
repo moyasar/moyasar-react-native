@@ -1,6 +1,10 @@
 import { CreditCardPaymentService } from '../../services/credit_card_payment_service';
 import { CreditCardNetwork } from '../../models/credit_card_network';
-import { createPayment, createToken } from '../../services/payment_service';
+import {
+  createPayment,
+  createToken,
+  fetchPayment,
+} from '../../services/payment_service';
 import { CreditCardRequestSource } from '../../models/api/sources/credit_card/credit_card_request_source';
 import type { CreditCardFields } from '../../models/component_models/credit_card_fields';
 import {
@@ -12,7 +16,10 @@ import {
   paymentConfigWithSaveOnlyFixture,
 } from '../__fixtures__/payment_config_fixture';
 import { tokenResponseFixture } from '../__fixtures__/token_response_fixture';
-import { GeneralError } from '../../models/errors/moyasar_errors';
+import {
+  UnableToFetchPaymentStatus,
+  GeneralError,
+} from '../../models/errors/moyasar_errors';
 import * as Localizations from '../../localizations/i18n';
 import i18next from 'i18next';
 
@@ -282,6 +289,125 @@ describe('CreditCardPaymentService', () => {
       expect(onPaymentResult).not.toHaveBeenCalled();
 
       createPaymentMock.mockReset();
+    });
+  });
+
+  describe('handle3DSCallbackResponse', () => {
+    let service: CreditCardPaymentService;
+    const onPaymentResult = jest.fn();
+
+    beforeEach(() => {
+      service = new CreditCardPaymentService();
+      onPaymentResult.mockReset();
+      (fetchPayment as jest.Mock).mockReset();
+    });
+
+    it('updates existing payment when callbackResponse.status is present and service.payment exists (no fetch)', async () => {
+      service.payment = { ...paymentResponseWithInitFixture };
+      const callbackResponse = {
+        id: 'pay_123',
+        status: 'paid',
+        message: 'Approved',
+      } as any;
+
+      await service.handle3DSCallbackResponse(
+        paymentConfigWithoutSaveOnlyFixture,
+        callbackResponse,
+        onPaymentResult
+      );
+
+      expect(fetchPayment).not.toHaveBeenCalled();
+      expect(service.payment?.status).toBe('paid');
+      expect(onPaymentResult).toHaveBeenCalledWith(service.payment);
+    });
+
+    it('fetches payment when status present but service.payment is null', async () => {
+      const fetched = { ...paymentResponseWithPaidFixture };
+      (fetchPayment as jest.Mock).mockResolvedValue(fetched);
+
+      const callbackResponse = {
+        id: 'pay_999',
+        status: 'paid',
+        message: 'OK',
+      } as any;
+
+      await service.handle3DSCallbackResponse(
+        paymentConfigWithoutSaveOnlyFixture,
+        callbackResponse,
+        onPaymentResult
+      );
+
+      expect(fetchPayment).toHaveBeenCalledWith(
+        'pay_999',
+        paymentConfigWithoutSaveOnlyFixture.publishableApiKey
+      );
+      expect(service.payment?.status).toBe('paid');
+      expect(onPaymentResult).toHaveBeenCalledWith(fetched);
+    });
+
+    it('fetches payment using callbackResponse.id when status missing (service.payment exists)', async () => {
+      service.payment = { ...paymentResponseWithInitFixture };
+      const fetched = { ...paymentResponseWithPaidFixture };
+      (fetchPayment as jest.Mock).mockResolvedValue(fetched);
+
+      const callbackResponse = {
+        id: 'pay_from_callback',
+        message: 'Processed',
+      } as any;
+
+      await service.handle3DSCallbackResponse(
+        paymentConfigWithoutSaveOnlyFixture,
+        callbackResponse,
+        onPaymentResult
+      );
+
+      expect(fetchPayment).toHaveBeenCalledWith(
+        'pay_from_callback',
+        paymentConfigWithoutSaveOnlyFixture.publishableApiKey
+      );
+      expect(service.payment?.status).toBe('paid');
+      expect(onPaymentResult).toHaveBeenCalledWith(fetched);
+    });
+
+    it('falls back to service.payment.id when callbackResponse.id missing and status missing', async () => {
+      service.payment = { ...paymentResponseWithInitFixture };
+      const fetched = { ...paymentResponseWithPaidFixture };
+      (fetchPayment as jest.Mock).mockResolvedValue(fetched);
+
+      const callbackResponse = {
+        message: 'No id provided',
+      } as any;
+
+      await service.handle3DSCallbackResponse(
+        paymentConfigWithoutSaveOnlyFixture,
+        callbackResponse,
+        onPaymentResult
+      );
+
+      expect(fetchPayment).toHaveBeenCalledWith(
+        service.payment.id,
+        paymentConfigWithoutSaveOnlyFixture.publishableApiKey
+      );
+      expect(service.payment?.status).toBe('paid');
+      expect(onPaymentResult).toHaveBeenCalledWith(fetched);
+    });
+
+    it('propagates error object returned by fetchPayment', async () => {
+      const apiError = new UnableToFetchPaymentStatus('network fail', 'id123');
+      (fetchPayment as jest.Mock).mockResolvedValue(apiError);
+
+      const callbackResponse = {
+        id: 'id123',
+        message: 'ok',
+      } as any;
+
+      await service.handle3DSCallbackResponse(
+        paymentConfigWithoutSaveOnlyFixture,
+        callbackResponse,
+        onPaymentResult
+      );
+
+      expect(onPaymentResult).toHaveBeenCalledWith(apiError);
     });
   });
 

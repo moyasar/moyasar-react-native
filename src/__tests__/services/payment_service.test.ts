@@ -2,12 +2,14 @@ import {
   createPayment,
   createToken,
   sendOtp,
+  fetchPayment,
 } from '../../services/payment_service';
 import { PaymentRequest } from '../../models/api/api_requests/payment_request';
 import { TokenRequest } from '../../models/api/api_requests/token_request';
 import {
   NetworkError,
   NetworkEndpointError,
+  UnableToFetchPaymentStatus,
 } from '../../models/errors/moyasar_errors';
 import { CreditCardRequestSource } from '../../models/api/sources/credit_card/credit_card_request_source';
 import {
@@ -15,6 +17,10 @@ import {
   paymentResponseWithInitJsonFixture,
   paymentResponseWithInitStcFixture,
   paymentResponseWithInitStcJsonFixture,
+  paymentResponseWithPaidFixture,
+  paymentResponseWithPaidJsonFixture,
+  paymentResponseWithPaidStcFixture,
+  paymentResponseWithPaidStcJsonFixture,
 } from '../__fixtures__/payment_response_fixture';
 import {
   tokenResponseFixture,
@@ -95,6 +101,78 @@ describe('PaymentService', () => {
       const result = await createPayment(paymentRequest, publishableApiKey);
 
       expect(result).toBeInstanceOf(NetworkError);
+    });
+  });
+
+  describe('fetchPayment', () => {
+    const paymentId = 'pay_123456';
+
+    it('should fetch a payment successfully (default credit card source)', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: jest.fn().mockResolvedValue(paymentResponseWithPaidJsonFixture),
+      });
+
+      const result = await fetchPayment(paymentId, publishableApiKey);
+
+      expect(result).toEqual(paymentResponseWithPaidFixture);
+      expect(global.fetch).toHaveBeenCalledWith(
+        `https://api.moyasar.com/v1/payments/${paymentId}`,
+        expect.objectContaining({
+          method: 'GET',
+          headers: expect.any(Object),
+        })
+      );
+    });
+
+    it('should fetch a payment successfully with custom source (stcPay)', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: jest
+          .fn()
+          .mockResolvedValue(paymentResponseWithPaidStcJsonFixture),
+      });
+
+      const result = await fetchPayment(
+        paymentId,
+        publishableApiKey,
+        PaymentType.stcPay
+      );
+
+      expect(result).toEqual(paymentResponseWithPaidStcFixture);
+      expect(global.fetch).toHaveBeenCalledWith(
+        `https://api.moyasar.com/v1/payments/${paymentId}`,
+        expect.objectContaining({
+          method: 'GET',
+          headers: expect.any(Object),
+        })
+      );
+    });
+
+    it('should return UnableToFetchPaymentStatus on backend (endpoint) error', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: false,
+        status: 400,
+        json: jest.fn().mockResolvedValue(networkErrorResponseJson),
+      });
+
+      const result = await fetchPayment(paymentId, publishableApiKey);
+
+      expect(result).toBeInstanceOf(UnableToFetchPaymentStatus);
+      if (result instanceof UnableToFetchPaymentStatus) {
+        expect(result.paymentId).toBe(paymentId);
+      }
+    });
+
+    it('should return UnableToFetchPaymentStatus on network error (fetch reject)', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network down'));
+
+      const result = await fetchPayment(paymentId, publishableApiKey);
+
+      expect(result).toBeInstanceOf(UnableToFetchPaymentStatus);
+      if (result instanceof UnableToFetchPaymentStatus) {
+        expect(result.paymentId).toBe(paymentId);
+      }
     });
   });
 

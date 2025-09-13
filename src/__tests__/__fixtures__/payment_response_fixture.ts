@@ -39,13 +39,13 @@ export const paymentResponseWithInitFixture = PaymentResponse.fromJson(
   PaymentType.creditCard
 );
 
-const jsonPaid = {
+export const paymentResponseWithPaidJsonFixture = {
   ...paymentResponseWithInitJsonFixture,
   status: 'paid',
 };
 
 export const paymentResponseWithPaidFixture = PaymentResponse.fromJson(
-  jsonPaid,
+  paymentResponseWithPaidJsonFixture,
   PaymentType.creditCard
 );
 
@@ -68,13 +68,13 @@ export const paymentResponseWithInitStcFixture = PaymentResponse.fromJson(
   PaymentType.stcPay
 );
 
-const jsonStcPaid = {
+export const paymentResponseWithPaidStcJsonFixture = {
   ...paymentResponseWithInitStcJsonFixture,
   status: 'paid',
 };
 
 export const paymentResponseWithPaidStcFixture = PaymentResponse.fromJson(
-  jsonStcPaid,
+  paymentResponseWithPaidStcJsonFixture,
   PaymentType.stcPay
 );
 
