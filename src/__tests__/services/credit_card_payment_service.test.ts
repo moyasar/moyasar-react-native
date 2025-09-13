@@ -303,7 +303,7 @@ describe('CreditCardPaymentService', () => {
     });
 
     it('updates existing payment when callbackResponse.status is present and service.payment exists (no fetch)', async () => {
-      service.payment = { ...paymentResponseWithInitFixture };
+      service.payment = paymentResponseWithInitFixture;
       const callbackResponse = {
         id: 'pay_123',
         status: 'paid',
@@ -322,7 +322,7 @@ describe('CreditCardPaymentService', () => {
     });
 
     it('fetches payment when status present but service.payment is null', async () => {
-      const fetched = { ...paymentResponseWithPaidFixture };
+      const fetched = paymentResponseWithPaidFixture;
       (fetchPayment as jest.Mock).mockResolvedValue(fetched);
 
       const callbackResponse = {
@@ -346,8 +346,8 @@ describe('CreditCardPaymentService', () => {
     });
 
     it('fetches payment using callbackResponse.id when status missing (service.payment exists)', async () => {
-      service.payment = { ...paymentResponseWithInitFixture };
-      const fetched = { ...paymentResponseWithPaidFixture };
+      service.payment = paymentResponseWithInitFixture;
+      const fetched = paymentResponseWithPaidFixture;
       (fetchPayment as jest.Mock).mockResolvedValue(fetched);
 
       const callbackResponse = {
@@ -370,8 +370,8 @@ describe('CreditCardPaymentService', () => {
     });
 
     it('falls back to service.payment.id when callbackResponse.id missing and status missing', async () => {
-      service.payment = { ...paymentResponseWithInitFixture };
-      const fetched = { ...paymentResponseWithPaidFixture };
+      service.payment = paymentResponseWithInitFixture;
+      const fetched = paymentResponseWithPaidFixture;
       (fetchPayment as jest.Mock).mockResolvedValue(fetched);
 
       const callbackResponse = {
