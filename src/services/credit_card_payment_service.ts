@@ -2,7 +2,7 @@ import { debugLog, errorLog } from '../helpers/debug_log';
 import { ExpiryDateUtil } from '../helpers/expiry_date_util';
 import type { PaymentConfig } from '../models/payment_config';
 import { PaymentRequest } from '../models/api/api_requests/payment_request';
-import type { PaymentResponse } from '../models/api/api_responses/payment_response';
+import { PaymentResponse } from '../models/api/api_responses/payment_response';
 import { CreditCardRequestSource } from '../models/api/sources/credit_card/credit_card_request_source';
 import type { CreditCardFields } from '../models/component_models/credit_card_fields';
 import { createPayment, createToken, fetchPayment } from './payment_service';
@@ -164,6 +164,10 @@ export class CreditCardPaymentService {
         callbackResponse.id || (this.payment?.id ?? ''),
         paymentConfig.publishableApiKey
       );
+
+      if (fetchedPayment instanceof PaymentResponse) {
+        this.payment = fetchedPayment;
+      }
 
       onPaymentResult(fetchedPayment);
     }
