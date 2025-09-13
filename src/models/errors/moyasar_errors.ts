@@ -5,7 +5,8 @@ export type MoyasarError =
   | NetworkError
   | NetworkEndpointError
   | GeneralError
-  | UnexpectedError;
+  | UnexpectedError
+  | UnableToFetchPaymentStatus;
 
 // Extend it, don't use it directly
 abstract class MoyasarBaseError extends Error {
@@ -50,6 +51,17 @@ export class UnexpectedError extends MoyasarBaseError {
 
     this.name = 'MoyasarUnexpectedError';
     this.pendingPayment = pendingPayment;
+  }
+}
+
+export class UnableToFetchPaymentStatus extends MoyasarBaseError {
+  paymentId?: string;
+
+  constructor(message: string, paymentId?: string) {
+    super(message);
+
+    this.name = 'UnableToFetchPaymentStatus';
+    this.paymentId = paymentId;
   }
 }
 

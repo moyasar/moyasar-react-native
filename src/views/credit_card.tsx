@@ -40,7 +40,7 @@ import { SaudiRiyal } from '../assets/saudi_riyal';
 import { PoweredByLogo } from '../assets/powered_logo';
 import { readexMedium, readexRegular } from '../helpers/fonts';
 
-// TODO: Modify to a better approach rather than global variable
+// TODO: Modify to a better approach rather than global variable. To make it linked with the component state
 const paymentService = new CreditCardPaymentService();
 
 let formattedAmount: string | null;
@@ -75,12 +75,11 @@ export function CreditCard({
           .transactionUrl
       }
       onWebviewPaymentAuthResult={(webviewPaymentResponse) => {
-        if (paymentService.payment) {
-          paymentService.payment.status = webviewPaymentResponse.status as any;
-          (paymentService.payment.source as CreditCardResponseSource).message =
-            webviewPaymentResponse.message;
-          onPaymentResult(paymentService.payment);
-        }
+        paymentService.handle3DSCallbackResponse(
+          paymentConfig,
+          webviewPaymentResponse,
+          onPaymentResult
+        );
       }}
       style={customStyle}
     />

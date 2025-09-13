@@ -5,6 +5,7 @@ import {
   isMoyasarError,
   NetworkEndpointError,
   NetworkError,
+  UnableToFetchPaymentStatus,
   type MoyasarError,
 } from '../models/errors/moyasar_errors';
 import type { PaymentRequest } from '../models/api/api_requests/payment_request';
@@ -17,27 +18,48 @@ const paymentsApiUrl = 'https://api.moyasar.com/v1/payments';
 const tokenApiUrl = 'https://api.moyasar.com/v1/tokens';
 
 /**
- * Makes a POST request.
- * @param url - The URL to send the request to.
- * @param jsonPayload - The encoded JSON payload to send.
- * @param {string} [publishableApiKey] - Moyasar's publishable API key.
- *
- * @throws
+ * Makes a network API request.
+ * @param baseUrl - The base URL for the request
+ * @param publishableApiKey - Moyasar's publishable API key
+ * @param options - Request options
+ * @param options.method - HTTP method (GET or POST). Defaults to POST
+ * @param options.jsonPayload - The JSON payload (for POST requests)
+ * @param options.pathParams - Path parameters to append to the URL (e.g. ['ID123', 'Order123'])
  */
 async function makeRequest(
-  url: string,
-  jsonPayload: string,
-  publishableApiKey?: string
+  baseUrl: string,
+  publishableApiKey?: string,
+  options: {
+    method?: 'GET' | 'POST';
+    jsonPayload?: Record<string, any>;
+    pathParams?: string[];
+  } = {}
 ): Promise<any> {
-  debugLog('Moyasar SDK: Making backend request...');
+  const { method = 'POST', pathParams = [], jsonPayload } = options;
 
-  const response = await fetch(url, {
-    method: 'POST',
+  // Build URL with path parameters
+  let url = baseUrl;
+  if (pathParams.length > 0) {
+    url = url.endsWith('/') ? url.slice(0, -1) : url;
+    url += '/' + pathParams.map((path) => encodeURIComponent(path)).join('/');
+  }
+
+  debugLog(`Moyasar SDK: Making ${method}...`);
+
+  // Build request and headers
+  const requestOptions: RequestInit = {
+    method,
     headers: publishableApiKey
       ? buildRequestHeaders(publishableApiKey)
       : buildRequestHeaders(),
-    body: jsonPayload,
-  });
+  };
+
+  // Add body for POST requests
+  if (method === 'POST' && jsonPayload !== undefined) {
+    requestOptions.body = JSON.stringify(jsonPayload);
+  }
+
+  const response = await fetch(url, requestOptions);
   debugLog('Moyasar SDK: Got backend response...');
 
   const responseJson = await response.json();
@@ -66,22 +88,52 @@ export async function createPayment(
   paymentRequest: PaymentRequest,
   publishableApiKey: string
 ): Promise<PaymentResponse | MoyasarError> {
-  const jsonPayload = JSON.stringify(paymentRequest.toJson());
-
   try {
-    const paymentJson = await makeRequest(
-      paymentsApiUrl,
-      jsonPayload,
-      publishableApiKey
-    );
+    const paymentJson = await makeRequest(paymentsApiUrl, publishableApiKey, {
+      jsonPayload: paymentRequest.toJson(),
+    });
 
     return PaymentResponse.fromJson(paymentJson, paymentRequest.source.type);
   } catch (error) {
+    errorLog(
+      `Moyasar SDK: An error occured while processing a Credit Card payment: ${error}`
+    );
+
     return isMoyasarError(error)
       ? error
       : new NetworkError(
           'Moyasar SDK: An error occured while processing a Credit Card payment'
         );
+  }
+}
+
+/**
+ * Fetches a payment with it's ID
+ * @param paymentId - The ID of the payment to fetch.
+ * @param publishableApiKey - Moyasar's publishable API key.
+ * @param paymentSource - The source of the payment. Defaults to PaymentType.creditCard.
+ */
+export async function fetchPayment(
+  paymentId: string,
+  publishableApiKey: string,
+  paymentSource: PaymentType = PaymentType.creditCard
+): Promise<PaymentResponse | MoyasarError> {
+  try {
+    const paymentJson = await makeRequest(paymentsApiUrl, publishableApiKey, {
+      method: 'GET',
+      pathParams: [paymentId],
+    });
+
+    return PaymentResponse.fromJson(paymentJson, paymentSource);
+  } catch (error) {
+    errorLog(`Moyasar SDK: Fetching payment failed with error: ${error}`);
+
+    return new UnableToFetchPaymentStatus(
+      isMoyasarError(error)
+        ? `Moyasar SDK: An error occured while fetching the payment with ID ${paymentId}, error: ${error.message}`
+        : `Moyasar SDK: An error occured while fetching the payment with ID ${paymentId}`,
+      paymentId
+    );
   }
 }
 
@@ -94,17 +146,17 @@ export async function createToken(
   tokenRequest: TokenRequest,
   publishableApiKey: string
 ): Promise<TokenResponse | MoyasarError> {
-  const jsonPayload = JSON.stringify(tokenRequest.toJson());
-
   try {
-    const paymentJson = await makeRequest(
-      tokenApiUrl,
-      jsonPayload,
-      publishableApiKey
-    );
+    const paymentJson = await makeRequest(tokenApiUrl, publishableApiKey, {
+      jsonPayload: tokenRequest.toJson(),
+    });
 
     return TokenResponse.fromJson(paymentJson);
   } catch (error) {
+    errorLog(
+      `Moyasar SDK: An error occured while creating a token request: ${error}`
+    );
+
     return isMoyasarError(error)
       ? error
       : new NetworkError(
@@ -117,24 +169,28 @@ export async function createToken(
  * Sends an OTP (One-Time Password) to the specified URL for payment processing.
  * @param otp - The OTP value to be sent.
  * @param url - The URL to which the OTP should be sent.
- * @param paymentSource - The source of the payment, defaults to PaymentType.stcPay.
+ * @param paymentSource - The source of the payment. Defaults to PaymentType.stcPay.
  */
 export async function sendOtp(
   otp: string,
   url: string,
   paymentSource: PaymentType = PaymentType.stcPay
 ): Promise<PaymentResponse | MoyasarError> {
-  const jsonPayload = JSON.stringify({ otp_value: otp });
-
   try {
-    const paymentJson = await makeRequest(url, jsonPayload);
+    const paymentJson = await makeRequest(url, undefined, {
+      jsonPayload: { otp_value: otp },
+    });
 
     return PaymentResponse.fromJson(paymentJson, paymentSource);
   } catch (error) {
+    errorLog(
+      `Moyasar SDK: An error occured while sending the OTP for a payment: ${error}`
+    );
+
     return isMoyasarError(error)
       ? error
       : new NetworkError(
-          'Moyasar SDK: An error occured while processing STC payment'
+          'Moyasar SDK: An error occured while sending the OTP for a payment'
         );
   }
 }

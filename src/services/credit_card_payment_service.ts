@@ -5,7 +5,7 @@ import { PaymentRequest } from '../models/api/api_requests/payment_request';
 import type { PaymentResponse } from '../models/api/api_responses/payment_response';
 import { CreditCardRequestSource } from '../models/api/sources/credit_card/credit_card_request_source';
 import type { CreditCardFields } from '../models/component_models/credit_card_fields';
-import { createPayment, createToken } from './payment_service';
+import { createPayment, createToken, fetchPayment } from './payment_service';
 import { CreditCardCvcValidator } from './validators/credit_card_cvc_validator';
 import { CreditCardExpiryValidator } from './validators/credit_card_expiry_validator';
 import { CreditCardNameValidator } from './validators/credit_card_name_validator';
@@ -19,6 +19,8 @@ import {
 import { isMoyasarError } from '../models/errors/moyasar_errors';
 import { TokenRequest } from '../models/api/api_requests/token_request';
 import type { ResultCallback } from '../models/payment_result';
+import type { WebviewPaymentAuthResponse } from '../models/api/api_responses/webview_payment_auth_response';
+import type { CreditCardResponseSource } from '../models/api/sources/credit_card/credit_card_response_source';
 
 export class CreditCardPaymentService {
   payment: PaymentResponse | null = null;
@@ -141,6 +143,30 @@ export class CreditCardPaymentService {
     this.payment = response;
 
     return true;
+  }
+
+  async handle3DSCallbackResponse(
+    paymentConfig: PaymentConfig,
+    callbackResponse: WebviewPaymentAuthResponse,
+    onPaymentResult: ResultCallback
+  ): Promise<void> {
+    debugLog('Moyasar SDK: Fetching payment status...');
+
+    if (callbackResponse.status && this.payment) {
+      this.payment.status = callbackResponse.status as any;
+      (this.payment.source as CreditCardResponseSource).message =
+        callbackResponse.message;
+
+      onPaymentResult(this.payment);
+    } else {
+      // Test: 15 mins period for new error failure
+      const fetchedPayment = await fetchPayment(
+        callbackResponse.id || (this.payment?.id ?? ''),
+        paymentConfig.publishableApiKey
+      );
+
+      onPaymentResult(fetchedPayment);
+    }
   }
 
   async beginSaveOnlyToken(

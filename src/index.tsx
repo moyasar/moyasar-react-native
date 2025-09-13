@@ -20,6 +20,7 @@ export {
   createPayment,
   createToken,
   sendOtp,
+  fetchPayment,
 } from './services/payment_service';
 export * from './models/payment_type';
 export * from './models/api/sources/payment_request_source';
