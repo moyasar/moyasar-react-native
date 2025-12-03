@@ -1332,7 +1332,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-moyasar-sdk (0.8.1):
+  - react-native-moyasar-sdk (0.10.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2023,7 +2023,7 @@ SPEC CHECKSUMS:
   React-logger: 8edfcedc100544791cd82692ca5a574240a16219
   React-Mapbuffer: c3f4b608e4a59dd2f6a416ef4d47a14400194468
   React-microtasksnativemodule: 054f34e9b82f02bd40f09cebd4083828b5b2beb6
-  react-native-moyasar-sdk: eeddeb78e111890724f40de1a87c1c9133800d9d
+  react-native-moyasar-sdk: 9e03be5cd210b94c2250bda01e9dbc7835f19cca
   react-native-webview: 520bcb79c3f2af91e157cdd695732a34ab5f25c8
   React-NativeModulesApple: 2c4377e139522c3d73f5df582e4f051a838ff25e
   React-oscompat: ef5df1c734f19b8003e149317d041b8ce1f7d29c
