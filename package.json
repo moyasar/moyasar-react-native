@@ -1,6 +1,6 @@
 {
   "name": "react-native-moyasar-sdk",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Official React Native Moyasar SDK - Integrate Credit Cards, Apple Pay, Samsung Pay, and STC Pay with simple interfaces for a seamless payment experience in your React Native app",
   "main": "./lib/module/index.js",
   "module": "./lib/module/index.js",
