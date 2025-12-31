@@ -9,9 +9,11 @@ const resources = {
     moyasarTranslation: {
       // Credit Card
       nameOnCard: 'Name on Card',
-      cardNumber: 'Card Number',
-      expiry: 'Expiry (MM/YY)',
-      cvc: 'CVC',
+      cardInformation: 'Card Information',
+      cardNumberPlaceholder: 'Card Number',
+      expiryPlaceholder: 'MM/YY',
+      cvcPlaceholder: 'CVC',
+      nameOnCardPlaceholder: 'e.g. John Doe',
       cardNumberRequired: 'Card number is required',
       invalidCardNumber: 'Invalid card number',
       unsupportedCreditCardNetwork: 'Unsupported card type',
@@ -45,9 +47,11 @@ const resources = {
     moyasarTranslation: {
       // Credit Card
       nameOnCard: 'الاسم على البطاقة',
-      cardNumber: 'رقم البطاقة',
-      expiry: 'تاريخ الانتهاء (شهر/سنة)',
-      cvc: 'رمز الأمان',
+      cardInformation: 'معلومات البطاقة',
+      cardNumberPlaceholder: 'رقم البطاقة',
+      expiryPlaceholder: 'شهر/سنة',
+      cvcPlaceholder: 'رمز الأمان',
+      nameOnCardPlaceholder: 'مثال: Mohammed Ahmad',
       cardNumberRequired: 'رقم البطاقة مطلوب',
       invalidCardNumber: 'رقم البطاقة غير صحيح',
       unsupportedCreditCardNetwork: 'نوع البطاقة الإئتمانية غير مدعوم',

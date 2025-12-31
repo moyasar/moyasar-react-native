@@ -7,11 +7,15 @@ import {
 
 export interface CreditCardMoyasarStyle {
   container?: ViewStyle;
-  textInputs?: TextStyle;
+  textInputsLabel?: TextStyle;
   textInputsPlaceholderColor?: ColorValue;
+  groupedTextInputsContainer?: ViewStyle;
+  groupedTextInputsDividers?: ViewStyle;
+  groupedTextInputs?: TextStyle;
+  standaloneTextInput?: TextStyle;
+  errorText?: TextStyle;
   paymentButton?: ViewStyle;
   paymentButtonText?: TextStyle;
-  errorText?: TextStyle;
   activityIndicatorColor?: ColorValue;
   webviewActivityIndicatorColor?: ColorValue; // Loading indicator color for 3DS webview
 }

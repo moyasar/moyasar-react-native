@@ -98,7 +98,10 @@ export default function App() {
         <CreditCard
           paymentConfig={paymentConfig}
           onPaymentResult={onPaymentResult}
-          style={{ textInputs: { borderWidth: 1.25 } }}
+          style={{
+            standaloneTextInput: { borderWidth: 1.25 },
+            groupedTextInputs: { borderWidth: 1.25 },
+          }}
         />
         <ApplePay
           paymentConfig={paymentConfig}
