@@ -12,7 +12,7 @@ import { Mastercard } from '../../../assets/mastercard';
 import { Amex } from '../../../assets/amex';
 import { Mada } from '../../../assets/mada';
 import { useTheme } from '../theme_context';
-import { cardNumberInputStyles } from './card_number_input.styles';
+import { cardNumberInputStyles } from '../styles/card_number_input.styles';
 import type { CardNumberInputProps } from '../types';
 import { paymentService } from '../payment_service_instance';
 

@@ -2,7 +2,7 @@ import { View, TextInput } from 'react-native';
 import { getConfiguredLocalizations } from '../../../localizations/i18n';
 import { useTheme } from '../theme_context';
 import { FieldLabel } from './field_label';
-import { nameInputStyles } from './name_input.styles';
+import { nameInputStyles } from '../styles/name_input.styles';
 import type { NameInputProps } from '../types';
 import { getInputBorderStyle } from '../../../helpers/styles_utils';
 

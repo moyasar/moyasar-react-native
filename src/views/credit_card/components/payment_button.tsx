@@ -3,7 +3,7 @@ import { getConfiguredLocalizations } from '../../../localizations/i18n';
 import { formatAmount, toMajor } from '../../../helpers/currency_util';
 import { SaudiRiyal } from '../../../assets/saudi_riyal';
 import { useTheme } from '../theme_context';
-import { paymentButtonStyles } from './payment_button.styles';
+import { paymentButtonStyles } from '../styles/payment_button.styles';
 import type { PaymentButtonProps } from '../types';
 
 let formattedAmount: string | null;

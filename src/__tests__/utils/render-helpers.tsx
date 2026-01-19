@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, RenderOptions } from '@testing-library/react-native';
-import { CreditCardThemeContext } from '../../../views/credit_card/theme_context';
+import { render, type RenderOptions } from '@testing-library/react-native';
+import { CreditCardThemeContext } from '../../views/credit_card/theme_context';
 import { mockThemeContext } from '../__fixtures__/theme_context_fixture';
 
 /**

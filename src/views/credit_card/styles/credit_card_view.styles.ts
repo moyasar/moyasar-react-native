@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { isArabicLang } from '../../localizations/i18n';
+import { isArabicLang } from '../../../localizations/i18n';
 
 export const creditCardViewStyles = StyleSheet.create({
   scrollView: {

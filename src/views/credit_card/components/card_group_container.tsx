@@ -2,7 +2,7 @@ import { View, Platform } from 'react-native';
 import { useTheme } from '../theme_context';
 import { CardNumberInput } from './card_number_input';
 import { CardDetailsRow } from './card_details_row';
-import { cardGroupContainerStyles } from './card_group_container.styles';
+import { cardGroupContainerStyles } from '../styles/card_group_container.styles';
 import type { CardGroupContainerProps } from '../types';
 import {
   getInputBorderStyle,

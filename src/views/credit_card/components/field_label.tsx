@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import { useTheme } from '../theme_context';
-import { fieldLabelStyles } from './field_label.styles';
+import { fieldLabelStyles } from '../styles/field_label.styles';
 import type { FieldLabelProps } from '../types';
 
 export const FieldLabel = ({

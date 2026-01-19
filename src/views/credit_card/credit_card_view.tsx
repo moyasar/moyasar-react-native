@@ -17,7 +17,7 @@ import { FieldLabel } from './components/field_label';
 import { CardGroupContainer } from './components/card_group_container';
 import { PaymentButton } from './components/payment_button';
 import { MoyasarLogo } from './components/moyasar_logo';
-import { creditCardViewStyles } from './credit_card_view.styles';
+import { creditCardViewStyles } from './styles/credit_card_view.styles';
 import type { ThemeColors } from '../../models/component_models/theme_colors';
 import { paymentService } from './payment_service_instance';
 

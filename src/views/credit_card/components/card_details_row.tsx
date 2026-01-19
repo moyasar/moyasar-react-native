@@ -8,7 +8,7 @@ import { mapArabicNumbers } from '../../../helpers/arabic_numbers_mapper';
 import { getCreditCardNetworkFromNumber } from '../../../helpers/credit_card_utils';
 import { CreditCardNetwork } from '../../../models/credit_card_network';
 import { useTheme } from '../theme_context';
-import { cardDetailsRowStyles } from './card_details_row.styles';
+import { cardDetailsRowStyles } from '../styles/card_details_row.styles';
 import type { CardDetailsRowProps } from '../types';
 import { getDividerStyle } from '../../../helpers/styles_utils';
 
