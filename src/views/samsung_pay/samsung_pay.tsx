@@ -88,7 +88,6 @@ const createFragment = (viewId: number | null) =>
     [viewId]
   );
 
-//  TODO: Support customizing the Samsung Pay button
 export function SamsungPay({
   paymentConfig,
   onPaymentResult,

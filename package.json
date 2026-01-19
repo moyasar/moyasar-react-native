@@ -68,6 +68,7 @@
     "@react-native/babel-preset": "0.79.2",
     "@react-native/eslint-config": "^0.78.0",
     "@release-it/conventional-changelog": "^10.0.2",
+    "@testing-library/react-native": "^13.3.3",
     "@types/jest": "^30.0.0",
     "@types/react": "^19.0.0",
     "commitlint": "^19.6.1",
@@ -82,6 +83,7 @@
     "react-native-builder-bob": "^0.40.12",
     "react-native-svg": "^15.11.2",
     "react-native-webview": "^13.13.4",
+    "react-test-renderer": "19.0.0",
     "release-it": "^19.0.6",
     "turbo": "^1.10.7",
     "typescript": "^5.8.3"
@@ -98,10 +100,17 @@
   "packageManager": "yarn@3.6.1",
   "jest": {
     "preset": "react-native",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-native|@react-native|react-native-url-polyfill|react-native-webview|react-native-svg)/)"
+    ],
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/",
-      "<rootDir>/src/__tests__/__fixtures__"
+      "<rootDir>/src/__tests__/__fixtures__",
+      "<rootDir>/src/__tests__/utils"
     ]
   },
   "commitlint": {
