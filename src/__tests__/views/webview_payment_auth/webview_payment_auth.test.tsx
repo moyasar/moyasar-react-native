@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react-native';
+import { render, waitFor, act } from '@testing-library/react-native';
 import { WebviewPaymentAuth } from '../../../views/webview_payment_auth';
 
 // Mock react-native-webview
@@ -45,9 +45,11 @@ describe('WebviewPaymentAuth', () => {
       <WebviewPaymentAuth {...defaultProps} />
     );
 
-    // Trigger onLoadProgress
+    // Trigger onLoadProgress wrapped in act to properly flush state updates
     const webview = getByTestId('mock-webview');
-    webview.props.onLoadProgress({ nativeEvent: { progress: 0.6 } });
+    await act(async () => {
+      webview.props.onLoadProgress({ nativeEvent: { progress: 0.6 } });
+    });
 
     await waitFor(() => {
       const activityIndicator = UNSAFE_queryByType(

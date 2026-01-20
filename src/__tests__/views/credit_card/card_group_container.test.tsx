@@ -2,6 +2,8 @@ import { render } from '@testing-library/react-native';
 import { CardGroupContainer } from '../../../views/credit_card/components/card_group_container';
 import { CreditCardThemeContext } from '../../../views/credit_card/theme_context';
 import { mockThemeContext } from '../../__fixtures__/theme_context_fixture';
+import { defaultNetworks } from '../../__fixtures__/credit_card_networks_fixture';
+import { CreditCardNetwork } from '../../../models/credit_card_network';
 
 describe('CardGroupContainer', () => {
   const defaultProps = {
@@ -12,7 +14,6 @@ describe('CardGroupContainer', () => {
     cvc: '',
     cvcError: null,
     onCardNumberChange: jest.fn(),
-    onCvcValidationChange: jest.fn(),
     onExpiryChange: jest.fn(),
     onCvcChange: jest.fn(),
     onCardNumberSubmit: jest.fn(),
@@ -22,7 +23,7 @@ describe('CardGroupContainer', () => {
     expiryInputRef: { current: null },
     cvcInputRef: { current: null },
     disabled: false,
-    supportedNetworks: ['visa', 'mastercard', 'mada', 'amex'],
+    supportedNetworks: defaultNetworks,
   };
 
   it('renders CardNumberInput and CardDetailsRow', () => {
@@ -102,7 +103,7 @@ describe('CardGroupContainer', () => {
   });
 
   it('passes supportedNetworks to CardNumberInput', () => {
-    const customNetworks = ['visa', 'mastercard'];
+    const customNetworks = [CreditCardNetwork.visa, CreditCardNetwork.master];
     const { getByTestId } = render(
       <CreditCardThemeContext.Provider value={mockThemeContext}>
         <CardGroupContainer

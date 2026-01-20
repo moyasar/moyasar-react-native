@@ -8,6 +8,7 @@ import {
   getInputBorderStyle,
   getDividerStyle,
 } from '../../../helpers/styles_utils';
+import { getActiveCardError } from '../../../helpers/credit_card_utils';
 
 export const CardGroupContainer = ({
   cardNumber,
@@ -17,7 +18,6 @@ export const CardGroupContainer = ({
   cvc,
   cvcError,
   onCardNumberChange,
-  onCvcValidationChange,
   onExpiryChange,
   onCvcChange,
   onCardNumberSubmit,
@@ -32,14 +32,7 @@ export const CardGroupContainer = ({
   const { themeColors, customStyle } = useTheme();
 
   // Get the active card error in priority order (number, expiry, cvc)
-  const getActiveCardError = () => {
-    if (cardNumberError) return cardNumberError;
-    if (expiryError) return expiryError;
-    if (cvcError) return cvcError;
-    return null;
-  };
-
-  const cardError = getActiveCardError();
+  const cardError = getActiveCardError(cardNumberError, expiryError, cvcError);
 
   const handleCardNumberChange = (value: string) => {
     onCardNumberChange(value);
@@ -74,12 +67,10 @@ export const CardGroupContainer = ({
         <CardNumberInput
           value={cardNumber}
           onChangeText={handleCardNumberChange}
-          onCvcValidationChange={onCvcValidationChange}
           onSubmitEditing={onCardNumberSubmit}
           inputRef={cardNumberInputRef}
           disabled={disabled}
           supportedNetworks={supportedNetworks}
-          cvc={cvc}
         />
 
         <View

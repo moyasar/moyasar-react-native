@@ -1,6 +1,7 @@
 import type { TextInput } from 'react-native';
 import type { CreditCardMoyasarStyle } from '../../models/component_models/moyasar_style';
 import type { ThemeColors } from '../../models/component_models/theme_colors';
+import type { CreditCardNetwork } from '../../models/credit_card_network';
 
 export type FieldRef = React.RefObject<TextInput | null>;
 
@@ -28,15 +29,12 @@ export interface NameInputProps {
 export interface CardNumberInputProps {
   value: string;
   onChangeText: (value: string) => void;
-  /** Callback to update CVC validation (for card type changes) */
-  onCvcValidationChange: (error: string | null) => void;
   /** Callback when keyboard submit button is pressed */
   onSubmitEditing: () => void;
   inputRef: FieldRef;
   disabled: boolean;
-  /** List of supported card networks (visa, mastercard, etc.) */
-  supportedNetworks: string[];
-  cvc: string;
+  /** List of supported card networks */
+  supportedNetworks: CreditCardNetwork[];
 }
 
 export interface CardDetailsRowProps {
@@ -57,15 +55,12 @@ export interface CardDetailsRowProps {
 
 export interface CardGroupContainerProps {
   cardNumber: string;
-  // TODO: Why error for every input type?
   cardNumberError: string | null;
   expiry: string;
   expiryError: string | null;
   cvc: string;
   cvcError: string | null;
   onCardNumberChange: (value: string) => void;
-  /** Callback to update CVC validation (for card type changes) */
-  onCvcValidationChange: (error: string | null) => void;
   onExpiryChange: (value: string) => void;
   onCvcChange: (value: string) => void;
   onCardNumberSubmit: () => void;
@@ -76,7 +71,7 @@ export interface CardGroupContainerProps {
   cvcInputRef: FieldRef;
   disabled: boolean;
   /** List of supported card networks */
-  supportedNetworks: string[];
+  supportedNetworks: CreditCardNetwork[];
 }
 
 export interface PaymentButtonProps {

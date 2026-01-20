@@ -2,6 +2,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { CardNumberInput } from '../../../views/credit_card/components/card_number_input';
 import { CreditCardThemeContext } from '../../../views/credit_card/theme_context';
 import { mockThemeContext } from '../../__fixtures__/theme_context_fixture';
+import { defaultNetworks } from '../../__fixtures__/credit_card_networks_fixture';
 
 describe('CardNumberInput', () => {
   it('renders with correct testID', () => {
@@ -11,12 +12,10 @@ describe('CardNumberInput', () => {
         <CardNumberInput
           value=""
           onChangeText={jest.fn()}
-          onCvcValidationChange={jest.fn()}
           onSubmitEditing={jest.fn()}
           inputRef={mockRef}
           disabled={false}
-          supportedNetworks={['visa', 'mastercard', 'mada', 'amex']}
-          cvc=""
+          supportedNetworks={defaultNetworks}
         />
       </CreditCardThemeContext.Provider>
     );
@@ -31,12 +30,10 @@ describe('CardNumberInput', () => {
         <CardNumberInput
           value="4111111111111111"
           onChangeText={jest.fn()}
-          onCvcValidationChange={jest.fn()}
           onSubmitEditing={jest.fn()}
           inputRef={mockRef}
           disabled={false}
-          supportedNetworks={['visa', 'mastercard', 'mada', 'amex']}
-          cvc=""
+          supportedNetworks={defaultNetworks}
         />
       </CreditCardThemeContext.Provider>
     );
@@ -53,12 +50,10 @@ describe('CardNumberInput', () => {
         <CardNumberInput
           value=""
           onChangeText={mockOnChange}
-          onCvcValidationChange={jest.fn()}
           onSubmitEditing={jest.fn()}
           inputRef={mockRef}
           disabled={false}
-          supportedNetworks={['visa', 'mastercard', 'mada', 'amex']}
-          cvc=""
+          supportedNetworks={defaultNetworks}
         />
       </CreditCardThemeContext.Provider>
     );
@@ -66,7 +61,7 @@ describe('CardNumberInput', () => {
     const input = getByTestId('moyasar-card-number-input');
     fireEvent.changeText(input, '4111 1111 1111 1111');
 
-    expect(mockOnChange).toHaveBeenCalled();
+    expect(mockOnChange).toHaveBeenCalledWith('4111111111111111');
   });
 
   it('shows Visa logo for Visa cards', () => {
@@ -76,12 +71,10 @@ describe('CardNumberInput', () => {
         <CardNumberInput
           value="4111111111111111"
           onChangeText={jest.fn()}
-          onCvcValidationChange={jest.fn()}
           onSubmitEditing={jest.fn()}
           inputRef={mockRef}
           disabled={false}
-          supportedNetworks={['visa', 'mastercard', 'mada', 'amex']}
-          cvc=""
+          supportedNetworks={defaultNetworks}
         />
       </CreditCardThemeContext.Provider>
     );
@@ -99,12 +92,10 @@ describe('CardNumberInput', () => {
         <CardNumberInput
           value="378282246310005"
           onChangeText={jest.fn()}
-          onCvcValidationChange={jest.fn()}
           onSubmitEditing={jest.fn()}
           inputRef={mockRef}
           disabled={false}
-          supportedNetworks={['visa', 'mastercard', 'mada', 'amex']}
-          cvc=""
+          supportedNetworks={defaultNetworks}
         />
       </CreditCardThemeContext.Provider>
     );

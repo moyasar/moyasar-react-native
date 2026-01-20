@@ -19,12 +19,10 @@ import { paymentService } from '../payment_service_instance';
 export const CardNumberInput = ({
   value,
   onChangeText,
-  onCvcValidationChange,
   onSubmitEditing,
   inputRef,
   disabled,
   supportedNetworks,
-  cvc,
 }: CardNumberInputProps) => {
   const { t } = getConfiguredLocalizations();
   const { themeColors, customStyle } = useTheme();
@@ -36,16 +34,7 @@ export const CardNumberInput = ({
       .slice(0, 16);
 
     const mappedCleanNumbers = mapArabicNumbers(cleanNumber);
-
     onChangeText(mappedCleanNumbers);
-
-    // To better handle Amex card validation
-    // TODO: Refactor to not need the cvc field
-    const cvcError = paymentService.cvcValidator.visualValidate(
-      cvc,
-      mappedCleanNumbers
-    );
-    onCvcValidationChange(cvcError);
   };
 
   return (
@@ -82,8 +71,7 @@ export const CardNumberInput = ({
         {paymentService.shouldShowNetworkLogo(
           value,
           CreditCardNetwork.mada,
-          // TODO: Resolve this to typed
-          supportedNetworks as any
+          supportedNetworks
         ) ? (
           <Mada style={cardNumberInputStyles.cardNetworkLogo} />
         ) : null}
@@ -91,7 +79,7 @@ export const CardNumberInput = ({
         {paymentService.shouldShowNetworkLogo(
           value,
           CreditCardNetwork.visa,
-          supportedNetworks as any
+          supportedNetworks
         ) ? (
           <Visa style={cardNumberInputStyles.cardNetworkLogo} />
         ) : null}
@@ -99,7 +87,7 @@ export const CardNumberInput = ({
         {paymentService.shouldShowNetworkLogo(
           value,
           CreditCardNetwork.master,
-          supportedNetworks as any
+          supportedNetworks
         ) ? (
           <Mastercard style={cardNumberInputStyles.cardNetworkLogo} />
         ) : null}
@@ -107,7 +95,7 @@ export const CardNumberInput = ({
         {paymentService.shouldShowNetworkLogo(
           value,
           CreditCardNetwork.amex,
-          supportedNetworks as any
+          supportedNetworks
         ) ? (
           <Amex style={cardNumberInputStyles.cardNetworkLogo} />
         ) : null}

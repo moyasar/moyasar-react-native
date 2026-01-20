@@ -65,3 +65,22 @@ export function mapCardNetworkStrings(networks: string[]): CreditCardNetwork[] {
     })
     .filter((network) => network !== CreditCardNetwork.unknown);
 }
+
+/**
+ * Gets the first active card error from a set of card field errors.
+ * Returns errors in priority order: card number → expiry → CVC
+ * @param cardNumberError - Error message for card number field
+ * @param expiryError - Error message for expiry field
+ * @param cvcError - Error message for CVC field
+ * @returns The first non-null error message, or null if no errors
+ */
+export function getActiveCardError(
+  cardNumberError: string | null,
+  expiryError: string | null,
+  cvcError: string | null
+): string | null {
+  if (cardNumberError) return cardNumberError;
+  if (expiryError) return expiryError;
+  if (cvcError) return cvcError;
+  return null;
+}

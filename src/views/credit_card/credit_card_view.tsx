@@ -10,7 +10,10 @@ import {
 import { getConfiguredLocalizations } from '../../localizations/i18n';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CreditCardProps } from '../../models/component_models/moyasar_props';
-import { mapCardNetworkStrings } from '../../helpers/credit_card_utils';
+import {
+  mapCardNetworkStrings,
+  getActiveCardError,
+} from '../../helpers/credit_card_utils';
 import { CreditCardThemeContext } from './theme_context';
 import { NameInput } from './components/name_input';
 import { FieldLabel } from './components/field_label';
@@ -85,16 +88,7 @@ export const CreditCardView = ({
   const isNumberEmpty = number.trim() === '';
 
   // Get the active card error in priority order (number, expiry, cvc)
-  // TODO: Why duplicated?
-  const getActiveCardError = () => {
-    if (numberError) return numberError;
-    if (expiryError) return expiryError;
-    if (cvcError) return cvcError;
-    return null;
-  };
-
-  // Determine if card form has an error
-  const cardError = getActiveCardError();
+  const cardError = getActiveCardError(numberError, expiryError, cvcError);
 
   async function startPaymentTransaction() {
     setIsPaymentInProgress(true);
@@ -121,6 +115,8 @@ export const CreditCardView = ({
         supportedNetworks
       )
     );
+    // Re-validate CVC when card number changes (Amex uses 4-digit CVC, others use 3-digit)
+    setCvcError(paymentService.cvcValidator.visualValidate(cvc, value));
   };
 
   const handleExpiryChange = (value: string) => {
@@ -179,7 +175,6 @@ export const CreditCardView = ({
                 cvc={cvc}
                 cvcError={cvcError}
                 onCardNumberChange={handleNumberChange}
-                onCvcValidationChange={setCvcError}
                 onExpiryChange={handleExpiryChange}
                 onCvcChange={handleCvcChange}
                 onCardNumberSubmit={() => {
