@@ -99,6 +99,7 @@ export class PaymentConfig {
       supportedNetworks.length > 0,
       'At least 1 network must be supported.'
     );
+    assert(baseUrl.length > 0, 'Please fill `baseUrl` argument.');
 
     this.givenId = givenId;
     this.publishableApiKey = publishableApiKey;
