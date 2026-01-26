@@ -16,7 +16,7 @@ import type { PaymentRequestSource } from '../sources/payment_request_source';
  *   - Each split requires `recipientId` and `amount` parameters.
  *   - `reference` and `description` parameters are optional.
  *   - Set `feeSource = true` parameter to mark the split as a fee/commission taken by the platform.
- *   - Set `refundable` parameter to control whether a split amount is refundable (`true`/`false`), or leave `undefined` to use the backend default.
+ *   - Set `refundable` parameter to control whether a split amount is refundable (`true`/`false`). Leave it to use the backend's default.
  *   - Set the `publishableApiKey` to "pk_test_uQra5pwtUo9GaenMSS4XgfAmeLhmjUTJwFdXJxsH" and set the `baseUrl` parameter to "https://apimig.moyasar.com" for staging testing.
  */
 export class PaymentRequest {
