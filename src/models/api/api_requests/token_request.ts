@@ -43,7 +43,9 @@ export class TokenRequest {
     this.cvc = cvc;
     this.month = month;
     this.year = year;
-    this.baseUrl = baseUrl;
+
+    const cleanedBaseUrl = baseUrl.replace(/\/+$/, ''); // Removes trailing slashes
+    this.baseUrl = cleanedBaseUrl;
     this.callbackUrl = callbackUrl;
     this.metadata = metadata;
   }
