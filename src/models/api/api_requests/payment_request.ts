@@ -55,7 +55,9 @@ export class PaymentRequest {
     splits?: PaymentSplit[] | null;
   }) {
     this.givenId = givenId;
-    this.baseUrl = baseUrl;
+
+    const cleanedBaseUrl = baseUrl.replace(/\/+$/, ''); // Removes trailing slashes
+    this.baseUrl = cleanedBaseUrl;
     this.amount = amount;
     this.currency = currency;
     this.description = description;
