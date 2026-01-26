@@ -46,7 +46,7 @@ const paymentConfig = new PaymentConfig({
     manual: false,
   }),
   applyCoupon: true,
-  // splits: [ publishableApiKey for testing: 'pk_test_uQra5pwtUo9GaenMSS4XgfAmeLhmjUTJwFdXJxsH'
+  // splits: [ publishableApiKey for testing: 'pk_test_uQra5pwtUo9GaenMSS4XgfAmeLhmjUTJwFdXJxsH', baseUrl: 'https://apimig.moyasar.com'
   //   new PaymentSplit({
   //     recipientId: '7d2d0797-a2be-40fe-bb1b-1fdec9824c95',
   //     amount: 10001,
