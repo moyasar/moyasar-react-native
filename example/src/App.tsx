@@ -16,11 +16,15 @@ import {
   TokenResponse,
   type PaymentResult,
   UnexpectedError,
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  PaymentSplit,
 } from 'react-native-moyasar-sdk';
 
 const paymentConfig = new PaymentConfig({
   // givenId: '013d92f2-c67b-49c6-ae03-d7c548c771a2',
   publishableApiKey: 'pk_test_U38gMHTgVv4wYCd35Zk1JSEd1ZyMYyA9oQ7T4rKa',
+  // baseUrl: 'https://apimig.moyasar.com', // Staging base URL
   amount: 20001,
   currency: 'SAR',
   merchantCountryCode: 'SA',
@@ -42,6 +46,20 @@ const paymentConfig = new PaymentConfig({
     manual: false,
   }),
   applyCoupon: true,
+  // splits: [ publishableApiKey for testing: 'pk_test_uQra5pwtUo9GaenMSS4XgfAmeLhmjUTJwFdXJxsH'
+  //   new PaymentSplit({
+  //     recipientId: '7d2d0797-a2be-40fe-bb1b-1fdec9824c95',
+  //     amount: 10001,
+  //   }),
+  //   new PaymentSplit({
+  //     recipientId: '327680bb-d790-4643-8e10-31455a1ab3a6',
+  //     amount: 10000,
+  //     reference: 'optional-reference-for-split-1fcfcbe9-ba75-4eed',
+  //     description: 'Platform processing fee',
+  //     feeSource: true,
+  //     refundable: true,
+  //   }),
+  // ],
 });
 
 function onPaymentResult(paymentResult: PaymentResult) {

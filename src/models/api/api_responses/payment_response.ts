@@ -1,3 +1,4 @@
+import { PaymentSplit } from '../../payment_split';
 import type { PaymentStatus } from '../../payment_status';
 import { PaymentType } from '../../payment_type';
 import { ApplePayPaymentResponseSource } from '../sources/apple_pay/apple_pay_response_source';
@@ -32,6 +33,7 @@ export class PaymentResponse {
   updatedAt: string;
   metadata?: Record<string, string | number | boolean> | null;
   source: PaymentResponseSource;
+  splits?: PaymentSplit[] | null;
 
   constructor({
     id,
@@ -56,6 +58,7 @@ export class PaymentResponse {
     updatedAt,
     metadata,
     source,
+    splits,
   }: {
     id: string;
     status: PaymentStatus;
@@ -79,6 +82,7 @@ export class PaymentResponse {
     updatedAt: string;
     metadata?: Record<string, string | number | boolean> | null;
     source: PaymentResponseSource;
+    splits?: PaymentSplit[] | null;
   }) {
     this.id = id;
     this.status = status;
@@ -102,6 +106,7 @@ export class PaymentResponse {
     this.updatedAt = updatedAt;
     this.metadata = metadata;
     this.source = source;
+    this.splits = splits;
   }
 
   /**
@@ -153,6 +158,11 @@ export class PaymentResponse {
       updatedAt: json.updated_at,
       metadata: json.metadata,
       source: paymentSource,
+      splits: json.splits
+        ? (json.splits as Array<Record<string, any>>).map((splitJson) =>
+            PaymentSplit.fromJson(splitJson)
+          )
+        : null,
     });
   }
 }

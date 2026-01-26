@@ -110,6 +110,7 @@ export class CreditCardPaymentService {
 
     const paymentRequest = new PaymentRequest({
       givenId: paymentConfig.givenId,
+      baseUrl: paymentConfig.baseUrl,
       amount: paymentConfig.amount,
       currency: paymentConfig.currency,
       description: paymentConfig.description,
@@ -117,6 +118,7 @@ export class CreditCardPaymentService {
       source: creditCardRequestSource,
       callbackUrl: 'https://sdk.moyasar.com/return',
       applyCoupon: paymentConfig.applyCoupon,
+      splits: paymentConfig.splits,
     });
 
     const response = await createPayment(
@@ -156,6 +158,7 @@ export class CreditCardPaymentService {
       cvc: creditCardRequestSource.cvc,
       month: creditCardRequestSource.month,
       year: creditCardRequestSource.year,
+      baseUrl: paymentConfig.baseUrl,
       callbackUrl: 'https://sdk.moyasar.com/return',
       metadata: paymentConfig.metadata,
     });
