@@ -1,3 +1,11 @@
+/**
+ * @param splits - Optional array of `PaymentSplit` object used to distribute the charged amount (in the smallest currency unit) among multiple recipients or to collect a platform fee.
+ *   - Each split requires `recipientId` and `amount` parameters.
+ *   - `reference` and `description` parameters are optional.
+ *   - Set `feeSource = true` parameter to mark the split as a fee/commission taken by the platform.
+ *   - Set `refundable` parameter to control whether a split amount is refundable (`true`/`false`). Leave it to use the backend's default.
+ *   - Set the `publishableApiKey` parameter to "pk_test_uQra5pwtUo9GaenMSS4XgfAmeLhmjUTJwFdXJxsH" and set the `baseUrl` parameter to "https://apimig.moyasar.com" for staging testing.
+ */
 export class PaymentSplit {
   public recipientId: string;
   public amount: number;
