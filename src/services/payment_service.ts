@@ -13,8 +13,8 @@ import type { TokenRequest } from '../models/api/api_requests/token_request';
 import { TokenResponse } from '../models/api/api_responses/token_response';
 import { PaymentType } from '../models/payment_type';
 
-const paymentsApiUrl = 'https://api.moyasar.com/v1/payments';
-const tokenApiUrl = 'https://api.moyasar.com/v1/tokens';
+const paymentsApiPath = '/v1/payments';
+const tokenApiPath = '/v1/tokens';
 
 /**
  * Makes a POST request.
@@ -70,7 +70,7 @@ export async function createPayment(
 
   try {
     const paymentJson = await makeRequest(
-      paymentsApiUrl,
+      paymentRequest.baseUrl + paymentsApiPath,
       jsonPayload,
       publishableApiKey
     );
@@ -98,7 +98,7 @@ export async function createToken(
 
   try {
     const paymentJson = await makeRequest(
-      tokenApiUrl,
+      tokenRequest.baseUrl + tokenApiPath,
       jsonPayload,
       publishableApiKey
     );

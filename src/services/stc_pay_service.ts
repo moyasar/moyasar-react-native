@@ -45,12 +45,14 @@ export class StcPayService {
 
     const paymentRequest = new PaymentRequest({
       givenId: paymentConfig.givenId,
+      baseUrl: paymentConfig.baseUrl,
       amount: paymentConfig.amount,
       currency: paymentConfig.currency,
       description: paymentConfig.description,
       metadata: paymentConfig.metadata,
       source: stcPayRequestSource,
       applyCoupon: paymentConfig.applyCoupon,
+      splits: paymentConfig.splits,
     });
 
     const response = await createPayment(

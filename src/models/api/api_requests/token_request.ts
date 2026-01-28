@@ -5,6 +5,7 @@
  * @param {string} cvc - Credit Card's security code.
  * @param {string} month - Two digit number representing the Credit Card's expiration month.
  * @param {string} year - Two or four digit number representing the Credit Card's expiration year.
+ * @param {string} [baseUrl='https://api.moyasar.com'] baseUrl - The base URL for Moyasar API. Defaults to 'https://api.moyasar.com'.
  * @param {string} callbackUrl - The URL to be redirected to after a 3D secure transaction (e.g., https://sdk.moyasar.com/return).
  * @param {Record<string, string | number | boolean> | null} [metadata] - Adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
  */
@@ -14,6 +15,7 @@ export class TokenRequest {
   cvc: string;
   month: string;
   year: string;
+  baseUrl: string;
   callbackUrl: string;
   metadata?: Record<string, string | number | boolean> | null;
 
@@ -23,6 +25,7 @@ export class TokenRequest {
     cvc,
     month,
     year,
+    baseUrl = 'https://api.moyasar.com',
     callbackUrl,
     metadata,
   }: {
@@ -31,6 +34,7 @@ export class TokenRequest {
     cvc: string;
     month: string;
     year: string;
+    baseUrl?: string;
     callbackUrl: string;
     metadata?: Record<string, string | number | boolean> | null;
   }) {
@@ -39,6 +43,9 @@ export class TokenRequest {
     this.cvc = cvc;
     this.month = month;
     this.year = year;
+
+    const cleanedBaseUrl = baseUrl.replace(/\/+$/, ''); // Removes trailing slashes
+    this.baseUrl = cleanedBaseUrl;
     this.callbackUrl = callbackUrl;
     this.metadata = metadata;
   }

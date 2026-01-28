@@ -36,3 +36,4 @@ export * from './models/api/api_responses/token_response';
 export * from './models/api/api_requests/token_request';
 export * from './models/api/api_requests/payment_request';
 export * from './models/component_models/moyasar_style';
+export * from './models/payment_split';

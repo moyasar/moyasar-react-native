@@ -1,6 +1,7 @@
 import { assert } from '../helpers/assert';
 import type { ApplePayConfig } from './apple_pay_config';
 import { CreditCardConfig } from './credit_card_config';
+import type { PaymentSplit } from './payment_split';
 import type { SamsungPayConfig } from './samsung_pay_config';
 
 /**
@@ -9,6 +10,7 @@ import type { SamsungPayConfig } from './samsung_pay_config';
 export class PaymentConfig {
   givenId?: string | null;
   publishableApiKey: string;
+  baseUrl: string;
   amount: number;
   merchantCountryCode: string;
   currency: string;
@@ -20,11 +22,13 @@ export class PaymentConfig {
   createSaveOnlyToken: boolean;
   samsungPay?: SamsungPayConfig;
   applyCoupon?: boolean;
+  splits?: PaymentSplit[] | null;
 
   /**
    * Constructs a new PaymentConfig instance with the provided settings.
    * @param givenId - Optional UUID for the payment (UUID v4 is recommended). It will be attached with the payment creation request to support idempotency. `It is going be the ID of the created payment`.
    * @param publishableApiKey - Your Moyasar publishable API key - https://docs.moyasar.com/get-your-api-keys.
+   * @param baseUrl - Moyasar API base URL. Defaults to `https://api.moyasar.com`.
    * @param amount - The amount to be charged in the smallest currency unit. For example, to charge `SAR 257.58` you will have the [amount] as `25758`. In other words, 10 SAR = 10 * 100 Halalas. Integer values only.
    * @param merchantCountryCode - The country code of the merchant’s principle place of business. Defaults to 'SA'. Must be in ISO 3166-1 alpha-2 country code format.
    * @param currency - The currency code for the payment. Defaults to 'SAR'. Must be in ISO 4217 3-letter currency code format.
@@ -36,10 +40,17 @@ export class PaymentConfig {
    * @param createSaveOnlyToken - Optional to process a save only token flow for a Credit Card. Defaults to false - https://docs.moyasar.com/create-token
    * @param samsungPay - Required for Samsung Pay feature.
    * @param applyCoupon - A flag to control the coupon application (based on the BIN). This key is required only if you don't want to apply the coupon. Otherwise, the coupon is going to be applied. Defaults to true.
+   * @param splits - Optional array of `PaymentSplit` object used to distribute the charged amount (in the smallest currency unit) among multiple recipients or to collect a platform fee.
+   *   - Each split requires `recipientId` and `amount` parameters.
+   *   - `reference` and `description` parameters are optional.
+   *   - Set `feeSource = true` parameter to mark the split as a fee/commission taken by the platform.
+   *   - Set `refundable` parameter to control whether a split amount is refundable (`true`/`false`). Leave it to use the backend's default.
+   *   - Set the `publishableApiKey` parameter to "pk_test_uQra5pwtUo9GaenMSS4XgfAmeLhmjUTJwFdXJxsH" and set the `baseUrl` parameter to "https://apimig.moyasar.com" for staging testing.
    */
   constructor({
     givenId,
     publishableApiKey,
+    baseUrl = 'https://api.moyasar.com',
     amount,
     merchantCountryCode = 'SA',
     currency = 'SAR',
@@ -51,9 +62,11 @@ export class PaymentConfig {
     createSaveOnlyToken = false,
     samsungPay,
     applyCoupon = true,
+    splits,
   }: {
     givenId?: string | null;
     publishableApiKey: string;
+    baseUrl?: string;
     amount: number;
     merchantCountryCode?: string;
     currency?: string;
@@ -65,6 +78,7 @@ export class PaymentConfig {
     createSaveOnlyToken?: boolean;
     samsungPay?: SamsungPayConfig;
     applyCoupon?: boolean;
+    splits?: PaymentSplit[] | null;
   }) {
     assert(
       publishableApiKey.length > 0,
@@ -85,9 +99,13 @@ export class PaymentConfig {
       supportedNetworks.length > 0,
       'At least 1 network must be supported.'
     );
+    assert(baseUrl.length > 0, 'Please fill `baseUrl` argument.');
 
     this.givenId = givenId;
     this.publishableApiKey = publishableApiKey;
+
+    const cleanedBaseUrl = baseUrl.replace(/\/+$/, ''); // Removes trailing slashes
+    this.baseUrl = cleanedBaseUrl;
     this.amount = amount;
     this.merchantCountryCode = merchantCountryCode.toUpperCase();
     this.currency = currency;
@@ -101,5 +119,6 @@ export class PaymentConfig {
     this.createSaveOnlyToken = createSaveOnlyToken;
     this.samsungPay = samsungPay;
     this.applyCoupon = applyCoupon;
+    this.splits = splits;
   }
 }

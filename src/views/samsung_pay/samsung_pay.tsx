@@ -29,6 +29,7 @@ export async function onSamsungPayResponse(
 
   const paymentRequest = new PaymentRequest({
     givenId: paymentConfig.givenId,
+    baseUrl: paymentConfig.baseUrl,
     amount: paymentConfig.amount,
     currency: paymentConfig.currency,
     description: paymentConfig.description,
@@ -38,6 +39,7 @@ export async function onSamsungPayResponse(
     },
     source: source,
     applyCoupon: paymentConfig.applyCoupon,
+    splits: paymentConfig.splits,
   });
 
   debugLog('Moyasar SDK: Paying with Samsung Pay...');

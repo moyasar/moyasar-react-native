@@ -30,12 +30,14 @@ export async function onApplePayResponse(
 
   const paymentRequest = new MoyasarPaymentRequest({
     givenId: paymentConfig.givenId,
+    baseUrl: paymentConfig.baseUrl,
     amount: paymentConfig.amount,
     currency: paymentConfig.currency,
     description: paymentConfig.description,
     metadata: paymentConfig.metadata,
     source: source,
     applyCoupon: paymentConfig.applyCoupon,
+    splits: paymentConfig.splits,
   });
 
   debugLog('Moyasar SDK: Paying with Apple Pay...');
