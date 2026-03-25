@@ -44,6 +44,7 @@ const paymentConfig = new PaymentConfig({
     merchantName: 'Test Samsung Pay from app',
     orderNumber: 'c553ed70-fb79-487c-b3d2-15aca6aff90c',
     manual: false,
+    saveCard: false,
   }),
   applyCoupon: true,
   // splits: [ publishableApiKey for testing: 'pk_test_uQra5pwtUo9GaenMSS4XgfAmeLhmjUTJwFdXJxsH', baseUrl: 'https://apimig.moyasar.com'
