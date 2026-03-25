@@ -22,5 +22,5 @@ jobs:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install --immutable
-      - run: npm test
+      - run: yarn test
       - run: npm publish
