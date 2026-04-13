@@ -25,6 +25,7 @@ export async function onSamsungPayResponse(
   const source = new SamsungPayRequestSource({
     samsungPayToken: token,
     manualPayment: paymentConfig.samsungPay?.manual,
+    saveCard: paymentConfig.samsungPay?.saveCard,
   });
 
   const paymentRequest = new PaymentRequest({

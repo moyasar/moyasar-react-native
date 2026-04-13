@@ -7,22 +7,26 @@ export class SamsungPayPaymentResponseSource implements PaymentResponseSource {
   gatewayId: string;
   referenceNumber?: string;
   message?: string;
+  token?: string;
 
   constructor({
     number,
     gatewayId,
     referenceNumber,
     message,
+    token,
   }: {
     number: string;
     gatewayId: string;
     referenceNumber?: string;
     message?: string;
+    token?: string;
   }) {
     this.number = number;
     this.gatewayId = gatewayId;
     this.referenceNumber = referenceNumber;
     this.message = message;
+    this.token = token;
   }
 
   static fromJson(json: Record<string, any>): SamsungPayPaymentResponseSource {
@@ -32,6 +36,7 @@ export class SamsungPayPaymentResponseSource implements PaymentResponseSource {
       gatewayId: json.gateway_id,
       referenceNumber: json.reference_number,
       message: json.message,
+      token: json.token,
     });
   }
 }

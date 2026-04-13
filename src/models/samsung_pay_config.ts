@@ -6,6 +6,7 @@ export class SamsungPayConfig {
   merchantName: string;
   orderNumber?: string | null;
   manual: boolean;
+  saveCard?: boolean;
 
   /**
    * Constructs a new SamsungPayConfig instance with the provided settings.
@@ -20,21 +21,25 @@ export class SamsungPayConfig {
    *   - Recommended format: Use a unique, traceable ID that can be linked to your system
    *   - Note: Make sure to regenerate a new order number for each transaction
    * @param manual - An option to enable the manual auth and capture.
+   * @param saveCard - An option to save (tokenize) the card after a successful payment.
    */
   constructor({
     serviceId,
     merchantName,
     orderNumber,
     manual = false,
+    saveCard = false,
   }: {
     serviceId: string;
     merchantName: string;
     orderNumber?: string | null;
     manual?: boolean;
+    saveCard?: boolean;
   }) {
     this.serviceId = serviceId;
     this.merchantName = merchantName;
     this.orderNumber = orderNumber;
     this.manual = manual;
+    this.saveCard = saveCard;
   }
 }

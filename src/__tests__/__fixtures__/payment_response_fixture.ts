@@ -87,3 +87,30 @@ export const paymentResponseWithFailedStcFixture = PaymentResponse.fromJson(
   jsonFailed,
   PaymentType.stcPay
 );
+
+export const paymentResponseWithInitSamsungJsonFixture = {
+  ...paymentResponseWithInitJsonFixture,
+  source: {
+    type: 'samsungpay',
+    number: '966500000001',
+    gateway_id: 'samsung_gateway_123',
+    reference_number: 'ref_123',
+    message: 'approved',
+    token: 'samsung_token_123',
+  },
+};
+
+export const paymentResponseWithInitSamsungFixture = PaymentResponse.fromJson(
+  paymentResponseWithInitSamsungJsonFixture,
+  PaymentType.samsungPay
+);
+
+const jsonSamsungPaid = {
+  ...paymentResponseWithInitSamsungJsonFixture,
+  status: 'paid',
+};
+
+export const paymentResponseWithPaidSamsungFixture = PaymentResponse.fromJson(
+  jsonSamsungPaid,
+  PaymentType.samsungPay
+);
