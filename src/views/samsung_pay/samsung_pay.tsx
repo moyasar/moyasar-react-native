@@ -15,6 +15,7 @@ import {
 import { PaymentConfig } from '../../models/payment_config';
 import { toMajor } from '../../helpers/currency_util';
 import { assert } from '../../helpers/assert';
+import { SamsungPayButtonType } from '../../models/component_models/samsung_pay_button_type';
 
 export async function onSamsungPayResponse(
   token: string,
@@ -91,7 +92,6 @@ const createFragment = (viewId: number | null) =>
     [viewId]
   );
 
-//  TODO: Support customizing the Samsung Pay button
 export function SamsungPay({
   paymentConfig,
   onPaymentResult,
@@ -150,6 +150,8 @@ export function SamsungPay({
           supportedNetworks: paymentConfig.supportedNetworks,
           orderNumber: paymentConfig.samsungPay?.orderNumber,
           buttonBorderRadius: style?.cornerRadius,
+          buttonType:
+            style?.buttonType ?? SamsungPayButtonType.payWithSamsungPay,
         }}
         onPaymentResult={(result) => {
           if (!result.nativeEvent.result) {

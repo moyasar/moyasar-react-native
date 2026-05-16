@@ -12,6 +12,7 @@ import {
   PaymentStatus,
   StcPay,
   SamsungPay,
+  SamsungPayButtonType,
   SamsungPayConfig,
   TokenResponse,
   type PaymentResult,
@@ -112,7 +113,10 @@ export default function App() {
         <SamsungPay
           paymentConfig={paymentConfig}
           onPaymentResult={onPaymentResult}
-          style={{ width: '90%' }}
+          style={{
+            width: '90%',
+            buttonType: SamsungPayButtonType.payWithSamsungPay,
+          }}
         />
         <CreditCard
           paymentConfig={paymentConfig}

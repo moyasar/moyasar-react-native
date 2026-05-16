@@ -1,9 +1,11 @@
 package com.moyasarsdk.samsungpay
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import android.graphics.drawable.GradientDrawable
@@ -18,6 +20,10 @@ class SamsungPayButtonFragment : Fragment() {
 
     private val viewModel: SamsungPayButtonViewModel = SamsungPayButtonViewModelHolder.sharedSamsungPayButtonViewModel
     private lateinit var mBinding: FragmentSamsungPayBinding
+    private var selectedButtonDrawable: Int = R.drawable.pay_with_samsung_pay_logo
+    private val buttonLayoutChangeListener = View.OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+        applyPaddingForButtonDrawable(selectedButtonDrawable)
+    }
 
     companion object {
         fun newInstance(
@@ -50,6 +56,13 @@ class SamsungPayButtonFragment : Fragment() {
         return mBinding.root
     }
 
+    override fun onDestroyView() {
+        if (this::mBinding.isInitialized) {
+            mBinding.samsungPayButton.removeOnLayoutChangeListener(buttonLayoutChangeListener)
+        }
+        super.onDestroyView()
+    }
+
     private fun enablePaymentButton() {
         mBinding.samsungPayButton.isClickable = true
         mBinding.samsungPayButton.alpha = 1f
@@ -63,7 +76,18 @@ class SamsungPayButtonFragment : Fragment() {
     private fun initView() {
         val samsungPayButton = mBinding.samsungPayButton
 
-         val backgroundDrawable = mBinding.samsungPayButton.background
+        selectedButtonDrawable = when (viewModel.merchantInfo.buttonType?.trim()) {
+            "samsung_pay_logo" -> R.drawable.samsung_pay_logo
+            else -> R.drawable.pay_with_samsung_pay_logo
+        }
+
+        samsungPayButton.setImageResource(selectedButtonDrawable)
+        samsungPayButton.scaleType = ImageView.ScaleType.FIT_CENTER
+
+        applyPaddingForButtonDrawable(selectedButtonDrawable)
+        samsungPayButton.addOnLayoutChangeListener(buttonLayoutChangeListener)
+
+        val backgroundDrawable = mBinding.samsungPayButton.background
 
         if (backgroundDrawable is GradientDrawable) {
             val radiusDp = (viewModel.merchantInfo.buttonBorderRadius)?.toFloat() ?: 12f
@@ -92,5 +116,33 @@ class SamsungPayButtonFragment : Fragment() {
                 }
             )
         }
+    }
+
+    private fun applyPaddingForButtonDrawable(buttonDrawable: Int) {
+        val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+        val (leftPaddingDp, topPaddingDp, rightPaddingDp, bottomPaddingDp) = when (buttonDrawable) {
+            R.drawable.samsung_pay_logo -> listOf(12, 10, 12, 10)
+            else -> {
+                if (isLandscape) {
+                    listOf(24, 19, 24, 13)
+                } else {
+                    listOf(24, 10, 24, 6)
+                }
+            }
+        }
+
+        val density = requireContext().resources.displayMetrics.density
+        val leftPaddingPx = (leftPaddingDp * density).toInt()
+        val topPaddingPx = (topPaddingDp * density).toInt()
+        val rightPaddingPx = (rightPaddingDp * density).toInt()
+        val bottomPaddingPx = (bottomPaddingDp * density).toInt()
+
+        mBinding.samsungPayButton.setPadding(
+            leftPaddingPx,
+            topPaddingPx,
+            rightPaddingPx,
+            bottomPaddingPx
+        )
     }
 }

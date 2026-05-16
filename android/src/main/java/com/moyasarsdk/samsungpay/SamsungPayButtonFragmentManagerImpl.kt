@@ -81,6 +81,7 @@ object SamsungPayButtonFragmentManagerImpl {
 
         var orderNumber: String? = null
         var buttonBorderRadius: Double? = null
+        var buttonType: String? = null
 
         if (merchantInfoMap.hasKey("orderNumber") && !merchantInfoMap.isNull("orderNumber")) {
             Logger.d("MoyasarSDK", "Order number will be set")
@@ -90,6 +91,11 @@ object SamsungPayButtonFragmentManagerImpl {
         if (merchantInfoMap.hasKey("buttonBorderRadius") && !merchantInfoMap.isNull("buttonBorderRadius")) {
             Logger.d("MoyasarSDK", "Button border radius will be set")
             buttonBorderRadius = merchantInfoMap.getDouble("buttonBorderRadius")
+        }
+
+        if (merchantInfoMap.hasKey("buttonType") && !merchantInfoMap.isNull("buttonType")) {
+            Logger.d("MoyasarSDK", "Samsung Pay button type will be set")
+            buttonType = merchantInfoMap.getString("buttonType")
         }
 
         // TODO: Optimize if needed like this or we can use the array directly
@@ -110,7 +116,8 @@ object SamsungPayButtonFragmentManagerImpl {
             currency = currency,
             supportedNetworks = supportedNetworks,
             orderNumber = orderNumber,
-            buttonBorderRadius = buttonBorderRadius
+            buttonBorderRadius = buttonBorderRadius,
+            buttonType = buttonType
         )
 
         Logger.d("MoyasarSDK", "Merchant info has been set: $propMerchantInfo")
