@@ -1,6 +1,6 @@
 # Contributing
 
-Contributions are welcome, no matter how large or small.
+Contributions are always welcome, no matter how large or small!
 
 This guide is intended to get a new contributor from a clean machine to a running project and a PR-ready change.
 
@@ -259,11 +259,7 @@ Before opening your PR:
 
 ## Publishing to npm (maintainers)
 
-This repository uses [release-it](https://github.com/release-it/release-it):
-
-```sh
-yarn release
-```
+Create a Github release with a version tag vX.X.X (e.g. v0.12.0) and the CD pipeline will handle the rest.
 
 ### Linting and tests
 
