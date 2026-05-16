@@ -21,9 +21,7 @@ class SamsungPayButtonFragment : Fragment() {
     private val viewModel: SamsungPayButtonViewModel = SamsungPayButtonViewModelHolder.sharedSamsungPayButtonViewModel
     private lateinit var mBinding: FragmentSamsungPayBinding
     private var selectedButtonDrawable: Int = R.drawable.pay_with_samsung_pay_logo
-    private val buttonLayoutChangeListener = View.OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-        applyPaddingForButtonDrawable(selectedButtonDrawable)
-    }
+    private var lastKnownOrientation: Int = Configuration.ORIENTATION_UNDEFINED
 
     companion object {
         fun newInstance(
@@ -56,11 +54,13 @@ class SamsungPayButtonFragment : Fragment() {
         return mBinding.root
     }
 
-    override fun onDestroyView() {
-        if (this::mBinding.isInitialized) {
-            mBinding.samsungPayButton.removeOnLayoutChangeListener(buttonLayoutChangeListener)
-        }
-        super.onDestroyView()
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (!this::mBinding.isInitialized) return
+        if (newConfig.orientation == lastKnownOrientation) return
+
+        lastKnownOrientation = newConfig.orientation
+        applyPaddingForButtonDrawable(selectedButtonDrawable)
     }
 
     private fun enablePaymentButton() {
@@ -85,7 +85,7 @@ class SamsungPayButtonFragment : Fragment() {
         samsungPayButton.scaleType = ImageView.ScaleType.FIT_CENTER
 
         applyPaddingForButtonDrawable(selectedButtonDrawable)
-        samsungPayButton.addOnLayoutChangeListener(buttonLayoutChangeListener)
+        lastKnownOrientation = resources.configuration.orientation
 
         val backgroundDrawable = mBinding.samsungPayButton.background
 
