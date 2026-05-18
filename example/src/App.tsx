@@ -12,6 +12,7 @@ import {
   PaymentStatus,
   StcPay,
   SamsungPay,
+  SamsungPayButtonType,
   SamsungPayConfig,
   TokenResponse,
   type PaymentResult,
@@ -112,7 +113,7 @@ export default function App() {
         <SamsungPay
           paymentConfig={paymentConfig}
           onPaymentResult={onPaymentResult}
-          style={{ width: '90%' }}
+          style={samsungPayStyle}
         />
         <CreditCard
           paymentConfig={paymentConfig}
@@ -122,12 +123,19 @@ export default function App() {
         <ApplePay
           paymentConfig={paymentConfig}
           onPaymentResult={onPaymentResult}
-          style={{ buttonType: 'buy' }}
+          style={applePayStyle}
         />
       </View>
     </ScrollView>
   );
 }
+
+const samsungPayStyle = {
+  width: '90%' as const,
+  buttonType: SamsungPayButtonType.payWithSamsungPay,
+};
+
+const applePayStyle = { buttonType: 'buy' as const };
 
 const styles = StyleSheet.create({
   container: {

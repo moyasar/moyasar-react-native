@@ -2,88 +2,264 @@
 
 Contributions are always welcome, no matter how large or small!
 
-## Development workflow
+This guide is intended to get a new contributor from a clean machine to a running project and a PR-ready change.
 
-This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains the following packages:
+## Repository layout
 
-- The library package in the root directory.
-- An example app in the `example/` directory.
+This project is a monorepo managed with [Yarn workspaces](https://yarnpkg.com/features/workspaces).
 
-To get started with the project, run `yarn` in the root directory to install the required dependencies for each package:
+- Root package: the React Native library.
+- `example/`: demo app that consumes the local library.
+
+`example` is wired to the local source, so library changes are reflected there.
+
+## Platform support
+
+- iOS development requires macOS (Xcode).
+- Android development works on macOS, Linux, and Windows.
+- Full end-to-end local development for both platforms requires macOS.
+
+## Required tools
+
+Install the following before you start:
+
+1. Git (latest stable).
+2. Node.js `v20.19.0` (see `.nvmrc`).
+3. Yarn `3.6.1` (see `packageManager` and `.yarnrc.yml`).
+4. Java JDK `17` for Android builds.
+5. Android Studio + Android SDK tools (for Android work).
+6. Ruby `>= 2.6.10` and Bundler (for iOS pod setup).
+7. CocoaPods matching `example/Gemfile` constraints.
+8. Xcode (for iOS work).
+
+Android project values used by this repo:
+
+- `compileSdkVersion = 35`
+- `targetSdkVersion = 35` in `example`
+- `minSdkVersion = 24`
+- `buildToolsVersion = 35.0.0`
+- `ndkVersion = 27.1.12297006`
+
+### Verify toolchain
+
+Run these once after installation:
 
 ```sh
-yarn
+node -v
+yarn -v
+java -version
+ruby -v
+bundle -v
 ```
 
-> Since the project relies on Yarn workspaces, you cannot use [`npm`](https://github.com/npm/cli) for development.
+For CocoaPods (after Bundler is installed):
 
-The [example app](/example/) demonstrates usage of the library. You need to run it to test any changes you make.
+```sh
+cd example
+bundle exec pod --version
+cd ..
+```
 
-It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.
+> Do not use npm for this repository. It depends on Yarn workspaces.
 
-If you want to use Android Studio or XCode to edit the native code, you can open the `example/android` or `example/ios` directories respectively in those editors. To edit the Objective-C or Swift files, open `example/ios/MoyasarSdkExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > react-native-moyasar-sdk`.
+## First-time setup
 
-To edit the Java or Kotlin files, open `example/android` in Android studio and find the source files at `react-native-moyasar-sdk` under `Android`.
+1. Clone the repository and move into it.
+2. Ensure Node.js `v20.19.0` is active.
+3. Install JavaScript dependencies from the repo root.
 
-You can use various commands from the root directory to work with the project.
+```sh
+yarn install
+```
 
-To start the packager:
+### iOS setup (macOS only)
+
+Install Ruby gems and pods from `example`:
+
+```sh
+cd example
+bundle install
+bundle exec pod install --project-directory=ios
+cd ..
+```
+
+Notes:
+
+- `example/react-native.config.js` enables automatic pods installation for some flows, but `bundle exec pod install --project-directory=ios` is still the reliable manual step for first-time setup and pod changes.
+- Open the workspace file (not the project file) when using Xcode:
+  - `example/ios/MoyasarSdkExample.xcworkspace`
+
+### Android setup
+
+Install Android SDK components required by the project:
+
+1. Android SDK Platform 35
+2. Android SDK Build-Tools 35.0.0
+3. Android NDK 27.1.12297006
+
+Set your SDK path for Gradle if needed:
+
+- File: `example/android/local.properties`
+- Example value:
+
+```properties
+sdk.dir=/Users/<your-user>/Library/Android/sdk
+```
+
+Also ensure `JAVA_HOME` points to JDK 17.
+
+## Run the project
+
+Run commands from the repository root.
+
+1. Start Metro in terminal 1:
 
 ```sh
 yarn example start
 ```
 
-To run the example app on Android:
+2. Start one platform in terminal 2:
+
+Android:
 
 ```sh
 yarn example android
 ```
 
-To run the example app on iOS:
+iOS:
 
 ```sh
 yarn example ios
 ```
 
-To confirm that the app is running with the new architecture, you can check the Metro logs for a message like this:
+### Build-only commands
+
+Use these when you want explicit platform build commands:
 
 ```sh
+yarn example build:android
+yarn example build:ios
+```
+
+### Verify New Architecture is active
+
+In Metro logs, confirm a line similar to:
+
+```text
 Running "MoyasarSdkExample" with {"fabric":true,"initialProps":{"concurrentRoot":true},"rootTag":1}
 ```
 
-Note the `"fabric":true` and `"concurrentRoot":true` properties.
+`"fabric":true` and `"concurrentRoot":true` indicate New Architecture is running.
 
-Make sure your code passes TypeScript and ESLint. Run the following to verify:
+## Development workflow
+
+- JavaScript and TypeScript changes usually reflect via Fast Refresh.
+- Native Android/iOS changes require rebuilding the app.
+- The example app is the primary place to validate your local library changes.
+
+Native IDE entry points:
+
+- Android Studio: open `example/android`.
+- Xcode: open `example/ios/MoyasarSdkExample.xcworkspace`.
+
+## Quality checks before opening a PR
+
+Run all checks from the repository root:
 
 ```sh
-yarn typecheck
 yarn lint
+yarn typecheck
+yarn test
+yarn prepare
 ```
 
-To fix formatting errors, run the following:
+To auto-fix lint formatting where possible:
 
 ```sh
 yarn lint --fix
 ```
 
-Remember to add tests for your change if possible. Run the unit tests by:
+## Commit message convention
 
-```sh
-yarn test
-```
-
-### Commit message convention
-
-We follow the [conventional commits specification](https://www.conventionalcommits.org/en) for our commit messages:
+This repository follows [Conventional Commits](https://www.conventionalcommits.org/en).
 
 - `fix`: bug fixes, e.g. fix crash due to deprecated method.
 - `feat`: new features, e.g. add new method to the module.
 - `refactor`: code refactor, e.g. migrate from class components to hooks.
-- `docs`: changes into documentation, e.g. add usage example for the module..
+- `docs`: changes into documentation, e.g. add usage example for the module.
 - `test`: adding or updating tests, e.g. add integration tests using detox.
 - `chore`: tooling changes, e.g. change CI config.
 
-Our pre-commit hooks verify that your commit message matches this format when committing.
+Commit hooks are configured through `lefthook.yml`.
+
+## Troubleshooting
+
+### `pod install` / iOS dependency issues
+
+Symptom:
+
+- Xcode build fails with sandbox or pods manifest mismatch.
+
+Fix:
+
+```sh
+cd example
+bundle install
+bundle exec pod install --project-directory=ios
+cd ..
+```
+
+If you use a custom Node installation manager and Xcode cannot find Node:
+
+- Update `example/ios/.xcode.env.local` so `NODE_BINARY` points to your current `node` binary.
+
+### Android SDK path errors
+
+Symptom:
+
+- Gradle cannot find Android SDK.
+
+Fix:
+
+- Ensure `example/android/local.properties` exists and `sdk.dir` points to your SDK.
+- Ensure required SDK/NDK versions are installed.
+
+### Java errors (`JAVA_HOME` invalid or missing)
+
+Symptom:
+
+- Gradle reports no Java runtime or invalid `JAVA_HOME`.
+
+Fix:
+
+- Install JDK 17.
+- Set `JAVA_HOME` to that installation.
+- Re-open your terminal and retry.
+
+### Clean re-install when local environment drifts
+
+```sh
+rm -rf node_modules example/node_modules
+yarn install
+cd example
+bundle install
+bundle exec pod install --project-directory=ios
+cd ..
+```
+
+## Sending a pull request
+
+Before opening your PR:
+
+1. Keep PRs focused on one logical change.
+2. Ensure lint, typecheck, tests, and build preparation pass.
+3. Update docs/tests when behavior changes.
+4. Use Conventional Commits.
+5. If changing public API or major behavior, open an issue or discuss with maintainers first.
+
+## Publishing to npm (maintainers)
+
+Create a Github release with a version tag vX.X.X (e.g. v0.12.0) and the CD pipeline will handle the rest.
 
 ### Linting and tests
 
@@ -92,16 +268,6 @@ Our pre-commit hooks verify that your commit message matches this format when co
 We use [TypeScript](https://www.typescriptlang.org/) for type checking, [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) for linting and formatting the code, and [Jest](https://jestjs.io/) for testing.
 
 Our pre-commit hooks verify that the linter and tests pass when committing.
-
-### Publishing to npm
-
-We use [release-it](https://github.com/release-it/release-it) to make it easier to publish new versions. It handles common tasks like bumping version based on semver, creating tags and releases etc.
-
-To publish new versions, run the following:
-
-```sh
-yarn release
-```
 
 ### Scripts
 
@@ -114,12 +280,3 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn example start`: start the Metro server for the example app.
 - `yarn example android`: run the example app on Android.
 - `yarn example ios`: run the example app on iOS.
-
-### Sending a pull request
-
-When you're sending a pull request:
-
-- Prefer small pull requests focused on one change.
-- Verify that linters and tests are passing.
-- Review the documentation to make sure it looks good.
-- For pull requests that change the API or implementation, discuss with maintainers first by opening an issue.

@@ -4,6 +4,7 @@ import {
   type TextStyle,
   type ViewStyle,
 } from 'react-native';
+import type { SamsungPayButtonType } from './samsung_pay_button_type';
 
 export interface CreditCardMoyasarStyle {
   container?: ViewStyle;
@@ -31,6 +32,7 @@ export interface ApplePayMoyasarStyle {
  * Height and width can accept relative values (like '100%') or absolute values (like 50).
  */
 export interface SamsungPayMoyasarStyle {
+  buttonType?: SamsungPayButtonType; // payWithSamsungPay | samsungPayLogoOnly
   height?: DimensionValue;
   width?: DimensionValue;
   cornerRadius?: number;

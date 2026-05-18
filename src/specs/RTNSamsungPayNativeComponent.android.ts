@@ -18,6 +18,8 @@ export interface MerchantInfo {
   orderNumber?: string | null; // Must for VISA payments
   /** Corner radius in DP unit */
   buttonBorderRadius?: Double | null;
+  /** 'pay_with_samsung_pay_logo' | 'samsung_pay_logo' */
+  buttonType?: string | null;
 }
 
 type SamsungPayPaymentResultEvent = {

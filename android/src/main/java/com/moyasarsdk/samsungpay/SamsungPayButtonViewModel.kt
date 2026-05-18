@@ -25,7 +25,8 @@ data class MerchantInfo(
     val currency: String,
     val supportedNetworks: List<String>,
     val orderNumber: String?,
-    val buttonBorderRadius: Double?
+    val buttonBorderRadius: Double?,
+    val buttonType: String?
 )
 
 /**
