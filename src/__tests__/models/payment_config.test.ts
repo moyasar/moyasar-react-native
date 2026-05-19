@@ -20,6 +20,7 @@ describe('PaymentConfig', () => {
       'visa',
       'mastercard',
       'amex',
+      'unionpay',
     ]);
     expect(config.applePay).toBeUndefined();
     expect(config.creditCard).toBeInstanceOf(CreditCardConfig);

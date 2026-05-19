@@ -3,5 +3,6 @@ export enum CreditCardNetwork {
   visa = 'visa',
   master = 'master',
   amex = 'amex',
+  unionpay = 'unionpay',
   unknown = 'unknown',
 }

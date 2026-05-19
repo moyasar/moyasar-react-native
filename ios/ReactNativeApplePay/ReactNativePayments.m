@@ -237,6 +237,7 @@ RCT_EXPORT_METHOD(handleDetailsUpdate: (NSDictionary *)details
     
     if (iOSVersion >= 9.2) {
         [supportedNetworksMapping setObject:PKPaymentNetworkChinaUnionPay forKey:@"chinaunionpay"];
+        [supportedNetworksMapping setObject:PKPaymentNetworkChinaUnionPay forKey:@"unionpay"];
         [supportedNetworksMapping setObject:PKPaymentNetworkInterac forKey:@"interac"];
     }
     
@@ -267,7 +268,12 @@ RCT_EXPORT_METHOD(handleDetailsUpdate: (NSDictionary *)details
     NSArray *jsSupportedNetworks = methodData[@"supportedNetworks"];
     NSMutableArray *supportedNetworks = [NSMutableArray array];
     for (NSString *supportedNetwork in jsSupportedNetworks) {
-        [supportedNetworks addObject: supportedNetworksMapping[supportedNetwork]];
+        NSString *networkKey = [supportedNetwork lowercaseString];
+        id mappedNetwork = supportedNetworksMapping[networkKey];
+
+        if (mappedNetwork != nil) {
+            [supportedNetworks addObject:mappedNetwork];
+        }
     }
     
     return supportedNetworks;
