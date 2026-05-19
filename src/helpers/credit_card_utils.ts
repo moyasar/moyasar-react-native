@@ -1,6 +1,8 @@
 import { CreditCardNetwork } from '../models/credit_card_network';
 import { inMadaRange } from './mada_util';
 
+export const UNION_PAY_PREFIX_REGEX = new RegExp('^(62|60|81)');
+
 export function getCreditCardNetworkFromNumber(
   input: string
 ): CreditCardNetwork {
@@ -8,6 +10,8 @@ export function getCreditCardNetworkFromNumber(
     return CreditCardNetwork.mada;
   } else if (new RegExp('^3[47]').test(input)) {
     return CreditCardNetwork.amex;
+  } else if (UNION_PAY_PREFIX_REGEX.test(input)) {
+    return CreditCardNetwork.unionpay;
   } else if (new RegExp('^4').test(input)) {
     return CreditCardNetwork.visa;
   } else if (
@@ -59,6 +63,11 @@ export function mapCardNetworkStrings(networks: string[]): CreditCardNetwork[] {
         case 'americanexpress':
         case 'american express':
           return CreditCardNetwork.amex;
+        case 'unionpay':
+        case 'chinaunionpay':
+        case 'china unionpay':
+        case 'china union pay':
+          return CreditCardNetwork.unionpay;
         default:
           return CreditCardNetwork.unknown;
       }

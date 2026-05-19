@@ -12,7 +12,7 @@ export const paymentConfigWithoutSaveOnlyFixture = new PaymentConfig({
     oversize: true,
     length: 42,
   },
-  supportedNetworks: ['mada', 'mastercard', 'visa'],
+  supportedNetworks: ['mada', 'mastercard', 'visa', 'unionpay'],
   applePay: new ApplePayConfig({
     merchantId: 'com.example.merchant',
     label: 'Example Merchant',
@@ -35,7 +35,7 @@ export const paymentConfigWithSaveOnlyFixture = new PaymentConfig({
     oversize: true,
     length: 42,
   },
-  supportedNetworks: ['mada', 'mastercard', 'visa'],
+  supportedNetworks: ['mada', 'mastercard', 'visa', 'unionpay'],
   applePay: new ApplePayConfig({
     merchantId: 'com.example.merchant',
     label: 'Example Merchant',

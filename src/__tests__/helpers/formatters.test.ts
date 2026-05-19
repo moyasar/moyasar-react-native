@@ -20,6 +20,11 @@ describe('formatCreditCardNumber', () => {
     expect(formattedNumber).toBe('3782 822463 10005');
   });
 
+  it('should format 19 digits (unionpay) card correctly', () => {
+    const formattedNumber = formatCreditCardNumber('6200000000000000000');
+    expect(formattedNumber).toBe('6200 0000 0000 0000 000');
+  });
+
   it('should return the original number if it does not match any pattern', () => {
     const formattedNumber = formatCreditCardNumber('411');
     expect(formattedNumber).toBe('411');
@@ -51,6 +56,14 @@ describe('formatCreditCardNumber', () => {
 
     const formattedNumber4 = formatCreditCardNumber('37828224631000');
     expect(formattedNumber4).toBe('3782 822463 1000');
+  });
+
+  it('should format incompleted 19 digits (unionpay) card correctly', () => {
+    const formattedNumber = formatCreditCardNumber('62000000000000000');
+    expect(formattedNumber).toBe('6200 0000 0000 0000 0');
+
+    const formattedNumber2 = formatCreditCardNumber('620000000000000000');
+    expect(formattedNumber2).toBe('6200 0000 0000 0000 00');
   });
 
   describe('formatMobileNumber', () => {

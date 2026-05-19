@@ -4,7 +4,7 @@ import { getCreditCardNetworkFromNumber } from './credit_card_utils';
 export function formatCreditCardNumber(number: string): string {
   const cardNetwork = getCreditCardNetworkFromNumber(number);
 
-  const regexMatches = number.match(/\d{4,16}/g);
+  const regexMatches = number.match(/\d{4,19}/g);
   const match = (regexMatches && regexMatches[0]) || '';
   const parts = [];
 
