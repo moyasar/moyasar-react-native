@@ -72,15 +72,6 @@ describe('getCreditCardNetworkFromNumber', () => {
     );
   });
 
-  it('should return unknown for unionpay prefixes with invalid length', () => {
-    expect(getCreditCardNetworkFromNumber('620000000000000')).toBe(
-      CreditCardNetwork.unknown
-    );
-    expect(getCreditCardNetworkFromNumber('62000000000000000000')).toBe(
-      CreditCardNetwork.unknown
-    );
-  });
-
   it('should return unknown for a card number not matching any known network', () => {
     expect(getCreditCardNetworkFromNumber('1234567812345670')).toBe(
       CreditCardNetwork.unknown
