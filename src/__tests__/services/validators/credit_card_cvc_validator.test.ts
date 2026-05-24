@@ -28,6 +28,9 @@ describe('CreditCardCvcValidator', () => {
 
     const result2 = validator.validate('123', '4201320111111010');
     expect(result2).toBeNull();
+
+    const result3 = validator.validate('123', '6200000000000005');
+    expect(result3).toBeNull();
   });
 
   it('should return error for empty CVC', () => {
@@ -68,5 +71,8 @@ describe('CreditCardCvcValidator', () => {
 
     const result3 = validator.validate('12', '4111111111111111');
     expect(result3).toContain('invalidCvc');
+
+    const result4 = validator.validate('1234', '6200000000000005');
+    expect(result4).toContain('invalidCvc');
   });
 });

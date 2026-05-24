@@ -34,7 +34,7 @@ export class PaymentConfig {
    * @param currency - The currency code for the payment. Defaults to 'SAR'. Must be in ISO 4217 3-letter currency code format.
    * @param description - Can be any string you want to tag the payment. For example `Payment for Order #34321`.
    * @param metadata - Adds searchable key/value pairs to the payment. For example `{"size": "xl"}`.
-   * @param supportedNetworks - Card networks supported for Apple Pay & Samsung Pay. Defaults to all available: ['mada', 'visa', 'mastercard', 'amex'].
+   * @param supportedNetworks - Card networks supported for Apple Pay & Samsung Pay. Defaults to all available: ['mada', 'visa', 'mastercard', 'amex', 'unionpay'].
    * @param applePay - Required for Apple Pay feature.
    * @param creditCard - Optional for Credit Card feature.
    * @param createSaveOnlyToken - Optional to process a save only token flow for a Credit Card. Defaults to false - https://docs.moyasar.com/create-token
@@ -56,7 +56,7 @@ export class PaymentConfig {
     currency = 'SAR',
     description,
     metadata,
-    supportedNetworks = ['mada', 'visa', 'mastercard', 'amex'],
+    supportedNetworks = ['mada', 'visa', 'mastercard', 'amex', 'unionpay'],
     applePay,
     creditCard = new CreditCardConfig({}),
     createSaveOnlyToken = false,

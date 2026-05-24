@@ -27,6 +27,7 @@ const allNetworks = [
   CreditCardNetwork.visa,
   CreditCardNetwork.master,
   CreditCardNetwork.amex,
+  CreditCardNetwork.unionpay,
 ];
 
 describe('CreditCardPaymentService', () => {
@@ -51,6 +52,13 @@ describe('CreditCardPaymentService', () => {
     number: '411111111111111',
     expiry: '12/23',
     cvc: '12',
+  };
+
+  const validUnionPayFields: CreditCardFields = {
+    name: 'John Doe',
+    number: '6200000000000000000',
+    expiry: `12/${new Date().getFullYear() + 1}`,
+    cvc: '123',
   };
 
   beforeEach(() => {
@@ -348,6 +356,15 @@ describe('CreditCardPaymentService', () => {
       const result = service.validateAllFields(invalidFields, allNetworks);
 
       expect(result).toBe(false);
+    });
+
+    it('should return true if unionpay fields are valid', () => {
+      const result = service.validateAllFields(
+        validUnionPayFields,
+        allNetworks
+      );
+
+      expect(result).toBe(true);
     });
   });
 });

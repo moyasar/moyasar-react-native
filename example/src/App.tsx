@@ -31,7 +31,7 @@ const paymentConfig = new PaymentConfig({
   merchantCountryCode: 'SA',
   description: 'Test payment',
   metadata: { size: '250 g' },
-  supportedNetworks: ['mada', 'visa', 'mastercard', 'amex'],
+  supportedNetworks: ['mada', 'visa', 'mastercard', 'amex', 'unionpay'],
   creditCard: new CreditCardConfig({ saveCard: false, manual: false }),
   applePay: new ApplePayConfig({
     merchantId: 'merchant.mysr.aalrabiah',

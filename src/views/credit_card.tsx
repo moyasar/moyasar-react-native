@@ -21,10 +21,15 @@ import { formatAmount, toMajor } from '../helpers/currency_util';
 import { CreditCardPaymentService } from '../services/credit_card_payment_service';
 import { WebviewPaymentAuth } from './webview_payment_auth';
 import type { CreditCardResponseSource } from '../models/api/sources/credit_card/credit_card_response_source';
-import { Visa } from '../assets/visa';
-import { Mastercard } from '../assets/mastercard';
-import { Amex } from '../assets/amex';
-import { Mada } from '../assets/mada';
+import {
+  Amex,
+  Mada,
+  Mastercard,
+  PoweredByLogo,
+  SaudiRiyal,
+  UnionPay,
+  Visa,
+} from '../assets';
 import { CreditCardNetwork } from '../models/credit_card_network';
 import {
   formatCreditCardNumber,
@@ -36,8 +41,6 @@ import {
 } from '../helpers/credit_card_utils';
 import { mapArabicNumbers } from '../helpers/arabic_numbers_mapper';
 import { debugLog } from '../helpers/debug_log';
-import { SaudiRiyal } from '../assets/saudi_riyal';
-import { PoweredByLogo } from '../assets/powered_logo';
 import { readexMedium, readexRegular } from '../helpers/fonts';
 
 // TODO: Modify to a better approach rather than global variable
@@ -127,6 +130,8 @@ const CreditCardView = ({
 
   const { width, height } = useWindowDimensions();
   const isPortrait = height > width;
+  const cardNetwork = getCreditCardNetworkFromNumber(number);
+  const cardNumberMaxLength = cardNetwork === CreditCardNetwork.amex ? 17 : 23;
 
   useEffect(() => {
     setIsButtonDisabled(
@@ -185,7 +190,7 @@ const CreditCardView = ({
                   const cleanNumber = value
                     .replace(/\s/g, '')
                     .replace(/[^\d٠-٩]/gi, '')
-                    .slice(0, 16);
+                    .slice(0, 19);
 
                   const mappedCleanNumbers = mapArabicNumbers(cleanNumber);
 
@@ -210,12 +215,7 @@ const CreditCardView = ({
                 placeholderTextColor={customStyle?.textInputsPlaceholderColor}
                 keyboardType="numeric"
                 editable={!isPaymentInProgress}
-                maxLength={
-                  getCreditCardNetworkFromNumber(number) ===
-                  CreditCardNetwork.amex
-                    ? 17
-                    : 19
-                }
+                maxLength={cardNumberMaxLength}
               />
               <View style={defaultStyle.cardNetworkLogoContainer}>
                 {paymentService.shouldShowNetworkLogo(
@@ -248,6 +248,14 @@ const CreditCardView = ({
                   supportedNetworks
                 ) ? (
                   <Amex style={defaultStyle.cardNetworkLogo} />
+                ) : null}
+
+                {paymentService.shouldShowNetworkLogo(
+                  number,
+                  CreditCardNetwork.unionpay,
+                  supportedNetworks
+                ) ? (
+                  <UnionPay style={defaultStyle.cardNetworkLogo} />
                 ) : null}
               </View>
             </View>
@@ -323,8 +331,6 @@ const CreditCardView = ({
                 placeholderTextColor={customStyle?.textInputsPlaceholderColor}
                 keyboardType="numeric"
                 maxLength={(() => {
-                  const cardNetwork = getCreditCardNetworkFromNumber(number);
-
                   return cardNetwork === CreditCardNetwork.amex ||
                     cardNetwork === CreditCardNetwork.unknown
                     ? 4
@@ -499,13 +505,13 @@ const defaultStyle = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     alignSelf: 'center',
-    end: 10,
+    end: 4,
     justifyContent: 'flex-end',
   },
   cardNetworkLogo: {
-    marginEnd: 8,
-    height: 37,
-    width: 37,
+    marginEnd: 4,
+    height: 26,
+    width: 26,
   },
   moyasarLogo: {
     paddingTop: 20,

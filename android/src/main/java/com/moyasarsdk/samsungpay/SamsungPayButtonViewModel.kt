@@ -209,11 +209,12 @@ class SamsungPayButtonViewModel(
 
             // Map string network names to Samsung Pay SDK Brand enums
             merchantInfo.supportedNetworks.forEach { network ->
-                when (network) {
+                when (network.lowercase()) {
                     "mada" -> brandList.add(SpaySdk.Brand.MADA)
                     "visa" -> brandList.add(SpaySdk.Brand.VISA)
                     "mastercard" -> brandList.add(SpaySdk.Brand.MASTERCARD)
                     "amex" -> brandList.add(SpaySdk.Brand.AMERICANEXPRESS)
+                    "unionpay", "chinaunionpay" -> brandList.add(SpaySdk.Brand.CHINAUNIONPAY)
                     else -> Logger.w("MoyasarSDK", "Unknown card network: $network, skipping")
                 }
             }
