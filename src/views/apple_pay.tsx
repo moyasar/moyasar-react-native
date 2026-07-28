@@ -155,7 +155,7 @@ export function ApplePay({
               }
             })
             .catch((error: any) => {
-              // TODO: Should we call the `onPaymentResult` callback here?
+              // TODO: Should we call the `onPaymentResult` callback here? NO
               errorLog(`Moyasar SDK: Apple Pay payment error: ${error}`);
             });
         }}
