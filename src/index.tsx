@@ -21,6 +21,7 @@ export {
   createToken,
   sendOtp,
 } from './services/payment_service';
+export { isSamsungPayAvailable } from './helpers/samsung_pay_availability';
 export * from './models/payment_type';
 export * from './models/api/sources/payment_request_source';
 export * from './models/api/sources/payment_response_source';
