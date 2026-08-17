@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import {
   ApplePay,
@@ -15,6 +16,7 @@ import {
   SamsungPayButtonType,
   SamsungPayConfig,
   TokenResponse,
+  isSamsungPayAvailable,
   type PaymentResult,
   UnexpectedError,
   // @ts-ignore
@@ -101,7 +103,22 @@ function onPaymentResult(paymentResult: PaymentResult) {
   }
 }
 
+async function demoIsSamsungPayAvailable() {
+  const serviceId = paymentConfig.samsungPay?.serviceId;
+
+  if (!serviceId) {
+    return;
+  }
+
+  const available = await isSamsungPayAvailable(serviceId);
+  console.log(`Samsung Pay availability: ${available}`);
+}
+
 export default function App() {
+  useEffect(() => {
+    void demoIsSamsungPayAvailable();
+  }, []);
+
   return (
     <ScrollView>
       <View style={styles.container}>
