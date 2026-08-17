@@ -141,7 +141,7 @@ export async function sendOtp(
 }
 
 function buildRequestHeaders(apiKey?: string): Record<string, string> {
-  const sdkVersion = '0.14.0';
+  const sdkVersion = '0.15.0';
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',

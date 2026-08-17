@@ -26,6 +26,14 @@ class RTNSamsungPayModuleImpl {
      * (`SPAY_READY`). Every other status (not supported, not set up, temporarily
      * not allowed, or any failure) resolves `false`. The promise never rejects,
      * so callers get a simple boolean.
+     * 
+     * Important: this is a wallet readiness check, not a definitive merchant
+     * service ID validation check. A `true` result means Samsung Pay reports the
+     * device wallet as ready. It does not guarantee that the provided `serviceId`
+     * is onboarded/approved for all operations. 
+     * 
+     * Note: service ID authorization issues may be reported through 
+     * Samsung error codes and `EXTRA_ERROR_REASON` values in failure callbacks of Samsung Pay operations (e.g. when clicking the Samsung Pay button or attempting a payment).
      */
     fun isSamsungPayAvailable(
         reactContext: ReactApplicationContext,

@@ -11,8 +11,16 @@ import { debugLog, errorLog } from './debug_log';
  * when Samsung Pay is not supported, or when it is supported but not yet set
  * up / activated by the user.
  *
+ * Important: this is a wallet readiness check, not a definitive merchant
+ * service ID validation check. A `true` result means Samsung Pay reports the
+ * device wallet as ready. It does not guarantee that the provided `serviceId`
+ * is onboarded/approved for all operations.
+ *
  * Use this to decide whether to show a Samsung Pay option in your own custom
  * payment UI before rendering the `SamsungPay` button.
+ *
+ * Note: service ID authorization issues may be reported through
+ * Samsung error codes and `EXTRA_ERROR_REASON` values in failure callbacks of Samsung Pay operations (e.g. when clicking the Samsung Pay button or attempting a payment).
  *
  * @param serviceId - The Samsung Pay service ID generated in the Samsung
  *   merchant dashboard (the same `serviceId` used in `SamsungPayConfig`).
