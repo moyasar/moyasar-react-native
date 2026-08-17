@@ -23,6 +23,8 @@ public class RTNMoyasarPackage extends TurboReactPackage implements ReactPackage
 
         if (name.equals(RTNDeviceLanguageImpl.NAME)) {
             return new RTNDeviceLanguage(reactContext);
+        } else if (name.equals(RTNSamsungPayModuleImpl.NAME)) {
+            return new RTNSamsungPay(reactContext);
         } else {
             return null;
         }
@@ -50,6 +52,19 @@ public class RTNMoyasarPackage extends TurboReactPackage implements ReactPackage
                     false, // canOverrideExistingModule
                     false, // needsEagerInit
                     true, // hasConstants
+                    false, // isCxxModule
+                    isTurboModule // isTurboModule
+                )
+            );
+
+            moduleInfos.put(
+                RTNSamsungPayModuleImpl.NAME,
+                new ReactModuleInfo(
+                    RTNSamsungPayModuleImpl.NAME,
+                    RTNSamsungPayModuleImpl.NAME,
+                    false, // canOverrideExistingModule
+                    false, // needsEagerInit
+                    false, // hasConstants
                     false, // isCxxModule
                     isTurboModule // isTurboModule
                 )
