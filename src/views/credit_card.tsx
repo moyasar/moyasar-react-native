@@ -46,15 +46,6 @@ import { readexMedium, readexRegular } from '../helpers/fonts';
 // TODO: Modify to a better approach rather than global variable
 const paymentService = new CreditCardPaymentService();
 
-let formattedAmount: string | null;
-
-function getFormattedAmount(amount: number, currency: string): string {
-  if (!formattedAmount) {
-    return (formattedAmount = formatAmount(amount, currency));
-  }
-  return formattedAmount;
-}
-
 // TODO: Test support against autofilling card details
 export function CreditCard({
   paymentConfig,
@@ -67,7 +58,6 @@ export function CreditCard({
     debugLog('Moyasar SDK: CreditCard view mounted');
     return () => {
       debugLog('Moyasar SDK: CreditCard view unmounted');
-      formattedAmount = null;
     };
   }, []);
 
@@ -419,10 +409,7 @@ const CreditCardView = ({
                   ]}
                 >
                   {t('moyasarTranslation:pay')}{' '}
-                  {getFormattedAmount(
-                    paymentConfig.amount,
-                    paymentConfig.currency
-                  )}
+                  {formatAmount(paymentConfig.amount, paymentConfig.currency)}
                 </Text>
               )}
             </TouchableOpacity>
