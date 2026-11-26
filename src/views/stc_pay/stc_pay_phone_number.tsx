@@ -28,15 +28,6 @@ import { readexMedium, readexRegular } from '../../helpers/fonts';
 // TODO: Modify to a better approach rather than global variable
 const stcPayService = new StcPayService();
 
-let formattedAmount: string | null;
-// TODO: Move this to a helper function to be reusable with CC
-function getFormattedAmount(amount: number, currency: string): string {
-  if (!formattedAmount) {
-    return (formattedAmount = formatAmount(amount, currency));
-  }
-  return formattedAmount;
-}
-
 export function StcPay({
   paymentConfig,
   onPaymentResult,
@@ -200,10 +191,7 @@ export function StcPay({
                     ]}
                   >
                     {t('moyasarTranslation:pay')}{' '}
-                    {getFormattedAmount(
-                      paymentConfig.amount,
-                      paymentConfig.currency
-                    )}
+                    {formatAmount(paymentConfig.amount, paymentConfig.currency)}
                   </Text>
                 )}
               </TouchableOpacity>
